@@ -1,0 +1,6 @@
+O que guardar para cada utilizador? 
+
+- nome
+- email
+- password
+- lista de pubs?
