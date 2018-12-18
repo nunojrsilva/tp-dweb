@@ -4,8 +4,8 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+var usersAPIRouter = require('./routes/api/users');
+
 
 var uuid = require('uuid/v4')
 var session = require('express-session')
@@ -18,47 +18,55 @@ var LocalStrategy = require('passport-local').Strategy
 
 var axios = require('axios')
 
+var mongoose = require('mongoose')
+
 
 var flash = require('connect-flash')
 
 
-passport.use(new LocalStrategy(
-  {
-    usernameField : 'email'
-  },
-
-  (email, password, done) => {
-    axios.get('http://localhost:5011/users?email=' + email)
-      .then(dados => {
-        const user = dados.data[0]
-        if (!user) {
-          return done(null, false, {message : "Utilizador inexistente"})
-        }
-        if (password != user.password) { return done (null, false, {message : "Password inválida"})}
-
-        return done(null, user)
-      })
-
-      .catch(erro => done(erro))
-  }
+mongoose.connect('mongodb://127.0.0.1:27017/tp-web', {useNewUrlParser: true})
+  .then(() => console.log("Mongo ready " + mongoose.connection.readyState))
+  .catch (() => console.log("Erro de conexão "))
 
 
-))
+
+// passport.use(new LocalStrategy(
+//   {
+//     usernameField : 'email'
+//   },
+
+//   (email, password, done) => {
+//     axios.get('http://localhost:5011/users?email=' + email)
+//       .then(dados => {
+//         const user = dados.data[0]
+//         if (!user) {
+//           return done(null, false, {message : "Utilizador inexistente"})
+//         }
+//         if (password != user.password) { return done (null, false, {message : "Password inválida"})}
+
+//         return done(null, user)
+//       })
+
+//       .catch(erro => done(erro))
+//   }
+
+
+// ))
 
 //Serialização do utilizador
 
-passport.serializeUser((user, done) => {
-  done(null, user.id)
-})
+// passport.serializeUser((user, done) => {
+//   done(null, user.id)
+// })
 
-//funcao inversa
+// //funcao inversa
 
-passport.deserializeUser((uid, done) => {
-  axios.get("http://localhost:5011/users/" + uid)
-    .then(dados => done(null, dados.data))
-    .catch(erro => done(erro, false))
+// passport.deserializeUser((uid, done) => {
+//   axios.get("http://localhost:5011/users/" + uid)
+//     .then(dados => done(null, dados.data))
+//     .catch(erro => done(erro, false))
 
-})
+// })
 
 
 var app = express();
@@ -67,19 +75,19 @@ var app = express();
 //Middleware da sessão
 
 
-app.use(session({
-  genid: req => {
-    console.log('Dentro do middleware da sessão - ' + req.sessionID)
-    return uuid()
-  },
-  store: new FileStore () ,
-  secret: 'aula dweb 2018',
-  resave : false,
-  saveUninitialized : true
-}))
+// app.use(session({
+//   genid: req => {
+//     console.log('Dentro do middleware da sessão - ' + req.sessionID)
+//     return uuid()
+//   },
+//   store: new FileStore () ,
+//   secret: 'aula dweb 2018',
+//   resave : false,
+//   saveUninitialized : true
+// }))
 
-app.use(passport.initialize())
-app.use(passport.session())
+// app.use(passport.initialize())
+// app.use(passport.session())
 
 
 //Conf da estrategia de autenticacao
@@ -97,8 +105,9 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+// app.use('/', indexRouter);
+
+app.use('/api/users', usersAPIRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
