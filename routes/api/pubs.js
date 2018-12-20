@@ -17,6 +17,12 @@ router.get('/:pid', (req,res) => {
         .catch(erro => res.status(500).send('Erro na consulta da publicação ' + req.params.pid))
 })
 
+router.get('/publico/:value', (req, res) => {
+	Pubs.listarPublico(req.params.value)
+		.then(dados => res.jsonp(dados))
+		.catch(erro => res.status(500).send('Erro na listagem de publicações por tipo: ' + erro))
+});
+
 router.get('/hashtag/:ht', (req, res) => {
 	Pubs.listarHashtag(req.params.ht)
 		.then(dados => res.jsonp(dados))

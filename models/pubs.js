@@ -25,6 +25,7 @@ var PubSchema = new Schema({
     data: {type: String, required: true},
     tipo: {type: String, required: true},
     local: {type: String, required: false},
+    publico: {type: Boolean, required: true},
     hashtags: [{type: String, required: true}],
     titulo: {type: String, required: false},
     opiniao: {type: String, required: false},

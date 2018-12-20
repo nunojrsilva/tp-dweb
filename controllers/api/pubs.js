@@ -16,6 +16,13 @@ module.exports.consultar = pid => {
             .exec()
 }
 
+module.exports.listarPublico = value => {
+	return Pub
+		.find({publico: value})
+		.sort({data:-1})
+		.exec()
+}
+
 module.exports.listarHashtag = hashtag => {
 	return Pub
 		.find({hashtags:{ $all: [hashtag] }})
