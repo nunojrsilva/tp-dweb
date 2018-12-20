@@ -10,7 +10,7 @@ var ficheiroSchema = new Schema({
 
 var eventoSchema = new Schema({
     titulo: {type: String, required: true},
-    data: {type: String, required: true},
+    data: {type: Date, required: true},
     atividade: {type: String, required: true},
     duracao: {type: String, required: false},
     descricao: {type: String, required: false}
@@ -22,7 +22,7 @@ var narracaoSchema = new Schema({
 })
 
 var PubSchema = new Schema({
-    data: {type: String, required: true},
+    data: {type: Date, required: true},
     tipo: {type: String, required: true},
     local: {type: String, required: false},
     publico: {type: Boolean, required: true},
