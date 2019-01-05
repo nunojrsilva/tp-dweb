@@ -11,6 +11,13 @@ router.get('/', (req,res) => {
         .catch(erro => res.status(500).send('Erro na listagem de publicações'))
 })
 
+
+router.get('/lista', (req,res) => {
+    console.log("Entrou no get de /pubs/lista")
+    res.render("lista")
+})
+
+
 router.get('/:pid', (req,res) => {
     Pubs.consultar(req.params.pid)
         .then(dados => res.jsonp(dados))

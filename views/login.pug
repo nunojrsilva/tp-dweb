@@ -1,10 +1,9 @@
 extends layout
 
 block content
-    h1 Lista de utilizadores
+    h1 Página de Login
     .w3-container
         form.w3-container(action="/login" method = "POST")
             input.w3-input(name="email" type="text" placeholder = "email")
             input.w3-input(name="password" type="password" placeholder = "password")
             input.w3-btn(type = "submit" value = "login")
-             
