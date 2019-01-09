@@ -1,0 +1,12 @@
+extends layout
+
+block content
+    h1 Publicação
+    h2= "Data : " + p.data
+    h2= "Visibilidade: " + p.publico
+    each elem in p.elems
+        h3= elem.hashtags
+        h2= "Titulo: " + elem.lista.titulo
+        each item in elem.lista.itens
+            p=item
+    .w3-container

@@ -20,7 +20,7 @@ router.get('/lista', (req,res) => {
 
 router.get('/:pid', (req,res) => {
     Pubs.consultar(req.params.pid)
-        .then(dados => res.jsonp(dados))
+        .then(dados => res.render("pub", {p:dados}))
         .catch(erro => res.status(500).send('Erro na consulta da publicação ' + req.params.pid))
 })
 
@@ -49,8 +49,11 @@ router.get('/data/:d', (req, res) => {
 });
 
 
-router.post('/', (req,res) => {
-    Pubs.inserir(req.body)
+router.post('/lista', (req,res) => {
+    console.dir(req.body)
+    listaPronta = completaPubLista(req.body)
+    console.dir(listaPronta)
+    Pubs.inserir(listaPronta)
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na inserção da publicação'))
 })
@@ -61,5 +64,30 @@ router.delete('/:pid', (req,res) => {
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na consulta da publicação ' + req.params.pid))
 })
+
+
+function completaPubLista (ObjLista){
+    var novaLista = {}
+    novaLista.data = new Date()
+    novaLista.tipo = "Lista"
+    novaLista.publico = false
+    novaLista.elems = completaElemLista(ObjLista)
+    return novaLista
+}
+
+function completaElemLista (ObjLista) {
+    var Elem = {}
+    Elem.hashtags = ["lista"]
+    var lista = {}
+    lista.titulo = ObjLista.titulo
+    lista.itens = []
+    console.log("Tamanho : " + ObjLista.item.length)
+    for (var i = 0; i < ObjLista.item.length; i++) {
+
+        lista.itens.push(ObjLista.item[i])
+    }
+    Elem.lista = lista
+    return Elem
+}
 
 module.exports = router;
