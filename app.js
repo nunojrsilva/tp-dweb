@@ -3,9 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var bodyParser = require("body-parser");
+
+/** bodyParser.urlencoded(options)
+ * Parses the text as URL encoded data (which is how browsers tend to send form data from regular forms set to POST)
+ * and exposes the resulting object (containing the keys and values) on req.body
+ */
+
 
 var usersAPIRouter = require('./routes/api/users');
 var pubsAPIRouter = require('./routes/api/pubs');
+var pubsRouter = require("./routes/pubs");
 
 var uuid = require('uuid/v4')
 var session = require('express-session')
@@ -93,7 +101,14 @@ var app = express();
 //Conf da estrategia de autenticacao
 
 
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 
+/**bodyParser.json(options)
+* Parses the text as JSON and exposes the resulting object on req.body.
+*/
+app.use(bodyParser.json());
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -109,6 +124,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', usersAPIRouter);
 app.use('/api/pubs', pubsAPIRouter);
+app.use('/pubs', pubsRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

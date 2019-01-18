@@ -1,0 +1,24 @@
+extends layout
+
+block content
+  h1 Publicação enviada com sucesso!
+  h2 Publicacao
+  p= pub.data
+  p= pub.tipo
+  if pub.local
+    p= pub.local
+  p= pub.publico
+  if pub.tituloPub
+    p= pub.tituloPub
+  p Elems : 
+  each e in pub.elems
+    each hash in e.hashtags
+        p="Hashtag : " + hash
+    if pub.tipo == "lista"
+        p= e.lista.titulo
+        each item in e.lista.itens
+            p= "item da lista :" + item
+
+
+
+  

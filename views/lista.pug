@@ -1,10 +1,12 @@
 extends layout
 
 block content
+    script(src='/javascripts/lista.js')
+
     h1 Adicionar Lista
     .w3-container.w3-all
-        form.w3-container(action="/api/pubs/lista" method ="POST" id="lista")
+        form.w3-container(action="/pubs/lista" method ="POST" id="lista")
             input.w3-input(name="titulo" type="text" placeholder = "Título da Lista")
-            input.w3-input(name="item" type="text" placeholder = "Item da Lista")
+            input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
             input.w3-btn(type = "submit" value = "Enviar")
             input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar Nova Linha")

@@ -2,6 +2,8 @@ var mongoose = require('mongoose')
 
 var Schema = mongoose.Schema
 
+var ObjectId = Schema.Types.ObjectId
+
 var ficheiroSchema = new Schema({
     titulo: {type: String, required: false},
     tipo: {type: String, required: true},
@@ -33,12 +35,16 @@ var listaSchema = new Schema({
 
 var elemSchema = new Schema({
     hashtags: [{type: String, required: true}],
-    
     opiniao: opiniaoSchema,
     narracao: narracaoSchema,
     evento: eventoSchema,
     ficheiros: [ficheiroSchema],
     lista: listaSchema
+})
+
+var comentarioSchema = new Schema ( {
+    utilizador : {type: ObjectId, required: true},
+    Texto : {type : String, required : true}
 })
 
 var PubSchema = new Schema({
@@ -47,8 +53,8 @@ var PubSchema = new Schema({
     local: {type: String, required: false},
     publico: {type: Boolean, required: true},
     tituloPub: {type: String, required: false},
-
-    elems: [{type: elemSchema, required: true}]
+    elems: [{type: elemSchema, required: true}],
+    comentarios : [{type: comentarioSchema}]
 })
 
 module.exports = mongoose.model('Pub', PubSchema, 'pubs')
