@@ -48,6 +48,7 @@ var comentarioSchema = new Schema ( {
 })
 
 var PubSchema = new Schema({
+    utilizador: {type: ObjectId, required: true, ref: 'User'},
     data: {type: Date, required: true},
     tipo: {type: String, required: true},
     local: {type: String, required: false},
@@ -56,5 +57,6 @@ var PubSchema = new Schema({
     elems: [{type: elemSchema, required: true}],
     comentarios : [{type: comentarioSchema}]
 })
+
 
 module.exports = mongoose.model('Pub', PubSchema, 'pubs')

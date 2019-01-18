@@ -1,11 +1,17 @@
 var Pub = require('../../models/pubs')
 
+var pop_config = {
+	path: 'utilizador',
+	select:'nome username'
+}
+
 //Lista de publicações
 
 module.exports.listar = () => {
     return Pub
             .find()
-            .sort({data : -1})
+			.populate(pop_config)
+			.sort({data : -1})
             .exec()
 }
 
@@ -13,35 +19,40 @@ module.exports.listar = () => {
 module.exports.consultar = pid => {
     return Pub
             .findOne({_id: pid})
+			.populate(pop_config)
             .exec()
 }
 
 module.exports.listarPublico = value => {
 	return Pub
-		.find({publico: value})
-		.sort({data:-1})
-		.exec()
+			.find({publico: value})
+			.populate(pop_config)
+			.sort({data:-1})
+			.exec()
 }
 
 module.exports.listarHashtag = hashtag => {
 	return Pub
-		.find({hashtags:{ $all: [hashtag] }})
-		.sort({data:-1})
-		.exec()
+			.find({hashtags:{ $all: [hashtag] }})
+			.populate(pop_config)
+			.sort({data:-1})
+			.exec()
 }
 
 module.exports.listarTipo = tipo => {
 	return Pub
-		.find({tipo: tipo})
-		.sort({data:-1})
-		.exec()
+			.find({tipo: tipo})
+			.populate(pop_config)
+			.sort({data:-1})
+			.exec()
 }
 
 module.exports.listarData = data => {
 	return Pub
-		.find({data: {$gte: data}})
-		.sort({data:-1})
-		.exec()
+			.find({data: {$gte: data}})
+			.populate(pop_config)
+			.sort({data:-1})
+			.exec()
 }
 
 module.exports.inserir = publicacao => {
@@ -50,7 +61,7 @@ module.exports.inserir = publicacao => {
 
 module.exports.remover = pid => {
     return Pub
-        .deleteOne({_id: pid})
-        .exec()
+			.deleteOne({_id: pid})
+			.exec()
 }
 

@@ -27,11 +27,11 @@ router.post('/lista', (req,res) => {
     console.log("Entrou no post de /pubs/lista")
     axios.post("http://localhost:3000/api/pubs/lista", req.body)
         .then((json) => {
-            console.log(JSON.stringify(json.data))
+            console.log("RESULTADO DO AXIOS\n" + JSON.stringify(json.data))
             res.render("respostaPub", {pub : json.data})
         })
         .catch(erro => {
-            console.log(erro)
+            console.log(erro) //CUIDADO ISTO É GRANDE PA CARACAS
             res.render('error', {error : erro, message : "Erro ao carregar pubs da BD"})})
 })
 

@@ -13,11 +13,16 @@ module.exports.listar = () => {
 
 
 module.exports.consultar = uid => {
-    return Evento
+    return User
             .findOne({_id: uid})
             .exec()
 }
 
+module.exports.consultarUsername = un => {
+    return User
+            .findOne({username: un},{_id: 1})
+            .exec()
+}
 
 module.exports.inserir = utilizador => {
     return User.create(utilizador)
