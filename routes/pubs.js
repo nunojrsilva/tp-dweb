@@ -31,7 +31,7 @@ router.post('/lista', (req,res) => {
             res.render("respostaPub", {pub : json.data})
         })
         .catch(erro => {
-            console.log(erro) //CUIDADO ISTO É GRANDE PA CARACAS
+            //console.log(erro) //CUIDADO ISTO É GRANDE PA CARACAS
             res.render('error', {error : erro, message : "Erro ao carregar pubs da BD"})})
 })
 

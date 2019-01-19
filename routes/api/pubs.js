@@ -50,14 +50,18 @@ router.get('/data/:d', (req, res) => {
 
 router.post('/lista', (req,res) => {
     console.dir("Dentro do /api/pubs/lista")
-    listaPronta = completaPubLista(req.body)
-    console.dir("ESTA É A LISTA PRONTA: \n" + listaPronta)
-    Pubs.inserir(listaPronta)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => {
-            console.log(erro)
-            res.status(500).send('Erro na inserção da publicação' + erro)
-        })
+    completaPubLista(req.body).then( 
+        listaPronta => {
+
+        Pubs.inserir(listaPronta)
+            .then(dados => res.jsonp(dados))
+            .catch(erro => {
+                console.log(erro)
+                res.status(500).send('Erro na inserção da publicação' + erro)
+            })
+    })
+    
+   
 })
 
 /////////////////////////////////////////////////////////
@@ -75,25 +79,28 @@ router.delete('/:pid', (req,res) => {
 /////////////////////////////////////////////////////////
 
 function completaPubLista (ObjLista){
-    try{
-    console.log("No inicio do completaPubLista, " + JSON.stringify(ObjLista))
-    var novaLista = {}
-    User.consultarUsername(ObjLista.username)
-        .then(un => {
-            novaLista.utilizador = un
-            novaLista.data = new Date()
-            novaLista.tipo = "lista"
-            novaLista.publico = false
-            novaLista.elems = completaElemLista(ObjLista)
-            return novaLista
-        })
-        .catch(erro => console.log("DEU ERRO NA FUN FANTASTICA DO NUNO\n" + erro))
-    }
 
-    catch(e){
-        console.log("ERA AQUI SIM SR\n" + e)
-    }
-    
+    var promise = new Promise( function(resolve, reject) {
+        // do a thing, possibly async, then…
+        console.log("No inicio do completaPubLista, " + JSON.stringify(ObjLista))
+        User.consultarUsername(ObjLista.username)
+            .then(un => {
+                var novaLista = {}
+                novaLista.utilizador = un
+                novaLista.data = new Date()
+                novaLista.tipo = "lista"
+                novaLista.publico = false
+                novaLista.elems = completaElemLista(ObjLista)
+                resolve (novaLista)
+            })  
+            .catch(erro => {
+                console.log("Erro no consultarUsername da completaPubLista : " + erro)
+                reject({})
+            })
+
+        });
+
+    return promise    
 }
 
 function completaElemLista (ObjLista) {
