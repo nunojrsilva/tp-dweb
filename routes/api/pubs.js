@@ -52,9 +52,12 @@ router.post('/lista', (req,res) => {
     console.dir("Dentro do /api/pubs/lista")
     completaPubLista(req.body).then( 
         listaPronta => {
-
         Pubs.inserir(listaPronta)
-            .then(dados => res.jsonp(dados))
+            .then(dados => {
+                User.inserirPub(listaPronta.utilizador, dados._id)
+                    .then(_ => res.jsonp(dados)  )
+                
+            })
             .catch(erro => {
                 console.log(erro)
                 res.status(500).send('Erro na inserção da publicação' + erro)
@@ -86,7 +89,7 @@ function completaPubLista (ObjLista){
         User.consultarUsername(ObjLista.username)
             .then(un => {
                 var novaLista = {}
-                novaLista.utilizador = un
+                novaLista.utilizador = un._id
                 novaLista.data = new Date()
                 novaLista.tipo = "lista"
                 novaLista.publico = false
