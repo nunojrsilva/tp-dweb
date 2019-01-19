@@ -4,10 +4,10 @@ var Schema = mongoose.Schema
 
 var ObjectId = Schema.Types.ObjectId
 
-var ficheiroSchema = new Schema({
-    titulo: {type: String, required: false},
-    tipo: {type: String, required: true},
-    caminho: {type: String, required: true}
+
+var ficheirosSchema = new Schema({
+    titulo: {type: String, required: true},
+    ficheiros: [{type: String, required: false}] // Nome dos ficheiros
 })
 
 var eventoSchema = new Schema({  // REVER ESTE CASO *OU MAIS GERAL OU COM SUB EVENTOS*
@@ -38,7 +38,7 @@ var elemSchema = new Schema({
     opiniao: opiniaoSchema,
     narracao: narracaoSchema,
     evento: eventoSchema,
-    ficheiros: [ficheiroSchema],
+    ficheiros: [ficheirosSchema],
     lista: listaSchema
 })
 
