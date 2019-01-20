@@ -6,7 +6,6 @@ var pop_config = {
 }
 
 //Lista de publicações
-
 module.exports.listar = () => {
     return Pub
             .find()
@@ -23,17 +22,25 @@ module.exports.consultar = pid => {
             .exec()
 }
 
-module.exports.listarPublico = value => {
+module.exports.listarPorUserPublico = (uid, publico) => {
 	return Pub
-			.find({publico: value})
+			.find({utilizador: uid, publico: publico})
 			.populate(pop_config)
 			.sort({data:-1})
 			.exec()
 }
 
-module.exports.listarHashtag = hashtag => {
+module.exports.listarPorUser = (id) => {
 	return Pub
-			.find({hashtags:{ $all: [hashtag] }})
+			.find({utilizador: id})
+			.populate(pop_config)
+			.sort({data:-1})
+			.exec()
+}
+
+module.exports.listarPorHashtag = hashtag => {
+	return Pub
+			.find({"elems.hashtags":{ $all: [hashtag] }})
 			.populate(pop_config)
 			.sort({data:-1})
 			.exec()
@@ -47,7 +54,7 @@ module.exports.listarTipo = tipo => {
 			.exec()
 }
 
-module.exports.listarData = data => {
+module.exports.listarPorData = data => {
 	return Pub
 			.find({data: {$gte: data}})
 			.populate(pop_config)

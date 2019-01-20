@@ -19,10 +19,11 @@ block content
 								br
 								label
 									b Ficheiros
-								input#files0.w3-input.w3-border.w3-light-grey(type='file' name='files0[]' multiple)
+								#listaFiles
+									input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
 								br
-								span(style="font-size: 10pt;") Click "+" for more files
-									i#more_files.w3-btn.w3-blue()
+								input#more_files.w3-btn.w3-border(type='button' value='Mais ficheiros' style='font-size:8px;')
+								br
 
 							td(style='width:50%')
 					br

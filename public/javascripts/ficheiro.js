@@ -1,5 +1,6 @@
 $(()=>{
-	//$('#myTable').load('http://localhost:4008/tabela')
+
+	var fileInputs = 0;
 
 	$('#files').bind('change', function() {
 		if (this.files[0].size > 200*1024*1024) {
@@ -8,15 +9,13 @@ $(()=>{
 		}
 	})
 
-    $('#more_files').click(e=>{
-        var numOfInputs = 1;
-        while($('#files'+numOfInputs).length) { numOfInputs++; }//once this loop breaks, numOfInputs is greater than the # of browse buttons
+	$("#more_files").click(e => {
 
-        $("<input type='file' class='w3-input w3-border w3-light-grey' multiple/>")
-            .attr("id", "files"+numOfInputs)
-            .attr("name", "files"+numOfInputs+"[]")
-            .insertAfter("#files"+(numOfInputs-1));
-    });
+		fileInputs = fileInputs + 1
+ 
+		var input = $("<input type='file' class='w3-input w3-border w3-light-grey' name='file" + fileInputs + "' multiple/>");
+		$("#listaFiles").append(input);
+	})
 
 	$("#fid").click(e=>{
 		var fid = $("#fileID").val()

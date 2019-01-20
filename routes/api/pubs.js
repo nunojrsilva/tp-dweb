@@ -8,43 +8,48 @@ var Pubs = require('../../controllers/pubs')
 var User = require('../../controllers/users')
 
 
-router.get('/', (req,res) => {
+router.get('/', (req, res) => {
     console.log("Entrou no get de /pubs")
-    Pubs.listar()
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).send('Erro na listagem de publicações'))
-})
+	if(req.query.username && req.query.publico){
+        User.consultarUsername(req.query.username)
+            .then(uid => {
+                Pubs.listarPorUserPublico(uid, req.query.publico)
+                    .then(dados => res.jsonp(dados))
+                    .catch(erro => res.status(500).send('Erro na consulta de publicações do autor: ' + req.query.username + ' -> Público: ' + req.query.publico))
+            })  
+            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUserPublico"))
 
-
-router.get('/:pid', (req,res) => {
-    Pubs.consultar(req.params.pid)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).send('Erro na consulta da publicação ' + req.params.pid))
-})
-
-router.get('/publico/:value', (req, res) => {
-	Pubs.listarPublico(req.params.value)
-		.then(dados => res.jsonp(dados))
-		.catch(erro => res.status(500).send('Erro na listagem de publicações por tipo: ' + erro))
+    } else if(req.query.username){
+        User.consultarUsername(req.query.username)
+            .then(uid => {
+                Pubs.listarPorUser(uid)
+                .then(dados => res.jsonp(dados))
+                .catch(erro => res.status(500).send('Erro na consulta de publicações do autor: ' + req.query.autor))
+            })  
+            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUser"))
+	} else if(req.query.hashtag){
+		Pubs.listarPorHashtag(req.query.hashtag)
+			.then(dados => res.jsonp(dados))
+			.catch(erro => res.status(500).send('Erro na consulta de publicações com a hashtag: ' + req.query.hashtag))
+	}else if(req.query.data){
+		Pubs.listarPorData(req.query.data)
+			.then(dados => res.jsonp(dados))
+			.catch(erro => res.status(500).send('Erro na listagem por data: ' + erro))
+	} else{
+        Pubs.listar()
+            .then(dados => res.jsonp(dados))
+            .catch(erro => res.status(500).send('Erro na listagem de publicações'))
+    }
 });
 
-router.get('/hashtag/:ht', (req, res) => {
-	Pubs.listarHashtag(req.params.ht)
-		.then(dados => res.jsonp(dados))
-		.catch(erro => res.status(500).send('Erro na listagem de publicações por tipo: ' + erro))
-});
 
+/*
 router.get('/tipo/:t', (req, res) => {
 	Pubs.listarTipo(req.params.t)
 		.then(dados => res.jsonp(dados))
 		.catch(erro => res.status(500).send('Erro na listagem de publicações por tipo: ' + erro))
-});
+});*/
 
-router.get('/data/:d', (req, res) => {
-	Pubs.listarData(req.params.d)
-		.then(dados => res.jsonp(dados))
-		.catch(erro => res.status(500).send('Erro na listagem de publicações por data: ' + erro))
-});
 
 /////////////////////////////////////////////////////////
 ///////////////////POSTS/////////////////////////////////
@@ -66,7 +71,7 @@ router.post('/lista', (req,res) => {
 
 
 router.post('/ficheiros', (req, res) => {
-	var form = new formidable.IncomingForm()
+    var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
 		if(!erro){
             console.log('fields: \n' + JSON.stringify(fields))             
