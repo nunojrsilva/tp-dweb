@@ -3,8 +3,6 @@ var router = express.Router();
 var axios = require('axios')
 var querystring = require('querystring');
 
-var Pubs = require('../controllers/api/pubs')
-
 
 router.get('/', (req,res) => {
     console.log("Entrou no get de /pubs")
@@ -21,6 +19,10 @@ router.get('/lista', (req,res) => {
     console.log("Entrou no get de /pubs/lista")
     res.render("lista")
 })
+
+router.get('/novaPubFich', function(req, res) {
+	res.render('ficheirosReg')
+});
 
 router.post('/lista', (req,res) => {
     console.log(req.body)

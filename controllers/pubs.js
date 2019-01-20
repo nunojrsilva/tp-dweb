@@ -1,4 +1,4 @@
-var Pub = require('../../models/pubs')
+var Pub = require('../models/pubs')
 
 var pop_config = {
 	path: 'utilizador',
@@ -56,6 +56,9 @@ module.exports.listarData = data => {
 }
 
 module.exports.inserir = publicacao => {
+	console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
+	console.log(JSON.stringify(publicacao))
+	console.log("--------------------------------------------------------------------------------")
     return Pub.create(publicacao)
 }
 

@@ -1,0 +1,53 @@
+extends layout
+
+block content
+    .w3-container
+        .w3-card-4
+            header.w3-container.w3-blue
+                h1 Ficheiros
+            .w3-container
+                h3 Procurar por id
+                .w3-container
+                    table
+                        tr
+                            td(style='width:20%')
+                                input#fileID.w3-input.w3-border(placeholder='ID da publicação')
+                            td
+                                button#fid.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação 
+ 
+                        tr
+                            td(style='width:20%')
+                                input#fileData.w3-input.w3-border(placeholder='Data mínima: yyyy-mm-dd')
+                            td
+                                button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação 
+
+                br
+                table.w3-table-all.w3-centered.w3-hoverable
+                    tr.w3-light-blue
+                        th(width="25%") ID
+                        th(width="25%") Ficheiros
+                        th(width="25%") Descrição
+                        th(width="25%") Data de Submissão
+                        th
+
+                    each p in pubs
+                        if p
+                            tr
+                                td=p._id
+                                td
+                                    each f in p.ficheiros
+                                        a(href='/uploaded/'+f.name)= f.name
+                                        br
+                                td= p.desc
+                                td= p.submitDate
+                                td(style='text-align:right; padding:2px;')
+                                    button.w3-button.w3-blue( style='margin-left:25px;')
+                                        a(href='/pubs/remover/'+p._id) Remover
+                br
+                br
+                button#fid.w3-button.w3-blue( style='margin-left:25px;')
+                    a(href="/pubs/nova") Adicionar ficheiro
+                br
+                br
+            footer.w3-container.w3-blue(style="text-align: center;")
+                address Powered by Desenvolvimento de Aplicações Web

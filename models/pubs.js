@@ -38,7 +38,7 @@ var elemSchema = new Schema({
     opiniao: opiniaoSchema,
     narracao: narracaoSchema,
     evento: eventoSchema,
-    ficheiros: [ficheirosSchema],
+    ficheiros: ficheirosSchema,
     lista: listaSchema
 })
 

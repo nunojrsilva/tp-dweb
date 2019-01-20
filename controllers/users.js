@@ -1,4 +1,4 @@
-var User = require('../../models/users')
+var User = require('../models/users')
 
 //Lista de Utilizadores
 
