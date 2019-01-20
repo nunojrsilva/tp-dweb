@@ -1,0 +1,5 @@
+cp hello.c fuse-3.4.1/example/
+cp passthrough.c fuse-3.4.1/example/
+cd fuse-3.4.1/build/
+ninja
+./example/passthrough -f example/passthrough@exe/

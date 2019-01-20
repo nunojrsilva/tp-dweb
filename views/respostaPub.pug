@@ -10,7 +10,7 @@ block content
   p= pub.publico
   if pub.tituloPub
     p= pub.tituloPub
-  p Elems : 
+  p Ficheiros : 
   each e in pub.elems
     each hash in e.hashtags
         p="Hashtag : " + hash
@@ -18,7 +18,10 @@ block content
         p= e.lista.titulo
         each item in e.lista.itens
             p= "item da lista :" + item
-
+    if pub.tipo == "ficheiros"
+        p= e.ficheiros.titulo
+        each item in e.ficheiros.ficheiros
+            p= "item da lista :" + item
 
 
   

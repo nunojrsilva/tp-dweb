@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-var User = require('../../controllers/api/users')
+var User = require('../../controllers/users')
 
 
 router.get('/', (req,res) => {

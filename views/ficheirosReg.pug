@@ -1,0 +1,40 @@
+extends layout
+
+block content
+	.w3-container
+		.w3-card-4
+			header.w3-container.w3-blue
+				h3 Submeter ficheiros
+			.w3-container
+				form#myForm.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
+					table
+						tr
+							td(style='width:50%')
+								label
+									b Username
+								input#filesUsername.w3-input.w3-border.w3-light-grey(type='text' name='username' required)
+								label
+									b Titulo
+								input#filesTitulo.w3-input.w3-border.w3-light-grey(type='text' name='fTitulo' required)
+								br
+								label
+									b Ficheiros
+								#listaFiles
+									input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+								br
+								input#more_files.w3-btn.w3-border(type='button' value='Mais ficheiros' style='font-size:8px;')
+								br
+
+							td(style='width:50%')
+					br
+
+					input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px;')
+					input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px;')
+
+					br
+					br
+					a(href="/pubs") Voltar à lista de ficheiros
+					br
+					br
+			footer.w3-container.w3-blue(style="text-align: center;")
+				address Powered by Desenvolvimento de Aplicações Web
