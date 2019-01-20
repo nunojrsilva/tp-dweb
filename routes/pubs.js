@@ -7,7 +7,7 @@ var querystring = require('querystring');
 router.get('/', (req,res) => {
     console.log("Entrou no get de /pubs")
     axios.get('http://localhost:3000/api/pubs')
-    .then(resposta => res.render('listaPubs', {lista : resposta.data}))
+    .then(resposta => res.render('listaPubs', {pubs : resposta.data}))
     .catch(erro => {
       console.log("Erro ao carregar pubs da BD")
       res.render('error', {error : erro, message : "Erro ao carregar compras da BD"})

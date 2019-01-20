@@ -16,7 +16,6 @@ router.get('/', (req,res) => {
 })
 
 
-
 router.get('/:pid', (req,res) => {
     Pubs.consultar(req.params.pid)
         .then(dados => res.jsonp(dados))
