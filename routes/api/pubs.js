@@ -62,7 +62,10 @@ router.post('/lista', (req,res) => {
             Pubs.inserir(listaPronta)
                 .then(dados => {
                     User.inserirPub(listaPronta.utilizador, dados._id)
-                        .then(_ => res.jsonp(dados) )  
+                        .then(user => {
+                            console.log(user)
+                            res.jsonp(dados)
+                        })
                 })
                 .catch(erro => {
                     console.log(erro)
@@ -113,15 +116,15 @@ router.post('/ficheiros', (req, res) => {
                     elem.ficheiros.titulo = fields.fTitulo
                     elem.ficheiros.ficheiros = ficheirosArray
                     publicacao.elems = [elem]
-
-                    console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
-                    console.log(JSON.stringify(publicacao))
-                    console.log("--------------------------------------------------------------------------------")
-
+                    
                     Pubs.inserir(publicacao)
                         .then(dados => {
-                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))                            
-                            res.render("respostaPub", {pub : dados})
+                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))   
+                            User.inserirPub(publicacao.utilizador, dados._id)
+                                .then(user => {
+                                    console.log(user)
+                                    res.render("respostaPub", {pub : dados})
+                                })
                         })
                         .catch(erro2 => {
                             console.log('Errei no inserir publicação\n' + erro2)
