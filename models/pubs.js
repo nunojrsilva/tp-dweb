@@ -6,8 +6,8 @@ var ObjectId = Schema.Types.ObjectId
 
 
 var ficheirosSchema = new Schema({
-    titulo: {type: String, required: true},
-    ficheiros: [{type: String, required: false}] // Nome dos ficheiros
+    titulo: {type: String, required: false},
+    ficheiros: [{type: String, required: true}] // Nome dos ficheiros
 })
 
 var eventoSchema = new Schema({  // REVER ESTE CASO *OU MAIS GERAL OU COM SUB EVENTOS*
@@ -19,7 +19,7 @@ var eventoSchema = new Schema({  // REVER ESTE CASO *OU MAIS GERAL OU COM SUB EV
 })
 
 var narracaoSchema = new Schema({
-    titulo: {type: String, required: true},
+    titulo: {type: String, required: false},
     texto: {type: String, required: true},
     autor: {type: String, required: false},
 })
@@ -34,12 +34,12 @@ var listaSchema = new Schema({
 })
 
 var elemSchema = new Schema({
-    hashtags: [{type: String, required: true}],
+    tipo: {type: String, required: true}, // Para preencher pelo servidor
     opiniao: opiniaoSchema,
     narracao: narracaoSchema,
     evento: eventoSchema,
-    ficheiros: ficheirosSchema,
-    lista: listaSchema
+    ficheiros: ficheirosSchema, //feito
+    lista: listaSchema //feito
 })
 
 var comentarioSchema = new Schema ( {
@@ -49,8 +49,8 @@ var comentarioSchema = new Schema ( {
 
 var PubSchema = new Schema({
     utilizador: {type: ObjectId, required: true, ref: 'User'},
-    data: {type: Date, required: true},
-    tipo: {type: String, required: true},
+    hashtags: [{type: String, required: true}],
+    data: {type: Date, required: true}, // Para preencher pelo servidor
     local: {type: String, required: false},
     publico: {type: Boolean, required: true},
     tituloPub: {type: String, required: false},

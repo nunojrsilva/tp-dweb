@@ -74,7 +74,6 @@ router.post('/lista', (req,res) => {
         })
 })
 
-
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -161,7 +160,7 @@ router.delete('/:pid', (req,res) => {
 
 function completaPubLista (ObjLista){
 
-    var promise = new Promise( function(resolve, reject) {
+    var promise = new Promise( (resolve, reject) => {
         // do a thing, possibly async, then…
         console.log("No inicio do completaPubLista, " + JSON.stringify(ObjLista))
         User.consultarUsername(ObjLista.username)

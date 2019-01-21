@@ -42,7 +42,6 @@ router.get('/', function(req, res) {
 	}
 });
 
-
 router.get('/lista', (req,res) => {
     console.log("Entrou no get de /pubs/lista")
     res.render("lista")
