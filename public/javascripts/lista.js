@@ -7,7 +7,7 @@ $(() => {
        item = item + 1
 
        var input = $("<input class=\"w3-input\" name=\"item" + item + "\" type=\"text\" placeholder=\"Item da Lista\">");
-       $("#lista").append(input)
+       $("#inputs").append(input)
      
    })
 

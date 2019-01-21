@@ -4,21 +4,21 @@ block content
   h1 Publicação enviada com sucesso!
   h2 Publicacao
   p= pub.data
-  p= pub.tipo
   if pub.local
     p= pub.local
+  each hash in pub.hashtags
+        p="Hashtags da publicacao : " + hash
   p= pub.publico
   if pub.tituloPub
     p= pub.tituloPub
   p Ficheiros : 
   each e in pub.elems
-    each hash in e.hashtags
-        p="Hashtag : " + hash
-    if pub.tipo == "lista"
-        p= e.lista.titulo
-        each item in e.lista.itens
-            p= "item da lista :" + item
-    if pub.tipo == "ficheiros"
+    p=e.tipo
+    if e.tipo == "lista"
+      p= e.lista.titulo
+    each item in e.lista.itens
+      p= "item da lista :" + item
+    if e.tipo == "ficheiros"
         p= e.ficheiros.titulo
         each item in e.ficheiros.ficheiros
             p= "item da lista :" + item

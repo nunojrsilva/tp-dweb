@@ -6,8 +6,10 @@ block content
     h1 Adicionar Lista
     .w3-container.w3-all
         form.w3-container(action="/pubs/lista" method ="POST" id="lista")
-            input.w3-input(name="username" type="text" placeholder = "Username")
-            input.w3-input(name="titulo" type="text" placeholder = "Título da Lista")
-            input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
-            input.w3-btn(type = "submit" value = "Enviar")
-            input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar Nova Linha")
+            fieldset(id="inputs")
+                legend Preencha os campos abaixo!
+                input.w3-input(name="username" type="text" placeholder = "Username")
+                input.w3-input(name="titulo" type="text" placeholder = "Título da Lista")
+                input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
+            input.w3-btn(type = "submit" value = "Enviar lista")
+            input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar novo item ... ")

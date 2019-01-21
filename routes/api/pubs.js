@@ -168,7 +168,7 @@ function completaPubLista (ObjLista){
                 var novaLista = {}
                 novaLista.utilizador = un._id
                 novaLista.data = new Date()
-                novaLista.tipo = "lista"
+                novaLista.hashtags = ["Lista"]
                 novaLista.publico = false
                 novaLista.elems = completaElemLista(ObjLista)
                 resolve (novaLista)
@@ -186,8 +186,8 @@ function completaPubLista (ObjLista){
 function completaElemLista (ObjLista) {
     console.log("No inicio do completaElemLista")
     var Elem = {}
-    Elem.hashtags = ["lista"]
     var lista = {}
+    Elem.tipo = "lista"
     lista.titulo = ObjLista.titulo
     lista.itens = []
     var atual = "item"
