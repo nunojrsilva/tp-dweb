@@ -57,19 +57,18 @@ router.get('/tipo/:t', (req, res) => {
 
 router.post('/lista', (req,res) => {
     console.dir("Dentro do /api/pubs/lista")
-    completaPubLista(req.body).then( 
-        listaPronta => {
-        Pubs.inserir(listaPronta)
-            .then(dados => {
-                User.inserirPub(listaPronta.utilizador, dados._id)
-                    .then(_ => res.jsonp(dados)  )
-                
-            })
-            .catch(erro => {
-                console.log(erro)
-                res.status(500).send('Erro na inserção da publicação' + erro)
-            })
-    })
+    completaPubLista(req.body)
+        .then(listaPronta => {
+            Pubs.inserir(listaPronta)
+                .then(dados => {
+                    User.inserirPub(listaPronta.utilizador, dados._id)
+                        .then(_ => res.jsonp(dados) )  
+                })
+                .catch(erro => {
+                    console.log(erro)
+                    res.status(500).send('Erro na inserção da publicação' + erro)
+                })
+        })
 })
 
 
