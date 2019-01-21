@@ -31,15 +31,8 @@ module.exports.inserir = utilizador => {
 module.exports.inserirPub = (utilizador_id, pub_id) => {
     console.log("Utilizador : " + utilizador_id)
     console.log("Pub : " + pub_id)
-    return User.findOneAndUpdate({_id : utilizador_id}, {
-         "$push": { "pubs": pub_id } }, 
-         {new : true},
-         (err, res) => {
-             if (!err) {
-                 console.log(res)
-             }
-             else {
-                 console.log("Erro : " + err)
-             }
-         })
+    return User.findOneAndUpdate(
+        {_id : utilizador_id}, 
+        {"$push": { pubs: pub_id } }, 
+        {new : true})
 }

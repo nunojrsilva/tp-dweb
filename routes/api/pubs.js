@@ -57,19 +57,21 @@ router.get('/tipo/:t', (req, res) => {
 
 router.post('/lista', (req,res) => {
     console.dir("Dentro do /api/pubs/lista")
-    completaPubLista(req.body).then( 
-        listaPronta => {
-        Pubs.inserir(listaPronta)
-            .then(dados => {
-                User.inserirPub(listaPronta.utilizador, dados._id)
-                    .then(_ => res.jsonp(dados)  )
-                
-            })
-            .catch(erro => {
-                console.log(erro)
-                res.status(500).send('Erro na inserção da publicação' + erro)
-            })
-    })
+    completaPubLista(req.body)
+        .then(listaPronta => {
+            Pubs.inserir(listaPronta)
+                .then(dados => {
+                    User.inserirPub(listaPronta.utilizador, dados._id)
+                        .then(user => {
+                            console.log(user)
+                            res.jsonp(dados)
+                        })
+                })
+                .catch(erro => {
+                    console.log(erro)
+                    res.status(500).send('Erro na inserção da publicação' + erro)
+                })
+        })
 })
 
 
@@ -114,15 +116,15 @@ router.post('/ficheiros', (req, res) => {
                     elem.ficheiros.titulo = fields.fTitulo
                     elem.ficheiros.ficheiros = ficheirosArray
                     publicacao.elems = [elem]
-
-                    console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
-                    console.log(JSON.stringify(publicacao))
-                    console.log("--------------------------------------------------------------------------------")
-
+                    
                     Pubs.inserir(publicacao)
                         .then(dados => {
-                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))                            
-                            res.render("respostaPub", {pub : dados})
+                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))   
+                            User.inserirPub(publicacao.utilizador, dados._id)
+                                .then(user => {
+                                    console.log(user)
+                                    res.render("respostaPub", {pub : dados})
+                                })
                         })
                         .catch(erro2 => {
                             console.log('Errei no inserir publicação\n' + erro2)
