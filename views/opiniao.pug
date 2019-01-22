@@ -1,0 +1,18 @@
+extends layout
+
+block content
+    script(src='/javascripts/opiniao.js')
+
+    h1 Adicionar Opinião
+    .w3-container.w3-all
+        form#formOpiniao.w3-container
+            fieldset(id="inputs")
+                legend Preencha os campos abaixo!
+                input#username.w3-input(name="username" type="text" placeholder = "Username")
+                input#opiniao.w3-input(name="opiniao" type="text" placeholder = "Conte-nos o que está a pensar...")
+                br
+                #listaFiles
+                input#addFiles.w3-btn.w3-border(type='button' value='Adicionar ficheiros' style='font-size:10px;')
+                br
+            br
+            input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:25px;')

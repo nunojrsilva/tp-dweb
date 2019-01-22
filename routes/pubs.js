@@ -54,6 +54,9 @@ router.get('/novaPubFich', function(req, res) {
 router.get("/narracao", (req,res) => {
 	res.render("narracao")
 })
+router.get('/opiniao', function(req, res) {
+	res.render('opiniao')
+});
 
 router.post('/lista', (req,res) => {
     console.log(req.body)
