@@ -51,6 +51,10 @@ router.get('/novaPubFich', function(req, res) {
 	res.render('ficheirosReg')
 });
 
+router.get('/opiniao', function(req, res) {
+	res.render('opiniao')
+});
+
 router.post('/lista', (req,res) => {
     console.log(req.body)
     console.log("Entrou no post de /pubs/lista")

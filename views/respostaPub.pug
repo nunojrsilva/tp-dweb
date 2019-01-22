@@ -11,17 +11,18 @@ block content
   p= pub.publico
   if pub.tituloPub
     p= pub.tituloPub
-  p Ficheiros : 
+
   each e in pub.elems
     p=e.tipo
     if e.tipo == "lista"
       p= e.lista.titulo
-    each item in e.lista.itens
-      p= "item da lista :" + item
+      each item in e.lista.itens
+        p= "item da lista :" + item
     if e.tipo == "ficheiros"
+      if e.ficheiros.titulo
         p= e.ficheiros.titulo
         each item in e.ficheiros.ficheiros
-            p= "item da lista :" + item
+            p= "ficheiro: " + item
 
 
   

@@ -144,6 +144,89 @@ router.post('/ficheiros', (req, res) => {
 });
 
 
+
+router.post('/opiniao', (req, res) => {
+    var form = new formidable.IncomingForm()
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            User.consultarUsername(fields.username)
+                .then(un => {     
+                    console.log('fields: \n' + JSON.stringify(fields))             
+                    console.log('files: \n' + JSON.stringify(files))       
+                    var publicacao = {}
+                    publicacao.utilizador = un
+                    console.log('Cheguei ao 1')  
+                    publicacao.hashtags = ["War", "Terror"]
+                    console.log('Cheguei ao 2')  
+                    publicacao.data = new Date()
+                    publicacao.publico = false
+                    publicacao.elems = []
+                    console.log('Cheguei ao 3')  
+                    var elem1 = {}
+                    elem1.tipo = "opiniao"
+                    elem1.opiniao = {}
+                    elem1.opiniao.opiniao = fields.opiniao
+                    publicacao.elems.push(elem1)
+                    console.log('Cheguei ao 4')  
+
+                    ficheirosArray = []
+
+                    for(var fich in files){
+
+                        var fenviado = files[fich].path
+                        var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                        
+                        fs.rename(fenviado, fnovo, erro1 => {
+                            console.log('entrei no rename')  
+                            
+                            if(erro1){
+                                console.log('errou no rename: ' + erro1) 
+                                res.status(500)
+                                res.write('Ocorreram erros no parse do form: ' + erro1)
+                                res.end()
+                            }
+                        })
+                        ficheirosArray.push(files[fich].name)
+                    }
+                    var elem2 = {}
+                    elem2.tipo = "ficheiros"
+                    elem2.ficheiros = {}
+                    elem2.ficheiros.ficheiros = ficheirosArray
+                    publicacao.elems.push(elem2)
+                    console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
+                    console.log(JSON.stringify(publicacao))
+                    console.log("--------------------------------------------------------------------------------")
+                    Pubs.inserir(publicacao)
+                        .then(dados => {
+                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))   
+                            User.inserirPub(publicacao.utilizador, dados._id)
+                                .then(user => {
+                                    console.log(user)
+                                    console.log("Porque é que não funcionas???")
+                                    res.render("respostaPub", {pub : dados})
+                                    console.log("Porque é que não funcionas???")
+
+                                })
+                        })
+                        .catch(erro2 => {
+                            console.log('Errei no inserir publicação\n' + erro2)
+                            res.status(500).send('2 na inserção de publicações: ' + erro2)
+                        })
+                })
+                .catch(erro3 => {
+                    res.status(500).send("Erro no consultarUsername do post de ficheiros : " + erro3)
+                })
+		}
+		else{
+			console.log('errou no parse: ' + erro) 
+			res.status(500)
+			res.write('Ocorreram erros no parse do form: ' + erro)
+			res.end()
+		}
+    })
+});
+
+
 /////////////////////////////////////////////////////////
 ///////////////////DELETES///////////////////////////////
 /////////////////////////////////////////////////////////
