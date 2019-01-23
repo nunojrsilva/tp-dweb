@@ -9,7 +9,22 @@ $(()=>{
 		}
 	})
 
+	$("#AdicaoFicheiros").click(e =>{
+		e.preventDefault()
+
+		$('#AdicaoFicheiros').css('visibility', 'hidden')
+		$('#filesDiv').css('visibility', 'visible')
+	})
+
+	$("#cancelarAdicaoFicheiros").click(e =>{
+		e.preventDefault()
+
+		$('#filesDiv').css('visibility', 'hidden')
+		$('#AdicaoFicheiros').css('visibility', 'visible')
+	})
+
 	$("#addFiles").click(e => {
+		e.preventDefault()
 
 		fileInputs = fileInputs + 1
  
@@ -18,6 +33,7 @@ $(()=>{
 	})
 
     $("#more_files").click(e => {
+		e.preventDefault()
 
 		fileInputs = fileInputs + 1
  
