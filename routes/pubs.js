@@ -59,6 +59,14 @@ router.get('/opiniao', function(req, res) {
 	res.render('opiniao')
 });
 
+router.get('/opiniaoPub', (req,res) => {
+    res.render("opiniaoPub")
+})
+
+router.get('/publicar', function(req, res) {
+	res.render('publicar')
+});
+
 router.post('/lista', (req,res) => {
     console.log(req.body)
     console.log("Entrou no post de /pubs/lista")
