@@ -19,7 +19,7 @@ module.exports.consultar = pid => {
     return Pub
             .findOne({_id: pid})
 			.populate(pop_config)
-            .exec()
+			.exec()
 }
 
 module.exports.listarPorUserPublico = (uid, publico) => {
