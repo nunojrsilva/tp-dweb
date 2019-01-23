@@ -104,7 +104,7 @@ router.post("/narracao", (req,res) => {
                         narracao.autor = fields.autor
                     }
                     elemNarracao.narracao = narracao
-
+                    publicacao.elems = []
                     publicacao.elems.push(elemNarracao)
                     
                     ficheirosArray = []
@@ -136,12 +136,6 @@ router.post("/narracao", (req,res) => {
                         publicacao.elem.push(elemFicheiro)
                         
                     }
-                    
-                    
-                    
-
-                    
-
                     
                     Pubs.inserir(publicacao)
                         .then(dados => {
@@ -296,6 +290,8 @@ router.post('/opiniao', (req, res) => {
                     console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
                     console.log(JSON.stringify(publicacao))
                     console.log("--------------------------------------------------------------------------------")
+
+                    //PUB CRIADA
                     Pubs.inserir(publicacao)
                         .then(dados => {
                             console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))   
@@ -303,7 +299,6 @@ router.post('/opiniao', (req, res) => {
                                 .then(user => {
                                     console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
                                     res.render("respostaPub", {pub : dados})
-
                                 })
                         })
                         .catch(erro2 => {
@@ -344,7 +339,8 @@ router.post('/evento', (req, res) => {
                     publicacao.hashtags = ["Evento"]
                     console.log('Cheguei ao 2')  
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    console.log("ISTO È A PRIVACIDADE", fields.publico)
+                    publicacao.publico = fields.publico
                     publicacao.elems = []
                     console.log('Cheguei ao 3')  
                     var elem1 = {}
