@@ -15,14 +15,20 @@ block content
   each e in pub.elems
     p=e.tipo
     if e.tipo == "lista"
+      p "LISTA"
       p= e.lista.titulo
       each item in e.lista.itens
         p= "item da lista :" + item
     if e.tipo == "ficheiros"
-      if e.ficheiros.titulo
+        p "FICHEIROS"
+        if e.ficheiros.titulo
         p= e.ficheiros.titulo
         each item in e.ficheiros.ficheiros
             p= "ficheiro: " + item
-
-
-  
+    if e.tipo == "narracao"
+      p "NARRACAO"
+      if e.titulo
+        p="Titulo " + e.titulo
+      p="Texto: " + e.texto
+      if e.autor
+        p="Autor: "+ e.autor

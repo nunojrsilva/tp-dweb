@@ -51,6 +51,9 @@ router.get('/novaPubFich', function(req, res) {
 	res.render('ficheirosReg')
 });
 
+router.get("/narracao", (req,res) => {
+	res.render("narracao")
+})
 router.get('/opiniao', function(req, res) {
 	res.render('opiniao')
 });

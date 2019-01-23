@@ -74,6 +74,94 @@ router.post('/lista', (req,res) => {
         })
 })
 
+
+router.post("/narracao", (req,res) => {
+    var form = new formidable.IncomingForm()
+    console.log("Post de /narracao")
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            console.log("Passei o parse")
+            console.log('fields form: \n' + JSON.stringify(fields))             
+            console.log('files form: \n' + JSON.stringify(files))
+            User.consultarUsername(fields.username)
+                .then(un => {            
+                    
+                    var publicacao = {}
+                    publicacao.utilizador = un
+                    publicacao.data = new Date()
+                    publicacao.publico = false
+                    publicacao.hashtags = ["narracao"]
+                    
+                    ficheirosArray = []
+
+                    for(var fich in files){
+
+                        var fenviado = files[fich].path
+                        var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                        
+                        fs.rename(fenviado, fnovo, erro1 => {
+                            console.log('entrei no rename')  
+                            
+                            if(erro1){
+                                console.log('errou no rename: ' + erro1) 
+                                res.status(500)
+                                res.write('Ocorreram erros no parse do form: ' + erro1)
+                                res.end()
+                            }
+                        })
+                        ficheirosArray.push(files[fich].name)
+                    }
+                    var elemFicheiro = {}
+                    elemFicheiro.ficheiros = {}
+                    elemFicheiro.tipo = "ficheiro"
+                    elemFicheiro.ficheiros.ficheiros = ficheirosArray
+                    
+                    var elemNarracao = {}
+                    elemNarracao.tipo = "narracao"
+                    var narracao = {}
+                    if (fields.titulo) {
+                        narracao.titulo = fields.titulo
+                    }
+                    narracao.texto = fields.texto
+                    if (fields.autor) {
+                        narracao.autor = fields.autor
+                    }
+                    elemNarracao.narracao = narracao
+
+                    publicacao.elems = [elemNarracao, elemFicheiro]
+
+                    
+                    Pubs.inserir(publicacao)
+                        .then(dados => {
+                            console.log('entrei no then do inserir publicação\n' + JSON.stringify(dados))   
+                            User.inserirPub(publicacao.utilizador, dados._id)
+                                .then(user => {
+                                    console.log(user)
+                                    res.render("respostaPub", {pub : dados})
+                                })
+                        })
+                        .catch(erro2 => {
+                            console.log('Errei no inserir publicação\n' + erro2)
+                            res.status(500).send('2 na inserção de publicações: ' + erro2)
+                        })
+                })
+                .catch(erro3 => {
+                    res.status(500).send("Erro no consultarUsername do post de ficheiros : " + erro3)
+                })
+		}
+		else{
+			console.log('errou no parse: ' + erro) 
+			res.status(500)
+			res.write('Ocorreram erros no parse do form: ' + erro)
+			res.end()
+		}
+    })
+    }
+)
+
+
+
+
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
