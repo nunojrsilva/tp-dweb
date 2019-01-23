@@ -23,6 +23,18 @@ $(()=>{
 		$('#AdicaoFicheiros').css('visibility', 'visible')
 	})
 
+	$("#sim").click(e =>{
+
+		$('#nao').prop('checked', false)
+		$('#sim').prop('checked', true)
+	})
+
+	$("#nao").click(e =>{
+
+		$('#sim').prop('checked', false)
+		$('#nao').prop('checked', true)
+	})
+
 	$("#addFiles").click(e => {
 		e.preventDefault()
 
@@ -52,7 +64,13 @@ $(()=>{
         formData.append('duracao', $('#duracao').val());
         formData.append('descricao', $('#descricao').val());
         formData.append('data', $('#data').val());
-        formData.append('fileTitle', $('#filesTitulo').val());
+		formData.append('fileTitle', $('#filesTitulo').val());
+		
+		if(document.getElementById('sim').checked)
+			formData.append('publico', true);
+		else
+			formData.append('publico', false);
+
         
         var aux=1;
 		$.each($("input[type=file]"), (i, obj) => {
