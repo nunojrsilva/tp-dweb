@@ -1,6 +1,7 @@
 $(()=>{
 
 	var fileInputs = 0;
+	var tipo = "opiniao"
 
 	$('input:file').bind('change', function() {
 		if (this.files[0].size > 200*1024*1024) {
@@ -18,31 +19,28 @@ $(()=>{
 	})
 
 	$("#opiniaobtn").click(e=>{
+		tipo = "opiniao"
 		$('#formDiv').load('http://localhost:3000/pubs/opiniaoPub')
 	})
 
-	$("#citacaobtn").click(e=>{
-		e.preventDefault();
-
-		$("#formDiv").replaceWith( "<h2>Citação</h2>" );
+	$("#narracaobtn").click(e=>{
+		tipo = "narracao"
+		$('#formDiv').load('http://localhost:3000/pubs/narracaoPub')
 	})
 
-	$("#filesobtn").click(e=>{
-		e.preventDefault();
-
-		$("#formDiv").replaceWith( "<h2>Ficheiros</h2>" );
+	$("#filesbtn").click(e=>{
+		tipo = "ficheiros"
+		$('#formDiv').load('http://localhost:3000/pubs/ficheirosPub')
 	})
 
 	$("#listabtn").click(e=>{
-		e.preventDefault();
-
-		$("#formDiv").replaceWith( "<h2>Lista</h2>" );
+		tipo = "lista"
+		//$('#formDiv').load('http://localhost:3000/pubs/opiniaoPub')
 	})
 
 	$("#eventobtn").click(e=>{
-		e.preventDefault();
-
-		$("#formDiv").replaceWith( "<h2>Evento</h2>" );
+		tipo = "evento"
+		//$('#formDiv').load('http://localhost:3000/pubs/opiniaoPub')
 	})
 
 	$('#formPub').submit(function(e){
@@ -57,11 +55,28 @@ $(()=>{
 				aux++;
 			})
 		});		
-        formData.append('opiniao', $('#opiniao').val());
-        formData.append('username', $('#username').val());
-		
+		formData.append('username', $('#username').val());
+
+		if(tipo == "opiniao")
+			formData.append('opiniao', $('#opiniao').val());
+
+		if(tipo == "ficheiros")
+			formData.append('titulo', $('#filesTitulo').val());
+
+		if(tipo == "narracao"){
+			formData.append('titulo', $('#titulo').val());
+			formData.append('texto', $('#texto').val());
+			formData.append('autor', $('#autor').val());
+		}
+		/*
+		if(tipo == "lista")
+			formData.append('lista', $('#lista').val());
+
+		if(tipo == "evento")
+			formData.append('evento', $('#evento').val());
+		*/	
 		$.ajax({
-			url:'/api/pubs/opiniao',
+			url:'/api/pubs/'+tipo,
 			type:"POST",
 			contentType: "application/json",
 			data:formData,

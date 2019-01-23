@@ -1,7 +1,6 @@
 extends layout
 
 block content
-    script(src='/javascripts/lista.js')
 
     h1 Adicionar Lista
     .w3-container.w3-all
@@ -13,3 +12,5 @@ block content
                 input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
             input.w3-btn(type = "submit" value = "Enviar lista")
             input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar novo item ... ")
+            
+    script(src='/javascripts/lista.js')
