@@ -242,10 +242,6 @@ router.post("/narracao", (req,res) => {
     }
 )
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3adc554ef273cf984fbe470d66c86412f824e8ff
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -263,22 +259,25 @@ router.post('/ficheiros', (req, res) => {
 
                     ficheirosArray = []
 
-                    for(var fich in files){
+                    if(Object.keys(files).length) {
 
-                        var fenviado = files[fich].path
-                        var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
-                        
-                        fs.rename(fenviado, fnovo, erro1 => {
-                            console.log('entrei no rename')  
+                        for(var fich in files){
+
+                            var fenviado = files[fich].path
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
-                            if(erro1){
-                                console.log('errou no rename: ' + erro1) 
-                                res.status(500)
-                                res.write('Ocorreram erros no parse do form: ' + erro1)
-                                res.end()
-                            }
-                        })
-                        ficheirosArray.push(files[fich].name)
+                            fs.rename(fenviado, fnovo, erro1 => {
+                                console.log('entrei no rename')  
+                                
+                                if(erro1){
+                                    console.log('errou no rename: ' + erro1) 
+                                    res.status(500)
+                                    res.write('Ocorreram erros no parse do form: ' + erro1)
+                                    res.end()
+                                }
+                            })
+                            ficheirosArray.push(files[fich].name)
+                        }
                     }
                     var elem = {}
                     elem.tipo = "ficheiros"
