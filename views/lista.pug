@@ -1,15 +1,60 @@
 extends layout
 
 block content
-    script(src='/javascripts/lista.js')
+    #inicioPagina
 
-    h1 Adicionar Lista
-    .w3-container.w3-all
-        form.w3-container(action="/pubs/lista" method ="POST" id="lista")
-            fieldset(id="inputs")
-                legend Preencha os campos abaixo!
-                input.w3-input(name="username" type="text" placeholder = "Username")
-                input.w3-input(name="titulo" type="text" placeholder = "Título da Lista")
-                input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
-            input.w3-btn(type = "submit" value = "Enviar lista")
-            input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar novo item ... ")
+        .w3-container
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h3 Adicionar Lista
+                form.w3-container(id='ListaForm' name="ListaForm" enctype="multipart/form-data" method="post")
+                    .w3-container(style="width: 50%;")
+                        fieldset(id="inputs")
+                            legend Preencha os campos abaixo!
+                            input.w3-input(id="username" type="text" placeholder = "Username")
+                            input.w3-input(id="titulo" type="text" placeholder = "Título da Lista")
+                            input.w3-input(id="item1" type="text" placeholder = "Item da Lista")
+
+                    input.w3-btn.w3-blue(type = "button" id = "adicionarLinha" value = "Adicionar novo item" style='margin-left:25px; margin-top:10px')                        
+                    input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
+                    input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
+                    input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Ficheiros ao Evento' style='margin-left:25px; margin-top:10px')
+                    
+                    .w3-container(id="filesDiv" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
+                        .w3-card-4(style='width: 80%')
+                            header.w3-container.w3-blue
+                                h3 Adicionar Ficheiros
+                            table
+                                tr
+                                    td
+                                        label
+                                            b Titulo
+                                        input.w3-input.w3-border.w3-light-grey(id='filesTitulo' type='text' name='fTitulo')
+                                        br
+                                        label
+                                            b Ficheiros
+                                        #listaFiles
+                                            input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+                                        br
+                                        input.w3-btn.w3-border(id='more_files' type='button' value='Mais ficheiros' style='font-size:8px;')
+                                        br
+                            input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Ficheiros' style='margin-right:25px;')
+                    
+                lable 
+                    b Pretende fazer a sua publicação pública?
+                    br
+                    lable Sim
+                        input(id="sim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+                    br
+                    label Não
+                        input(id="nao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
+
+                br
+                br
+                a(href="/pubs") Voltar ao Feed
+                br
+                br
+                footer.w3-container.w3-blue(style="text-align: center;")
+                    address Powered by Desenvolvimento de Aplicações Web
+         
+    script(src='/javascripts/lista.js')

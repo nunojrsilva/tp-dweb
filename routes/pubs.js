@@ -42,7 +42,7 @@ router.get('/', function(req, res) {
 	}
 });
 
-router.get('/lista', (req,res) => {
+router.get('/novalista', (req,res) => {
     console.log("Entrou no get de /pubs/lista")
     res.render("lista")
 })
@@ -70,20 +70,5 @@ router.get('/opiniaoPub', (req,res) => {
 router.get('/publicar', function(req, res) {
 	res.render('publicar')
 });
-
-router.post('/lista', (req,res) => {
-    console.log(req.body)
-    console.log("Entrou no post de /pubs/lista")
-    axios.post("http://localhost:3000/api/pubs/lista", req.body)
-        .then((json) => {
-            console.log("RESULTADO DO AXIOS\n" + JSON.stringify(json.data))
-            res.render("respostaPub", {pub : json.data})
-        })
-        .catch(erro => {
-            //console.log(erro) //CUIDADO ISTO É GRANDE PA CARACAS
-            res.render('error', {error : erro, message : "Erro ao carregar pubs da BD"})})
-})
-
-
 
 module.exports = router;

@@ -34,16 +34,7 @@ $(()=>{
 		$('#sim').prop('checked', false)
 		$('#nao').prop('checked', true)
 	})
-
-	$("#addFiles").click(e => {
-		e.preventDefault()
-
-		fileInputs = fileInputs + 1
- 
-		var input = $("<input type='file' class='w3-input w3-border w3-light-grey' name='file" + fileInputs + "' multiple/>");
-		$("#listaFiles").append(input);
-	})
-
+	
     $("#more_files").click(e => {
 		e.preventDefault()
 
