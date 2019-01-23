@@ -96,7 +96,7 @@ router.post("/lista", (req,res) => {
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -162,7 +162,7 @@ router.post("/narracao", (req,res) => {
                     var publicacao = {}
                     publicacao.utilizador = un
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.hashtags = ["narracao"]
                     console.log('Cheguei ao 1') 
 
@@ -191,7 +191,7 @@ router.post("/narracao", (req,res) => {
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -210,7 +210,7 @@ router.post("/narracao", (req,res) => {
                         elemFicheiro.tipo = "ficheiro"
                         elemFicheiro.ficheiros.ficheiros = ficheirosArray
 
-                        publicacao.elem.push(elemFicheiro)
+                        publicacao.elems.push(elemFicheiro)
                         
                     }
                     
@@ -242,10 +242,6 @@ router.post("/narracao", (req,res) => {
     }
 )
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3adc554ef273cf984fbe470d66c86412f824e8ff
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -258,7 +254,7 @@ router.post('/ficheiros', (req, res) => {
                     publicacao.utilizador = un
                     publicacao.hashtags = ["ficheiros"]
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.elems = []
 
                     ficheirosArray = []
@@ -329,7 +325,7 @@ router.post('/opiniao', (req, res) => {
                     publicacao.utilizador = un
                     publicacao.hashtags = ["War", "Terror"]
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.elems = []
                     var elem1 = {}
                     elem1.tipo = "opiniao"
@@ -342,7 +338,7 @@ router.post('/opiniao', (req, res) => {
                     for(var fich in files){
 
                         var fenviado = files[fich].path
-                        var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                        var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                         
                         fs.rename(fenviado, fnovo, erro1 => {
                             console.log('entrei no rename')  
@@ -438,7 +434,7 @@ router.post('/evento', (req, res) => {
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
