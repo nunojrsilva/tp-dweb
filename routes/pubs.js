@@ -47,6 +47,7 @@ router.get('/lista', (req,res) => {
     res.render("lista")
 })
 
+
 router.get('/novaPubFich', function(req, res) {
 	res.render('ficheirosReg')
 });

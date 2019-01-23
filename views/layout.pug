@@ -1,9 +1,7 @@
-doctype html
-html
-  head
-    title= title
-    link(rel='stylesheet', href='/stylesheets/style.css')
-    script(src='/javascripts/jquery-3.3.1.min.js')
-    //script(src='/javascripts/ficheiro.js')
-  body
-    block content
+extends layoutBase
+block content1
+  .w3-container.w3-all
+      div.w3-bar.w3-light-grey
+          a.w3-bar-item.w3-button(href="/") Home
+          a.w3-bar-item.w3-button(href="/login") Xau
+  block content

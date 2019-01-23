@@ -5,10 +5,15 @@ var passport = require('passport')
 var axios = require('axios')
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
-  console.log("Na cb da homepage: " + req.sessionID)
-  res.render('index');
-});
+// router.get('/', function(req, res, next) {
+//   console.log("Na cb da homepage: " + req.sessionID)
+//   res.render('index');
+// });
+
+
+router.get('/', (req,res) => {
+  res.render("homepage")
+})
 
 //Login
 
