@@ -164,6 +164,7 @@ router.post("/narracao", (req,res) => {
                     publicacao.data = new Date()
                     publicacao.publico = false
                     publicacao.hashtags = ["narracao"]
+                    console.log('Cheguei ao 1') 
 
 
                     var elemNarracao = {}
@@ -176,13 +177,16 @@ router.post("/narracao", (req,res) => {
                     if (fields.autor) {
                         narracao.autor = fields.autor
                     }
+                    console.log('Cheguei ao 2') 
                     elemNarracao.narracao = narracao
                     publicacao.elems = []
                     publicacao.elems.push(elemNarracao)
+                    console.log('Cheguei ao 3') 
                     
                     ficheirosArray = []
 
-                    if(Object.keys[files].length) {
+                    console.log('Cheguei ao 4') 
+                    if(Object.keys(files).length) {
 
                         for(var fich in files){
 
@@ -238,6 +242,10 @@ router.post("/narracao", (req,res) => {
     }
 )
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3adc554ef273cf984fbe470d66c86412f824e8ff
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -245,21 +253,20 @@ router.post('/ficheiros', (req, res) => {
             console.log('fields: \n' + JSON.stringify(fields))             
             console.log('files: \n' + JSON.stringify(files))
             User.consultarUsername(fields.username)
-                .then(un => {     
-                    console.log('fields: \n' + JSON.stringify(fields))             
-                    console.log('files: \n' + JSON.stringify(files))       
+                .then(un => {    
                     var publicacao = {}
                     publicacao.utilizador = un
+                    publicacao.hashtags = ["ficheiros"]
                     publicacao.data = new Date()
-                    publicacao.tipo = "ficheiros"
                     publicacao.publico = false
+                    publicacao.elems = []
 
                     ficheirosArray = []
 
                     for(var fich in files){
 
                         var fenviado = files[fich].path
-                        var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                        var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                         
                         fs.rename(fenviado, fnovo, erro1 => {
                             console.log('entrei no rename')  
@@ -274,11 +281,12 @@ router.post('/ficheiros', (req, res) => {
                         ficheirosArray.push(files[fich].name)
                     }
                     var elem = {}
-                    elem.hashtags = ["ficheiros"]
+                    elem.tipo = "ficheiros"
                     elem.ficheiros = {}
-                    elem.ficheiros.titulo = fields.fTitulo
+                    if(fields.fTitulo)
+                        elem.ficheiros.titulo = fields.fTitulo
                     elem.ficheiros.ficheiros = ficheirosArray
-                    publicacao.elems = [elem]
+                    publicacao.elems.push(elem)
                     
                     Pubs.inserir(publicacao)
                         .then(dados => {
@@ -319,19 +327,15 @@ router.post('/opiniao', (req, res) => {
                     console.log('files: \n' + JSON.stringify(files))       
                     var publicacao = {}
                     publicacao.utilizador = un
-                    console.log('Cheguei ao 1')  
                     publicacao.hashtags = ["War", "Terror"]
-                    console.log('Cheguei ao 2')  
                     publicacao.data = new Date()
                     publicacao.publico = false
                     publicacao.elems = []
-                    console.log('Cheguei ao 3')  
                     var elem1 = {}
                     elem1.tipo = "opiniao"
                     elem1.opiniao = {}
                     elem1.opiniao.opiniao = fields.opiniao
                     publicacao.elems.push(elem1)
-                    console.log('Cheguei ao 4')  
 
                     ficheirosArray = []
 

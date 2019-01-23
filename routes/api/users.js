@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+let fs = require('fs');
 
 var User = require('../../controllers/users')
 
@@ -19,9 +20,14 @@ router.get('/:uid', (req,res) => {
 
 
 router.post('/', (req,res) => {
+    console.log('Entrei no post de users', req.body)
     User.inserir(req.body)
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).send('Erro na inserção de utilizador'))
+    .then(dados => {
+        console.log('Entrei no then do post de users')
+        fs.mkdirSync(__dirname + '/../../uploaded/'+req.body.username+'/');
+        res.jsonp(dados)
+    })    
+    .catch(erro => res.status(500).send('Erro na inserção de utilizador'))
 })
 
 
