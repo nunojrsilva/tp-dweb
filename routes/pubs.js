@@ -47,6 +47,7 @@ router.get('/lista', (req,res) => {
     res.render("lista")
 })
 
+
 router.get('/novaPubFich', function(req, res) {
 	res.render('ficheirosReg')
 });
@@ -60,6 +61,14 @@ router.get("/narracao", (req,res) => {
 })
 router.get('/opiniao', function(req, res) {
 	res.render('opiniao')
+});
+
+router.get('/opiniaoPub', (req,res) => {
+    res.render("opiniaoPub")
+})
+
+router.get('/publicar', function(req, res) {
+	res.render('publicar')
 });
 
 router.post('/lista', (req,res) => {

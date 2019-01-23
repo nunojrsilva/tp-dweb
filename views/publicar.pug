@@ -1,0 +1,39 @@
+extends layout
+
+block content
+	script(src='/javascripts/geral.js')
+	
+	.w3-container
+		.w3-card-4
+			header.w3-container.w3-blue
+				h3 Publicação
+			.w3-container
+				form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
+					table
+						tr
+							td(style='width:50%')
+								br
+								input#opiniaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Opinião' style='margin-right:10px;')
+								input#citacaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Citação' style='margin-right:10px;')
+								input#filesbtn.w3-btn.w3-border.w3-light-grey(type='button' value='Ficheiros' style='margin-right:10px;')
+								input#listabtn.w3-btn.w3-border.w3-light-grey(type='button' value='Lista' style='margin-right:10px;')
+								input#eventobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Evento' style='margin-right:10px;')
+								br
+								br
+
+								label
+									b Username
+								input#username.w3-input.w3-border.w3-light-grey(type='text' name='username' required)
+								br
+								#formDiv
+
+							td(style='width:50%')
+					br
+
+					input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:25px;')
+					input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px;')
+
+					br
+					br
+			footer.w3-container.w3-blue(style="text-align: center;")
+				address Powered by Desenvolvimento de Aplicações Web
