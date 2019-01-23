@@ -80,22 +80,9 @@ $(()=>{
 			type:"POST",
 			contentType: "application/json",
 			data:formData,
-			success: data =>{/*
-				var titulo = $('#filesTitulo').val();
-
-        		for(var numOfInputs = 0; $('#files'+numOfInputs).length; numOfInputs++){
-					var files = $('#files'+numOfInputs)[0].files;
-					for (var i = 0; i < files.length; i++)
-					{
-						//alert('Ficheiro enviado:' + files[i].name);
-
-						var nome = files[i].name;
-						
-						$('#myTable').append('<tr><td><a href=\'/uploaded/'+nome+'\'>'+nome+'</a></td><td>'+titulo+'</td></tr>');
-					}			
-				}*/
+			success: data =>{
 				alert('Ficheiros enviados');
-				$('#myForm').trigger("reset");
+				$('#formPub').trigger("reset");
 			},
 			error: e =>{
 				alert('Erro no post: ' + e)
