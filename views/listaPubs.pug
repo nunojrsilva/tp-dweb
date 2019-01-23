@@ -19,49 +19,39 @@ block content
                             td(style='width:20%')
                                 input#fileData.w3-input.w3-border(placeholder='Data mínima: yyyy-mm-dd')
                             td
-                                button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação 
-
-                br
-                table.w3-table-all.w3-centered.w3-hoverable
-                    tr.w3-light-blue
-                        th(width="25%") Data
-                        th(width="15%") Hashtags
-                        th(width="10%") Local
-                        th(width="10%") Publico
-                        th(width="15%") Titulo
-                        th(width="25%") Elems
-
+                                button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação
                     each p in pubs
-                        if p
-                            tr
-                                td= p.data
-                                td= p.hashtags
-                                if p.local
-                                    td= p.local
-                                else
-                                    td ---
-                                
-                                td= p.publico
-
-                                
-                                if p.tituloPub
-                                    td= p.tituloPub
-                                else
-                                    td ---
-                                td
+                        .w3-container
+                            .w3-card-4
+                                header.w3-container.w3-blue
+                                    h1=p.utilizador.nome
+                                .w3-container
+                                    if p.tituloPub
+                                        h2=p.tituloPub
+                                    h4="Publicado em " + p.data
+                                    if p.local
+                                        h4="Local: " + p.local
+                                    h5="Público: " + p.publico
                                     each e in p.elems
-                                        p=e.tipo
+                                        h4="TIPO: "+ e.tipo
                                         if e.tipo == "lista"
                                             p= e.lista.titulo
+                                            ul.w3-ul.w3-hoverable
                                             each item in e.lista.itens
-                                                p= "item da lista :" + item
+                                                li=item
                                         if e.tipo == "ficheiros"
                                             p= e.ficheiros.titulo
                                             each item in e.ficheiros.ficheiros
-                                                a(href='/uploaded/'+item)= item
-                                                br
+                                                a(href='/' + p.utilizador + '/'+item)= item
+                                        if e.tipo =="narracao"
+                                            h2 Narração!
+                                            if e.narracao.titulo
+                                                p(style="text-align: center;")= e.narracao.titulo
+                                            cite= e.narracao.texto
+                                            if e.narracao.autor
+                                                p="Autor: " +  e.narracao.autor
+                                            br
 
-                br
                 br
             footer.w3-container.w3-blue(style="text-align: center;")
                 address Powered by Desenvolvimento de Aplicações Web

@@ -259,22 +259,25 @@ router.post('/ficheiros', (req, res) => {
 
                     ficheirosArray = []
 
-                    for(var fich in files){
+                    if(Object.keys(files).length) {
 
-                        var fenviado = files[fich].path
-                        var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
-                        
-                        fs.rename(fenviado, fnovo, erro1 => {
-                            console.log('entrei no rename')  
+                        for(var fich in files){
+
+                            var fenviado = files[fich].path
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
-                            if(erro1){
-                                console.log('errou no rename: ' + erro1) 
-                                res.status(500)
-                                res.write('Ocorreram erros no parse do form: ' + erro1)
-                                res.end()
-                            }
-                        })
-                        ficheirosArray.push(files[fich].name)
+                            fs.rename(fenviado, fnovo, erro1 => {
+                                console.log('entrei no rename')  
+                                
+                                if(erro1){
+                                    console.log('errou no rename: ' + erro1) 
+                                    res.status(500)
+                                    res.write('Ocorreram erros no parse do form: ' + erro1)
+                                    res.end()
+                                }
+                            })
+                            ficheirosArray.push(files[fich].name)
+                        }
                     }
                     var elem = {}
                     elem.tipo = "ficheiros"
@@ -335,7 +338,7 @@ router.post('/opiniao', (req, res) => {
 
                     ficheirosArray = []
 
-                    for(var fich in files){
+                    if(Object.keys(files).length) {
 
                         var fenviado = files[fich].path
                         var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
@@ -343,14 +346,18 @@ router.post('/opiniao', (req, res) => {
                         fs.rename(fenviado, fnovo, erro1 => {
                             console.log('entrei no rename')  
                             
-                            if(erro1){
-                                console.log('errou no rename: ' + erro1) 
-                                res.status(500)
-                                res.write('Ocorreram erros no parse do form: ' + erro1)
-                                res.end()
-                            }
+                            fs.rename(fenviado, fnovo, erro1 => {
+                                console.log('entrei no rename')  
+                                
+                                if(erro1){
+                                    console.log('errou no rename: ' + erro1) 
+                                    res.status(500)
+                                    res.write('Ocorreram erros no parse do form: ' + erro1)
+                                    res.end()
+                                }
+                            })
+                            ficheirosArray.push(files[fich].name)
                         })
-                        ficheirosArray.push(files[fich].name)
                     }
                     var elem2 = {}
                     elem2.tipo = "ficheiros"
