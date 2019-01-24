@@ -291,11 +291,11 @@ router.post("/lista", (req,res) => {
 
 			var i = 1;
 			var tag
-			for (i = 1; i <= Object.keys(fields).length - 3; i++){
+			for (i = 1; i < Object.keys(fields).length - 3; i++){
 				tag = "item"+i
 				listaElem.lista.itens.push(fields[tag])
 			}
-
+			console.log("ESTA É A LISTA")
 			console.dir(listaElem.lista.itens)
 			publicacao.elems = [listaElem]
 

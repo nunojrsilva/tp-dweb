@@ -69,7 +69,8 @@ $(()=>{
 
         var aux=1;
         var linha = "";
-        console.log(item)
+		console.log(item)
+		
         for(aux = 1; aux <= item; aux++){
             linha = $("#item" + aux).val()
             if(linha != undefined){
@@ -89,7 +90,10 @@ $(()=>{
 				formData.append('file'+aux, file);
 				aux++;
 			})
-		});		
+		});
+		
+		formData.append('fileTitle', $('#filesTitulo').val());
+		
 		
 		$.ajax({
 			url:'/pubs/lista',

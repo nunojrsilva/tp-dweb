@@ -100,7 +100,7 @@ $(()=>{
 				aux++;
 			})
 		});		
-		formData.append('titulo', $('#filesTitulo').val());
+		formData.append('fileTitle', $('#filesTitulo').val());
 		//alert('Cheguei ao 1')
 
 		formData.append('username', $('#username').val());
