@@ -104,6 +104,10 @@ router.get('/listaPub', (req,res) => {
     res.render("listaPub")
 })
 
+router.get('/eventoPub', (req,res) => {
+    res.render("eventoPub")
+})
+
 router.get('/publicar', function(req, res) {
 	res.render('publicar')
 });
@@ -307,7 +311,7 @@ router.post("/lista", (req,res) => {
 			var listaElem = {}
 			listaElem.tipo = "lista"
 			listaElem.lista = {}
-			listaElem.lista.titulo = fields.titulo
+			listaElem.lista.titulo = fields.tituloLista
 			listaElem.lista.itens = []
 
 			var i = 1;
