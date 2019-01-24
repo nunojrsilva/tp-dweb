@@ -1,9 +1,17 @@
 extends layout
 
 block content
-    h1 Página de Login
     .w3-container
-        form.w3-container(action="/login" method = "POST")
-            input.w3-input(name="email" type="text" placeholder = "email")
-            input.w3-input(name="password" type="password" placeholder = "password")
-            input.w3-btn(type = "submit" value = "login")
+        h1 Página de Login
+    .w3-container(align="center")
+        .w3-card-4.w3-dark-grey(style= "width:50%")
+            .w3-container
+                form(action="/login" method = "POST")
+                    label(for="username")
+                        b Username
+                    input.w3-input(name="username" type="text" placeholder = "email")
+                    label(for="password")
+                        b Password
+                    input.w3-input(name="password" type="password" placeholder = "password")
+                    .w3-container
+                        input.w3-button.w3-black(type = "submit" value = "login")

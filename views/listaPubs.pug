@@ -35,7 +35,7 @@ block content
                                     each e in p.elems
                                         h4="TIPO: "+ e.tipo
                                         if e.tipo == "lista"
-                                            p= e.lista.titulo
+                                            h2= e.lista.titulo
                                             ul.w3-ul.w3-hoverable
                                             each item in e.lista.itens
                                                 li=item
@@ -52,6 +52,19 @@ block content
                                             cite= e.narracao.texto
                                             if e.narracao.autor
                                                 p="Autor: " +  e.narracao.autor
+                                        if e.tipo =="opiniao"
+                                            h2 Opinião!
+                                            p= e.narracao.texto
+                                        if e.tipo =="evento"
+                                            h2 Evento!
+                                            h2=e.evento.titulo
+                                            h3=e.evento.data
+                                            h3="Tipo de evento: " + e.evento.atividade
+                                            if e.evento.duracao
+                                                h3="Duração: " + e.evento.duracao
+                                            if e.evento.descricao
+                                                h4 Descrição
+                                                p=e.evento.descricao
                                             br
 
                 br
