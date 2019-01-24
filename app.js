@@ -13,6 +13,7 @@ var bodyParser = require("body-parser");
 
 var usersAPIRouter = require('./routes/api/users');
 var pubsAPIRouter = require('./routes/api/pubs');
+var filesAPIRouter = require('./routes/api/files');
 var pubsRouter = require("./routes/pubs");
 var indexRouter = require("./routes/index");
 
@@ -125,6 +126,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/users', usersAPIRouter);
 app.use('/api/pubs', pubsAPIRouter);
+app.use('/api/files', filesAPIRouter);
 app.use('/pubs', pubsRouter);
 app.use('/', indexRouter);
 

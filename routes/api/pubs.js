@@ -42,7 +42,6 @@ router.get('/', (req, res) => {
     }
 });
 
-
 /*
 router.get('/tipo/:t', (req, res) => {
 	Pubs.listarTipo(req.params.t)
@@ -435,7 +434,6 @@ router.post('/evento', (req, res) => {
                     console.log('Cheguei ao 4')  
 
                     ficheirosArray = []
-                    console.log("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", )
                     console.dir(files)
                     if(Object.keys(files).length){
                         for(var fich in files){
@@ -502,53 +500,5 @@ router.delete('/:pid', (req,res) => {
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro ao apagar publicação ' + req.params.pid))
 })
-
-/////////////////////////////////////////////////////////
-///////////////////FUNCOES///////////////////////////////
-/////////////////////////////////////////////////////////
-
-function completaPubLista (ObjLista){
-
-    var promise = new Promise( (resolve, reject) => {
-        // do a thing, possibly async, then…
-        console.log("No inicio do completaPubLista, " + JSON.stringify(ObjLista))
-        User.consultarUsername(ObjLista.username)
-            .then(un => {
-                var novaLista = {}
-                novaLista.utilizador = un._id
-                novaLista.data = new Date()
-                novaLista.hashtags = ["Lista"]
-                novaLista.publico = false
-                novaLista.elems = completaElemLista(ObjLista)
-                resolve (novaLista)
-            })  
-            .catch(erro => {
-                console.log("Erro no consultarUsername da completaPubLista : " + erro)
-                reject({})
-            })
-
-        });
-
-    return promise    
-}
-
-function completaElemLista (ObjLista) {
-    console.log("No inicio do completaElemLista")
-    var Elem = {}
-    var lista = {}
-    Elem.tipo = "lista"
-    lista.titulo = ObjLista.titulo
-    lista.itens = []
-    var atual = "item"
-    console.log(Object.keys(ObjLista).length)
-    for (var i = 1; i <= Object.keys(ObjLista).length - 2; i++) {
-         atual = "item" + i
-         console.log("item" + i + " = " + ObjLista[atual])
-         lista.itens.push(ObjLista[atual])
-     }
-    Elem.lista = lista
-    console.log("No final do completaElemLista, " + JSON.stringify(Elem))
-    return [Elem]
-}
 
 module.exports = router;

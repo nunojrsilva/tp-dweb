@@ -62,7 +62,7 @@ $(()=>{
         formData.append('username', $('#username').val());        
         formData.append('titulo', $('#titulo').val());
 		
-		if(document.getElementById('checkboxSim').checked)
+		if(document.getElementById('sim').checked)
 			formData.append('publico', true);
 		else
 			formData.append('publico', false);
