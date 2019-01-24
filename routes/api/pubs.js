@@ -242,10 +242,6 @@ router.post("/narracao", (req,res) => {
     }
 )
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 3adc554ef273cf984fbe470d66c86412f824e8ff
 router.post('/ficheiros', (req, res) => {
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
