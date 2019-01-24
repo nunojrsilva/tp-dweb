@@ -4,10 +4,15 @@ var Schema = mongoose.Schema
 
 var ObjectId = Schema.Types.ObjectId
 
+var ficheiroSchema = new Schema({
+    nomeGuardado: {type: String, required: true},
+    nome: {type: String, required: true},
+    isImage: {type: Boolean, required: true}
+})
 
 var ficheirosSchema = new Schema({
     titulo: {type: String, required: false},
-    ficheiros: [{type: String, required: true}] // Nome dos ficheiros
+    ficheiros: [ficheiroSchema] // Nome dos ficheiros
 })
 
 var eventoSchema = new Schema({  // REVER ESTE CASO *OU MAIS GERAL OU COM SUB EVENTOS*

@@ -44,7 +44,7 @@ block content
                                             ul
                                                 each item in e.ficheiros.ficheiros
                                                     li
-                                                        a(href='/api/files?username=' + p.utilizador.nome + '&filename='+item)= item
+                                                        a(href='/api/files?username=' + p.utilizador.nome + '&filename='+ item.nome + '&data=' + p.data)= item.nome
                                         if e.tipo =="narracao"
                                             h2 Narração!
                                             if e.narracao.titulo

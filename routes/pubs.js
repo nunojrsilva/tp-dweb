@@ -3,42 +3,63 @@ var router = express.Router();
 var axios = require('axios')
 var formidable = require('formidable')
 var fs = require('fs')
-
-
+var path = require('path');
+var hash = require('crypto').createHash;
+var isImage = require('is-image')
 
 
 router.get('/', function(req, res) {
 	if(req.query.username && req.query.publico){
 		axios.get('http://localhost:3000/api/pubs?username=' + req.query.username + '&publico=' + req.query.publico)
-        .then(resposta => res.render('listaPubs', {pubs : resposta.data}))
+        .then(resposta =>{
+			removeNomeGuardado(resposta.data)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
 		.catch(erro => {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else if(req.query.username){
 		axios.get('http://localhost:3000/api/pubs?username=' + req.query.username)
-        .then(resposta => res.render('listaPubs', {pubs : resposta.data}))
+        .then(resposta =>{
+			removeNomeGuardado(resposta.data)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
 		.catch(erro => {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
-        })
+		})
     } else if(req.query.hashtag){
 		axios.get('http://localhost:3000/api/pubs?hashtag=' + req.query.hashtag)
-		.then(resposta => res.render('listaPubs', { pubs: resposta.data }))
+		.then(resposta =>{
+			removeNomeGuardado(resposta.data)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
 		.catch(erro => {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else if(req.query.data){
 		axios.get('http://localhost:3000/api/pubs?data=' + req.query.data)
-		.then(resposta => res.render('listaPubs', { pubs: resposta.data }))
+		.then(resposta =>{
+			removeNomeGuardado(resposta.data)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
 		.catch(erro => {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else{
 		axios.get('http://localhost:3000/api/pubs')
-		.then(resposta => res.render('listaPubs', { pubs: resposta.data }))
+		.then(resposta =>{
+			removeNomeGuardado(resposta.data)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
 		.catch(erro => {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
@@ -112,7 +133,7 @@ router.post('/opiniao', (req, res) => {
 
 			if(Object.keys(files).length){
 				
-				parseFicheiros(fields, files)
+				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
 					axiosPost(res, publicacao, fields)
@@ -164,7 +185,7 @@ router.post('/evento', (req, res) => {
 
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files)
+				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
 					axiosPost(res, publicacao, fields)
@@ -199,7 +220,7 @@ router.post('/ficheiros', (req, res) => {
 			publicacao.elems = []
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files)
+				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
 					axiosPost(res, publicacao, fields)
@@ -249,7 +270,7 @@ router.post("/narracao", (req,res) => {
 			publicacao.elems.push(elemNarracao)
 			
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files)
+				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
 					axiosPost(res, publicacao, fields)
@@ -300,7 +321,7 @@ router.post("/lista", (req,res) => {
 			publicacao.elems = [listaElem]
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files)
+				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
 					axiosPost(res, publicacao, fields)
@@ -323,24 +344,45 @@ router.post("/lista", (req,res) => {
 //////////////////////FUNCOES///////////////////////////
 ////////////////////////////////////////////////////////
 
-async function parseFicheiros(fields, files){
+async function parseFicheiros(fields, files, data){
 
     return new Promise((elemento, erro) =>{
 		var ficheirosArray = []
+		var ficheiro = {}
+
         for(var fich in files){
+			var nome = files[fich].name
+			var parts = nome.split('.')
+			var extention = "." + parts[parts.length - 1]
+			
+			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/' + dataCalendario)
+			
 
-            var fenviado = files[fich].path
-            var fnovo = __dirname + '/../uploaded/'+fields.username+'/'+files[fich].name
-            
-            fs.rename(fenviado, fnovo, error => {
-                
-                if(error){
-                    console.log('errou no rename: ' + error) 
-                    erro(error)
+			ficheiro = {}
+			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + dataCalendario).digest('hex')
+			ficheiro.nome = nome
+			ficheiro.isImage = isImage(nome)
+			
+			var fnovo =  pasta + '/' + ficheiro.nomeGuardado + extention
+			console.log("EXTENSÃO", extention)
+			var fenviado = files[fich].path
 
-                }
-            })
-            ficheirosArray.push(files[fich].name)
+			//Verificação da existencia da pasta do dia (será que cria a do utilizador também?)
+			if(!fs.existsSync(pasta)){
+				fs.mkdirSync(pasta)
+				console.log('PASTA DO DIA FOI CRIADA');				
+			}
+
+			fs.rename(fenviado, fnovo, error => {
+				if(error){
+					console.log('errou no rename: ' + error) 
+					erro(error)
+				}
+			})
+			ficheirosArray.push(ficheiro)
+			
+
         }
         var elem = {}
         elem.tipo = "ficheiros"
@@ -368,5 +410,20 @@ function axiosPost (res, publicacao, fields){
 	})
 }
 
+async function removeNomeGuardado(pubs){
+	return new Promise((publicacoes) =>{
+
+		for(pub in pubs){
+			for (elem in pub.elems){
+				if (elem.tipo == "ficheiros"){
+					for (ficheiro in ficheiros){
+						delete ficheiro[nomeGuardado]
+					}
+				}
+			}
+		}
+		publicacoes(pubs)
+	})
+}
 
 module.exports = router;
