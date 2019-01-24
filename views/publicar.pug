@@ -1,40 +1,79 @@
 extends layout
 
 block content
-	
-	.w3-container
-		.w3-card-4
-			header.w3-container.w3-blue
-				h3 Publicação
-			.w3-container
-				form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
-					table
-						tr
-							td(style='width:50%')
-								br
-								input#opiniaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Opinião' style='margin-right:10px;')
-								input#narracaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Narração' style='margin-right:10px;')
-								input#filesbtn.w3-btn.w3-border.w3-light-grey(type='button' value='Ficheiros' style='margin-right:10px;')
-								input#listabtn.w3-btn.w3-border.w3-light-grey(type='button' value='Lista' style='margin-right:10px;')
-								input#eventobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Evento' style='margin-right:10px;')
-								br
-								br
+    
+    .w3-container
+        .w3-card-4
+            header.w3-container.w3-blue
+                h3 Publicação
+            .w3-container
+                form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
+                    table(style='width:100%')
+                        tr
+                            td(style='width:50%' valign='top')
+                                br
+                                input#opiniaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Opinião' style='margin-right:10px;')
+                                input#narracaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Narração' style='margin-right:10px;')
+                                input#filesbtn.w3-btn.w3-border.w3-light-grey(type='button' value='Ficheiros' style='margin-right:10px;')
+                                input#listabtn.w3-btn.w3-border.w3-light-grey(type='button' value='Lista' style='margin-right:10px;')
+                                input#eventobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Evento' style='margin-right:10px;')
+                                input#livrebtn.w3-btn.w3-border.w3-light-grey(type='button' value='Livre' style='margin-right:10px;')
+                                br
+                                br
 
-								label
-									b Username
-								input#username.w3-input.w3-border.w3-light-grey(type='text' name='username' required)
-								br
-								#formDiv
+                                label
+                                    b Username
+                                input#username.w3-input.w3-border.w3-light-grey(type='text' name='username' required)
+                                br
+                                #formDiv
+                                
+                                input#AdicaoFicheiros.w3-btn.w3-blue(type='button' value='Adicionar ficheiros' style='font-size:12px; margin-left:25px; margin-top:10px')
+                                br
+                            td(style='width:5%')
 
-							td(style='width:50%')
-					br
+                            td(style='width:45%')
+                                .w3-container(id="filesDiv" style='visibility: hidden')
+                                    .w3-card-4.w3-margin
+                                        header.w3-container.w3-blue
+                                            h4 Adicionar Ficheiros
+                                        .w3-container
+                                            label
+                                                b Titulo
+                                            input.w3-input.w3-border.w3-light-grey(id='filesTitulo' type='text' name='fTitulo')
+                                            br
+                                            label
+                                                b Ficheiros
+                                            #listaFiles
+                                                input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+                                            br
+                                            input.w3-btn.w3-border(id='more_files' type='button' value='Mais ficheiros' style='font-size:10px;')
+                                            br
+                                            br
+                                            input#cancelarAdicaoFicheiros.w3-btn.w3-blue(type='button' value='Cancelar Adição de Ficheiros' style='font-size:12px; margin-left:25px; margin-top:10px')
+                                            br
+                                            br
+                    br
+                    lable 
+                        b Pretende fazer a sua publicação pública?
+                        br
+                        lable Sim
+                            input(id="checkboxSim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+                        br
+                        label Não
+                            input(id="checkboxNao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
 
-					input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:25px;')
-					input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px;')
+                    br
+                    br
+                    
+                    input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:25px;')
+                    input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px;')
 
-					br
-					br
-			footer.w3-container.w3-blue(style="text-align: center;")
-				address Powered by Desenvolvimento de Aplicações Web
-				
-	script(src='/javascripts/geral.js')
+                br
+                br
+                a(href="/pubs") Voltar ao Feed
+                br
+                br
+            footer.w3-container.w3-blue(style="text-align: center;")
+                address Powered by Desenvolvimento de Aplicações Web
+                
+    script(src='/javascripts/geral.js')
