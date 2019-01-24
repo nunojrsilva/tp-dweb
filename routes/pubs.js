@@ -75,6 +75,10 @@ router.get('/ficheirosPub', (req,res) => {
     res.render("ficheirosPub")
 })
 
+router.get('/listaPub', (req,res) => {
+    res.render("listaPub")
+})
+
 router.get('/publicar', function(req, res) {
 	res.render('publicar')
 });

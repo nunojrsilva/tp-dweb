@@ -42,7 +42,6 @@ router.get('/', (req, res) => {
     }
 });
 
-
 /*
 router.get('/tipo/:t', (req, res) => {
 	Pubs.listarTipo(req.params.t)
@@ -96,7 +95,7 @@ router.post("/lista", (req,res) => {
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -162,7 +161,7 @@ router.post("/narracao", (req,res) => {
                     var publicacao = {}
                     publicacao.utilizador = un
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.hashtags = ["narracao"]
                     console.log('Cheguei ao 1') 
 
@@ -191,7 +190,7 @@ router.post("/narracao", (req,res) => {
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -210,7 +209,7 @@ router.post("/narracao", (req,res) => {
                         elemFicheiro.tipo = "ficheiro"
                         elemFicheiro.ficheiros.ficheiros = ficheirosArray
 
-                        publicacao.elem.push(elemFicheiro)
+                        publicacao.elems.push(elemFicheiro)
                         
                     }
                     
@@ -254,7 +253,7 @@ router.post('/ficheiros', (req, res) => {
                     publicacao.utilizador = un
                     publicacao.hashtags = ["ficheiros"]
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.elems = []
 
                     ficheirosArray = []
@@ -328,7 +327,7 @@ router.post('/opiniao', (req, res) => {
                     publicacao.utilizador = un
                     publicacao.hashtags = ["War", "Terror"]
                     publicacao.data = new Date()
-                    publicacao.publico = false
+                    publicacao.publico = fields.publico
                     publicacao.elems = []
                     var elem1 = {}
                     elem1.tipo = "opiniao"
@@ -340,10 +339,11 @@ router.post('/opiniao', (req, res) => {
 
                     if(Object.keys(files).length) {
 
-                        for(var fich in files){
-
-                            var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                        var fenviado = files[fich].path
+                        var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
+                        
+                        fs.rename(fenviado, fnovo, erro1 => {
+                            console.log('entrei no rename')  
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -356,7 +356,7 @@ router.post('/opiniao', (req, res) => {
                                 }
                             })
                             ficheirosArray.push(files[fich].name)
-                        }
+                        })
                     }
                     var elem2 = {}
                     elem2.tipo = "ficheiros"
@@ -434,13 +434,12 @@ router.post('/evento', (req, res) => {
                     console.log('Cheguei ao 4')  
 
                     ficheirosArray = []
-                    console.log("AQUIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIII", )
                     console.dir(files)
                     if(Object.keys(files).length){
                         for(var fich in files){
 
                             var fenviado = files[fich].path
-                            var fnovo = __dirname + '/../../public/uploaded/'+files[fich].name
+                            var fnovo = __dirname + '/../../uploaded/'+fields.username+'/'+files[fich].name
                             
                             fs.rename(fenviado, fnovo, erro1 => {
                                 console.log('entrei no rename')  
@@ -501,53 +500,5 @@ router.delete('/:pid', (req,res) => {
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro ao apagar publicação ' + req.params.pid))
 })
-
-/////////////////////////////////////////////////////////
-///////////////////FUNCOES///////////////////////////////
-/////////////////////////////////////////////////////////
-
-function completaPubLista (ObjLista){
-
-    var promise = new Promise( (resolve, reject) => {
-        // do a thing, possibly async, then…
-        console.log("No inicio do completaPubLista, " + JSON.stringify(ObjLista))
-        User.consultarUsername(ObjLista.username)
-            .then(un => {
-                var novaLista = {}
-                novaLista.utilizador = un._id
-                novaLista.data = new Date()
-                novaLista.hashtags = ["Lista"]
-                novaLista.publico = false
-                novaLista.elems = completaElemLista(ObjLista)
-                resolve (novaLista)
-            })  
-            .catch(erro => {
-                console.log("Erro no consultarUsername da completaPubLista : " + erro)
-                reject({})
-            })
-
-        });
-
-    return promise    
-}
-
-function completaElemLista (ObjLista) {
-    console.log("No inicio do completaElemLista")
-    var Elem = {}
-    var lista = {}
-    Elem.tipo = "lista"
-    lista.titulo = ObjLista.titulo
-    lista.itens = []
-    var atual = "item"
-    console.log(Object.keys(ObjLista).length)
-    for (var i = 1; i <= Object.keys(ObjLista).length - 2; i++) {
-         atual = "item" + i
-         console.log("item" + i + " = " + ObjLista[atual])
-         lista.itens.push(ObjLista[atual])
-     }
-    Elem.lista = lista
-    console.log("No final do completaElemLista, " + JSON.stringify(Elem))
-    return [Elem]
-}
 
 module.exports = router;

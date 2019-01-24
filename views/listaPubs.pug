@@ -39,11 +39,12 @@ block content
                                             ul.w3-ul.w3-hoverable
                                             each item in e.lista.itens
                                                 li=item
-                                        if e.tipo == "ficheiros"
-                                            if e.ficheiros.titulo
-                                                h2= e.ficheiros.titulo
-                                            each item in e.ficheiros.ficheiros
-                                                a(href='/uploaded/' + p.utilizador.username + '/'+item)= item
+                                        if e.tipo == "ficheiro"
+                                            p= e.ficheiros.titulo
+                                            ul
+                                                each item in e.ficheiros.ficheiros
+                                                    li
+                                                        a(href='/api/files?username=' + p.utilizador.nome + '&filename='+item)= item
                                         if e.tipo =="narracao"
                                             h2 Narração!
                                             if e.narracao.titulo

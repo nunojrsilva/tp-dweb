@@ -1,7 +1,6 @@
 extends layout
 
 block content
-<<<<<<< HEAD
     #inicioPagina
 
         .w3-container
@@ -17,7 +16,7 @@ block content
                             input.w3-input(id="item1" type="text" placeholder = "Item da Lista")
 
                     input.w3-btn.w3-blue(type = "button" id = "adicionarLinha" value = "Adicionar novo item" style='margin-left:25px; margin-top:10px')                        
-                    input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
+                    input.w3-btn.w3-blue(id="enviar" type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
                     input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
                     input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Ficheiros ao Evento' style='margin-left:25px; margin-top:10px')
                     
@@ -58,18 +57,4 @@ block content
                 footer.w3-container.w3-blue(style="text-align: center;")
                     address Powered by Desenvolvimento de Aplicações Web
          
-=======
-
-    h1 Adicionar Lista
-    .w3-container.w3-all
-        form.w3-container(action="/pubs/lista" method ="POST" id="lista")
-            fieldset(id="inputs")
-                legend Preencha os campos abaixo!
-                input.w3-input(name="username" type="text" placeholder = "Username")
-                input.w3-input(name="titulo" type="text" placeholder = "Título da Lista")
-                input.w3-input(name="item1" type="text" placeholder = "Item da Lista")
-            input.w3-btn(type = "submit" value = "Enviar lista")
-            input.w3-btn(type = "button" id = "adicionarLinha" value = "Adicionar novo item ... ")
-            
->>>>>>> 3adc554ef273cf984fbe470d66c86412f824e8ff
     script(src='/javascripts/lista.js')
