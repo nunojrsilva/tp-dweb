@@ -1,8 +1,16 @@
-fieldset(id="inputs")
-    legend Preencha os campos abaixo!
-    input.w3-input(id="username" type="text" placeholder = "Username")
-    input.w3-input(id="titulo" type="text" placeholder = "Título da Lista")
-    input.w3-input(id="item1" type="text" placeholder = "Item da Lista")
-    
-input.w3-btn.w3-blue(type = "button" id = "adicionarLinha" value = "Adicionar novo item" style='margin-left:25px; margin-top:10px')                        
-
+.w3-card-4
+    header.w3-container.w3-blue
+        h5 Criar Nova Lista
+    .w3-container.w3-border(style="width:100%; float: left;")
+        br
+        label(style="width:30px")
+            b Título
+        input.w3-input.w3-border.w3-light-grey(id="titulo" type="text" placeholder="Título da Lista" style="width:40%" required)
+        br
+        label
+            b Lista
+        #listaItens
+            input.w3-input.w3-border.w3-light-grey(id="item1" type="text" placeholder = "Item da Lista" style="width:40%" required)
+        input.w3-btn.w3-blue(type = "button" id = "adicionarIten" value = "Adicionar novo item" style='font-size:10px; margin-left:25px; margin-top:10px')                        
+        br
+        br

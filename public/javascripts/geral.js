@@ -11,15 +11,6 @@ $(()=>{
 		}
 	})
 
-	$("#formDiv").on("click", "#adicionarLinha", () => {
-
-        item = item + 1
- 
-        var input = $("<input class=\"w3-input\" id=\"item" + item + "\" type=\"text\" placeholder=\"Item da Lista\">");
-        $("#inputs").append(input)
-      
-	})
-	
 	$("#AdicaoFicheiros").click(e =>{
 		e.preventDefault()
 
@@ -48,6 +39,15 @@ $(()=>{
 		$('#checkboxNao').prop('checked', true)
 	})
 
+	$("#formDiv").on("click", "#adicionarIten", () => {
+
+        item = item + 1
+ 
+        var input = $("<input class='w3-input w3-border w3-light-grey' id='item" + item + "' style='width:40%; margin-top:2px;' type='text' placeholder='Item da Lista'>");
+        $("#listaItens").append(input)
+      
+	})
+
     $("#more_files").click(e => {
 		e.preventDefault()
 
@@ -74,12 +74,12 @@ $(()=>{
 
 	$("#listabtn").click(e=>{
 		tipo = "lista"
-		//$('#formDiv').load('http://localhost:3000/pubs/listaPub')
+		$('#formDiv').load('http://localhost:3000/pubs/listaPub')
 	})
 
 	$("#eventobtn").click(e=>{
 		tipo = "evento"
-		//$('#formDiv').load('http://localhost:3000/pubs/eventoPub')
+		$('#formDiv').load('http://localhost:3000/pubs/eventoPub')
 	})
 
 	$("#livrebtn").click(e=>{
@@ -93,6 +93,7 @@ $(()=>{
 					
 		var formData = new FormData();
 		var aux=1;
+        var linha = "";
 
 		$.each($("input[type=file]"), function(i, obj) {
 			$.each(obj.files,function(j, file){
@@ -114,13 +115,29 @@ $(()=>{
 			formData.append('texto', $('#texto').val());
 			formData.append('autor', $('#autor').val());
 		}
-		/*
-		if(tipo == "lista")
-			formData.append('lista', $('#lista').val());
+		
+		if(tipo == "lista"){
+			formData.append('titulo', $('#titulo').val());
 
-		if(tipo == "evento")
-			formData.append('evento', $('#evento').val());
-		*/	
+			for(aux = 1; aux <= item; aux++){
+				linha = $("#item" + aux).val()
+				if(linha != undefined){
+					if (linha != ""){
+						formData.append('item'+aux, linha)
+					}
+				}
+				else console.log("ERA UNDEFINED", aux)
+			}
+		}
+
+		if(tipo == "evento"){
+			formData.append('titulo', $('#titulo').val());
+			formData.append('atividade', $('#atividade').val());
+			formData.append('duracao', $('#duracao').val());
+			formData.append('descricao', $('#descricao').val());
+			formData.append('data', $('#data').val());
+		}
+
 		//alert('Cheguei ao 2')
 
 		if(document.getElementById('checkboxSim').checked)

@@ -1,0 +1,32 @@
+.w3-card-4
+	header.w3-container.w3-blue
+		h5 Criar Novo Evento
+	.w3-container.w3-border(style="float: left;")
+		br
+		table(style='width:100%')
+			tr(align="left")
+				th(style='width:55%') Título
+				th(style='width:5%')
+				th(style='width:40%') Duração
+			tr
+				td(style='width:55%')
+					input.w3-input.w3-border.w3-light-grey(id='titulo' type='text' name='titulo' placeholder='Título do Evento' required)
+				td(style='width:5%')
+				td(style='width:40%')
+					input.w3-input.w3-border.w3-light-grey(id='duracao' type='text' placeholder='Duração do evento' name='duracao')
+			
+			tr(align="left")
+				th(style='width:55%') Atividade
+				th(style='width:5%')
+				th(style='width:40%') Data de Realização
+			tr
+				td(style='width:55%')
+					input.w3-input.w3-border.w3-light-grey(id='atividade' type='text' name='atividade' placeholder='Tipo de atividade praticada' required)
+				td(style='width:5%')
+				td(style='width:40%')
+					input.w3-input.w3-border.w3-light-grey(id='data' type='text' name='data' placeholder='Data de início' required)
+		br
+		label
+			b Descrição
+		textarea.w3-input.w3-border.w3-light-grey(id='descricao' type='text' name='descricao' rows='6' cols='80' required)
+		br

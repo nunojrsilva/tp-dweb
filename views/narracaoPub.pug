@@ -1,12 +1,21 @@
-label
-    b Titulo
-input#titulo.w3-input.w3-border.w3-light-grey(type='text' name='titulo')
-br
-label
-    b Texto
-textarea#texto.w3-input.w3-border.w3-light-grey(rows='3' cols='40' type='text' name='texto' required)
-br
-label 
-    b Autor
-input#autor.w3-input.w3-border.w3-light-grey(type='text' name='autor' required)
-br
+.w3-card-4
+    header.w3-container.w3-blue
+        h5 Criar Nova Narração
+    .w3-container.w3-border(style="width:100%; float: left;")
+        br
+        table(style="width:100%;")
+            tr
+                td(style="width:48%;")
+                    label
+                        b Titulo
+                    input#titulo.w3-input.w3-border.w3-light-grey(type='text' name='titulo' placeholder='Título da obra')
+                td(style="width:4%;")
+                td(style="width:48%;")
+                    label 
+                        b Autor
+                    input#autor.w3-input.w3-border.w3-light-grey(type='text' name='autor' placeholder='Autor da obra')
+        br
+        label
+            b Citação
+        textarea#texto.w3-input.w3-border.w3-light-grey(rows='5' cols='40' type='text' name='texto' placeholder='Insira aqui a citação' required)
+        br
