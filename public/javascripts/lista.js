@@ -92,7 +92,7 @@ $(()=>{
 		});		
 		
 		$.ajax({
-			url:'/api/pubs/lista',
+			url:'/pubs/lista',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,

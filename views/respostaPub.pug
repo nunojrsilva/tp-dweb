@@ -22,7 +22,7 @@ block content
     if e.tipo == "ficheiros"
         p "FICHEIROS"
         if e.ficheiros.titulo
-        p= e.ficheiros.titulo
+          p= e.ficheiros.titulo
         each item in e.ficheiros.ficheiros
             p= "ficheiro: " + item
     if e.tipo == "narracao"

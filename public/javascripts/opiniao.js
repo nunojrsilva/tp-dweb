@@ -34,31 +34,19 @@ $(()=>{
         formData.append('username', $('#username').val());
 		
 		$.ajax({
-			url:'/api/pubs/opiniao',
+			url:'/pubs/opiniao',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,
-			success: data =>{/*
-				var titulo = $('#filesTitulo').val();
+			success: data =>{
 
-        		for(var numOfInputs = 0; $('#files'+numOfInputs).length; numOfInputs++){
-					var files = $('#files'+numOfInputs)[0].files;
-					for (var i = 0; i < files.length; i++)
-					{
-						//alert('Ficheiro enviado:' + files[i].name);
-
-						var nome = files[i].name;
-						
-						$('#myTable').append('<tr><td><a href=\'/uploaded/'+nome+'\'>'+nome+'</a></td><td>'+titulo+'</td></tr>');
-					}			
-				}*/
 				alert('Ficheiros enviados');
 				$('#myForm').trigger("reset");
 			},
 			error: e =>{
 				alert('Erro no post: ' + e)
 				$('#myForm').trigger("reset");
-				console.log('Erro no post: ' + e)
+				console.log('Erro no post: ' + JSON.stringify(e))
 			},
 			cache: false,
 			contentType: false,

@@ -53,7 +53,7 @@ $(()=>{
         formData.append('username', $('#filesUsername').val());
 		
 		$.ajax({
-			url:'/api/pubs/ficheiros',
+			url:'/pubs/ficheiros',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,

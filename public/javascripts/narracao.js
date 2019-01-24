@@ -29,7 +29,7 @@ $(()=>{
         formData.append('ficheiro', $('#ficheiro').val());
 		
 		$.ajax({
-			url:'/api/pubs/narracao',
+			url:'/pubs/narracao',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,

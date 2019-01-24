@@ -63,9 +63,6 @@ module.exports.listarPorData = data => {
 }
 
 module.exports.inserir = publicacao => {
-	console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
-	console.log(JSON.stringify(publicacao))
-	console.log("--------------------------------------------------------------------------------")
     return Pub.create(publicacao)
 }
 

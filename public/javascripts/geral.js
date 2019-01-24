@@ -89,7 +89,7 @@ $(()=>{
 
 	$('#formPub').submit(function(e){
 		e.preventDefault();
-		alert('Entrei')
+		//alert('Entrei')
 					
 		var formData = new FormData();
 		var aux=1;
@@ -101,7 +101,7 @@ $(()=>{
 			})
 		});		
 		formData.append('titulo', $('#filesTitulo').val());
-		alert('Cheguei ao 1')
+		//alert('Cheguei ao 1')
 
 		formData.append('username', $('#username').val());
 
@@ -121,16 +121,16 @@ $(()=>{
 		if(tipo == "evento")
 			formData.append('evento', $('#evento').val());
 		*/	
-		alert('Cheguei ao 2')
+		//alert('Cheguei ao 2')
 
 		if(document.getElementById('checkboxSim').checked)
 			formData.append('publico', true);
 		else
 			formData.append('publico', false);
-		alert('Cheguei ao 3')
+		//alert('Cheguei ao 3')
 
 		$.ajax({
-			url:'/api/pubs/'+tipo,
+			url:'/pubs/'+tipo,
 			type:"POST",
 			contentType: "application/json",
 			data:formData,
@@ -139,9 +139,9 @@ $(()=>{
 				$('#formPub').trigger("reset");
 			},
 			error: e =>{
-				alert('Erro no post: ' + e)
+				alert('Erro no post: ' + JSON.stringify(e))
 				$('#myForm').trigger("reset");
-				console.log('Erro no post: ' + e)
+				console.log('Erro no post: ' + JSON.stringify(e))
 			},
 			cache: false,
 			contentType: false,

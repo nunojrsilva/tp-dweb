@@ -74,7 +74,7 @@ $(()=>{
 		});		
 		
 		$.ajax({
-			url:'/api/pubs/evento',
+			url:'/pubs/evento',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,
