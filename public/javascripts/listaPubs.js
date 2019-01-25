@@ -1,21 +1,24 @@
 $(()=>{
     $("input.pubLike:button").click(function() {
 
-        alert("ID da publicação: " + $(this).closest('publicacao').attr('id'));
+        var pubID = $(this).closest('publicacao').attr('id')
 
-		var number = $('#' + this.id).attr('name');
-		var y = parseInt(number);
-		$('#' + this.id).val('Gosto (' + (y+1) + ')')
-		$('#' + this.id).attr('name',y+1);
+        alert("ID da publicação: " + pubID);
 
+        var formData = new FormData();
+        formData.append('pubID', pubID)
+        
         $.ajax({
-            url: '/pubs/comentario',
+            url: '/pubs/pubGostos',
             type: 'PUT',
             contentType: "application/json",
             data: formData,
             success: data =>{
-                alert('Comentário enviado');
-                $('#' + this.id).trigger("reset");
+                var number = $('#' + this.id).attr('name');
+                var y = parseInt(number);
+                $('#' + this.id).val('Gostos (' + (y+1) + ')')
+                $('#' + this.id).attr('name',y+1);
+                alert('Gosto adicionado');
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
@@ -32,11 +35,29 @@ $(()=>{
 
         alert("ID do comentário: " + this.id);
 
-		var number = $('#' + this.id).attr('name');
-		var y = parseInt(number);
-		$('#' + this.id).val('Gosto (' + (y+1) + ')')
-		$('#' + this.id).attr('name',y+1);
-
+        var formData = new FormData();
+        formData.append('comentID', this.id)
+        
+        $.ajax({
+            url: '/pubs/comentGostos',
+            type: 'PUT',
+            contentType: "application/json",
+            data: formData,
+            success: data =>{
+                var number = $('#' + this.id).attr('name');
+                var y = parseInt(number);
+                $('#' + this.id).val('Gostos (' + (y+1) + ')')
+                $('#' + this.id).attr('name',y+1);
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                $('#' + this.id).trigger("reset");
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+            processData: false
+        });
     });
     
     $("form").submit(function(e) {

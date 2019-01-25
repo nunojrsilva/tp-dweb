@@ -92,3 +92,18 @@ module.exports.inserirComentario = (pub_id, comentario) => {
         {"$push": { comentarios: comentario } }, 
         {new : true})
 }
+
+
+module.exports.pubIncGostos = pub_id => {
+	console.log("No controller Pub : " + pub_id)
+    return Pub.findOneAndUpdate(
+		{_id : pub_id}, 
+		{$inc: { gostos: 1 } })
+}
+
+module.exports.comentIncGostos = coment_id => {
+	console.log("No controller Pub : " + coment_id)
+    return Pub.findOneAndUpdate(
+		{"comentarios._id": coment_id}, 
+		{$inc: { 'comentarios.$.gostos': 1 } })
+}

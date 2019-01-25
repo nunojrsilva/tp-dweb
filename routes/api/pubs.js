@@ -106,10 +106,24 @@ router.put('/comentario', (req, res) =>{
         })
 })
 
-router.put('/gostos', (req, res) =>{
-    console.log("PASSEI PELO /api/gostos")
+router.put('/pubGostos', (req, res) =>{
+    console.log("PASSEI PELO /api/pubGostos")
     console.dir(req.body)
-    Pubs.incGostos(req.body.pubID)
+    Pubs.pubIncGostos(req.body.pubID)
+        .then(pub => {
+            console.log("GOSTO FEITO COM SUCESSO", pub)
+            res.jsonp(pub)
+        })
+        .catch(erro => {
+            console.log('Errei no incrementar gosto\n' + erro)
+            res.status(500).send('Erro na incrementação de gostos: ' + erro)
+        })
+})
+
+router.put('/comentGostos', (req, res) =>{
+    console.log("PASSEI PELO /api/comentGostos")
+    console.dir(req.body)
+    Pubs.comentIncGostos(req.body.comentID)
         .then(pub => {
             console.log("GOSTO FEITO COM SUCESSO", pub)
             res.jsonp(pub)

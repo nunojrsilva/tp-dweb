@@ -67,7 +67,7 @@ block content
                                                     h4 Descrição
                                                     p=e.evento.descricao
                                                 br
-                                        input.pubLike.w3-btn.w3-blue(type='button' id=p._id+"_Gostos" value='Gostos(' + p.gostos + ')' name=p.gostos style='margin-left:10px;')
+                                        input.pubLike.w3-btn.w3-blue(type='button' id=p._id+"_Gostos" value='Gostos (' + p.gostos + ')' name=p.gostos style='margin-left:10px;')
                                         br
                                         br
                                 .w3-card-4(style='margin-top:5px;')
@@ -93,7 +93,7 @@ block content
                                                     br
                                                     b= c.utilizador.nome
                                                     p= "Texto: " + c.texto
-                                                    input.commentLike.w3-btn.w3-blue(type='button' id=c._id value='Gostos(' + p.gostos + ')' name=p.gostos style='margin-left:10px;')
+                                                    input.commentLike.w3-btn.w3-blue(type='button' id=c._id value='Gostos (' + c.gostos + ')' name=c.gostos style='margin-left:10px;')
                                                     br
                                                     br
                                         else 
