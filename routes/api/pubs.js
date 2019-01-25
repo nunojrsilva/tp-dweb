@@ -74,6 +74,38 @@ router.post('/pub', (req, res) =>{
 
 })
 
+router.put('/comentario', (req, res) =>{
+    console.log("PASSEI PELO /PUB")
+    console.dir(req.body)
+    User.consultarUsername(req.body.username)
+        .then(username =>{
+            if(username != null){
+                var comentario = {}
+                comentario.utilizador = username
+                comentario.texto = req.body.comentario
+                comentario.gostos = 0;
+            
+                Pubs.inserirComentario(req.body.pubID, comentario)
+                    .then(pub => {
+                        console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", pub)
+                        res.jsonp(pub)
+                    })
+                    .catch(erro => {
+                        console.log('Errei no inserir comentário\n' + erro)
+                        res.status(500).send('Erro na inserção de comentários: ' + erro)
+                    })
+            }
+            else{
+                console.log('Utilizador inexistente\n' + erro)
+                res.status(500).send('Utilizador inexistente: ' + erro)
+            }
+        })
+        .catch(erroUsername =>{
+            console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
+            res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+        })
+})
+
 /////////////////////////////////////////////////////////
 ///////////////////DELETES///////////////////////////////
 /////////////////////////////////////////////////////////

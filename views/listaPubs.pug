@@ -21,52 +21,90 @@ block content
                             td
                                 button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação
                     each p in pubs
-                        .w3-container
-                            .w3-card-4
-                                header.w3-container.w3-blue
-                                    h1=p.utilizador.nome
-                                .w3-container
-                                    if p.tituloPub
-                                        h2=p.tituloPub
-                                    h4="Publicado em " + p.data
-                                    if p.local
-                                        h4="Local: " + p.local
-                                    h5="Público: " + p.publico
-                                    each e in p.elems
-                                        h4="TIPO: "+ e.tipo
-                                        if e.tipo == "lista"
-                                            h2= e.lista.titulo
-                                            ul.w3-ul.w3-hoverable
-                                            each item in e.lista.itens
-                                                li=item
-                                        if e.tipo == "ficheiros"
-                                            p= e.ficheiros.titulo
-                                            ul
-                                                each item in e.ficheiros.ficheiros
-                                                    li
-                                                        a(href='/api/files?username=' + p.utilizador.nome + '&filename='+ item.nome + '&data=' + p.data)= item.nome
-                                        if e.tipo =="narracao"
-                                            h2 Narração!
-                                            if e.narracao.titulo
-                                                p(style="text-align: center;")= e.narracao.titulo
-                                            cite= e.narracao.texto
-                                            if e.narracao.autor
-                                                p="Autor: " +  e.narracao.autor
-                                        if e.tipo =="opiniao"
-                                            h2 Opinião!
-                                            p= e.opiniao.opiniao
-                                        if e.tipo =="evento"
-                                            h2 Evento!
-                                            h2=e.evento.titulo
-                                            h3=e.evento.data
-                                            h3="Tipo de evento: " + e.evento.atividade
-                                            if e.evento.duracao
-                                                h3="Duração: " + e.evento.duracao
-                                            if e.evento.descricao
-                                                h4 Descrição
-                                                p=e.evento.descricao
+                        publicacao(id=p._id)
+                            .w3-container
+                                .w3-card-4
+                                    header.w3-container.w3-blue
+                                        h1=p.utilizador.nome
+                                    .w3-container
+                                        if p.tituloPub
+                                            h2=p.tituloPub
+                                        h4="Publicado em " + p.data
+                                        if p.local
+                                            h4="Local: " + p.local
+                                        h5="Público: " + p.publico
+                                        each e in p.elems
+                                            h4="TIPO: "+ e.tipo
+                                            if e.tipo == "lista"
+                                                h2= e.lista.titulo
+                                                ul.w3-ul.w3-hoverable
+                                                each item in e.lista.itens
+                                                    li=item
+                                            if e.tipo == "ficheiros"
+                                                p= e.ficheiros.titulo
+                                                ul
+                                                    each item in e.ficheiros.ficheiros
+                                                        li
+                                                            a(href='/api/files?username=' + p.utilizador.nome + '&filename='+ item.nome + '&data=' + p.data)= item.nome
+                                            if e.tipo =="narracao"
+                                                h2 Narração!
+                                                if e.narracao.titulo
+                                                    p(style="text-align: center;")= e.narracao.titulo
+                                                cite= e.narracao.texto
+                                                if e.narracao.autor
+                                                    p="Autor: " +  e.narracao.autor
+                                            if e.tipo =="opiniao"
+                                                h2 Opinião!
+                                                p= e.opiniao.opiniao
+                                            if e.tipo =="evento"
+                                                h2 Evento!
+                                                h2=e.evento.titulo
+                                                h3=e.evento.data
+                                                h3="Tipo de evento: " + e.evento.atividade
+                                                if e.evento.duracao
+                                                    h3="Duração: " + e.evento.duracao
+                                                if e.evento.descricao
+                                                    h4 Descrição
+                                                    p=e.evento.descricao
+                                                br
+                                        input.pubLike.w3-btn.w3-blue(type='button' id=p._id+"_Gostos" value='Gostos(' + p.gostos + ')' name=p.gostos style='margin-left:10px;')
+                                        br
+                                        br
+                                .w3-card-4(style='margin-top:5px;')
+                                    header.w3-container.w3-grey
+                                        h6 
+                                            b Comentários
+                                    .w3-container
+                                        form.w3.container.w3-border-bottom(id=p._id+"novoComent" name=p._id enctype="multipart/form-data" method="post")
                                             br
+                                            table(style='width:100%')
+                                                tr
+                                                    td
+                                                        input#username.w3-input.w3-border.w3-light-grey(type='text' placeholder='Insira o seu username' style='width:30%' required)
+                                                tr
+                                                    td(style='width:80%')
+                                                        input#comentario.w3-input.w3-border.w3-light-grey(type='text' placeholder='Escreve um comentário' style='margin-top:20px;' required)
+                                                    td
+                                                        input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:20px; margin-top:20px;')
+                                            br
+                                        if p.comentarios.length
+                                            each c in p.comentarios
+                                                .w3-container.w3-border-bottom
+                                                    br
+                                                    b= c.utilizador.nome
+                                                    p= "Texto: " + c.texto
+                                                    input.commentLike.w3-btn.w3-blue(type='button' id=c._id value='Gostos(' + p.gostos + ')' name=p.gostos style='margin-left:10px;')
+                                                    br
+                                                    br
+                                        else 
+                                            p Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
+                                        br
+                                br
+                                br
 
                 br
+
             footer.w3-container.w3-blue(style="text-align: center;")
                 address Powered by Desenvolvimento de Aplicações Web
+
+    script(src='/javascripts/listaPubs.js')

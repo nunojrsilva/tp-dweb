@@ -48,8 +48,8 @@ var elemSchema = new Schema({
 })
 
 var comentarioSchema = new Schema ( {
-    utilizador : {type: ObjectId, required: true},
-    Texto : {type : String, required : true}
+    utilizador : {type: ObjectId, required: true, ref: 'User'},
+    texto : {type : String, required : true}
 })
 
 var PubSchema = new Schema({
@@ -60,6 +60,7 @@ var PubSchema = new Schema({
     publico: {type: Boolean, required: true},
     tituloPub: {type: String, required: false},
     elems: [{type: elemSchema, required: true}],
+    gostos: {type: Number, required: true},
     comentarios : [{type: comentarioSchema}]
 })
 

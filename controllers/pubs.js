@@ -5,11 +5,17 @@ var pop_config = {
 	select:'nome username'
 }
 
+var pop_config2 = {
+	path: 'comentarios.utilizador',
+	select: 'nome username'
+}
+
 //Lista de publicações
 module.exports.listar = () => {
     return Pub
             .find()
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data : -1})
             .exec()
 }
@@ -19,6 +25,7 @@ module.exports.consultar = pid => {
     return Pub
             .findOne({_id: pid})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.exec()
 }
 
@@ -26,6 +33,7 @@ module.exports.listarPorUserPublico = (uid, publico) => {
 	return Pub
 			.find({utilizador: uid, publico: publico})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
@@ -34,6 +42,7 @@ module.exports.listarPorUser = (id) => {
 	return Pub
 			.find({utilizador: id})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
@@ -42,6 +51,7 @@ module.exports.listarPorHashtag = hashtag => {
 	return Pub
 			.find({"elems.hashtags":{ $all: [hashtag] }})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
@@ -50,6 +60,7 @@ module.exports.listarTipo = tipo => {
 	return Pub
 			.find({tipo: tipo})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
@@ -58,6 +69,7 @@ module.exports.listarPorData = data => {
 	return Pub
 			.find({data: {$gte: data}})
 			.populate(pop_config)
+			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
@@ -72,3 +84,11 @@ module.exports.remover = pid => {
 			.exec()
 }
 
+module.exports.inserirComentario = (pub_id, comentario) => {
+	console.log("Pub : " + pub_id)
+    console.log("Comentario : " + comentario)
+    return Pub.findOneAndUpdate(
+        {_id : pub_id}, 
+        {"$push": { comentarios: comentario } }, 
+        {new : true})
+}
