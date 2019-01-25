@@ -1,4 +1,5 @@
 var Pub = require('../models/pubs')
+var mongoose = require('mongoose')
 
 var pop_config = {
 	path: 'utilizador',
@@ -91,4 +92,17 @@ module.exports.inserirComentario = (pub_id, comentario) => {
         {_id : pub_id}, 
         {"$push": { comentarios: comentario } }, 
         {new : true})
+}
+
+module.exports.consultarFicheiro = (idPub, idFich) => {
+	var pub = mongoose.Types.ObjectId(idPub)
+	var fich = mongoose.Types.ObjectId(idFich)
+	return Pub
+		.aggregate([{$match: {_id: pub}}, 
+		{$unwind: "$elems"}, 
+		{$match: {'elems.tipo': "ficheiros"}}, 
+		{$unwind: "$elems.ficheiros.ficheiros"}, 
+		{$match: {"elems.ficheiros.ficheiros._id": fich}}, 
+		{$project:{"elems.ficheiros.ficheiros": 1}}])
+		.exec()
 }
