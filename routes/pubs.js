@@ -7,6 +7,8 @@ var path = require('path');
 var hash = require('crypto').createHash;
 var isImage = require('is-image')
 
+var randomstring = require('randomstring')
+
 
 router.get('/', function(req, res) {
 	if(req.query.username && req.query.publico){
@@ -405,6 +407,7 @@ async function parseFicheiros(fields, files, data){
     return new Promise((elemento, erro) =>{
 		var ficheirosArray = []
 		var ficheiro = {}
+		var salt = null
 
         for(var fich in files){
 			var nome = files[fich].name
@@ -414,9 +417,10 @@ async function parseFicheiros(fields, files, data){
 			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/' + dataCalendario)
 			
+			salt = randomstring.generate(68)
 
 			ficheiro = {}
-			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + dataCalendario).digest('hex')
+			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + salt + dataCalendario).digest('hex')
 			ficheiro.nome = nome
 			ficheiro.isImage = isImage(nome)
 			
