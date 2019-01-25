@@ -49,7 +49,8 @@ var elemSchema = new Schema({
 
 var comentarioSchema = new Schema ( {
     utilizador : {type: ObjectId, required: true, ref: 'User'},
-    texto : {type : String, required : true}
+    texto : {type : String, required : true},
+    gostos : {type : Number, required : true}
 })
 
 var PubSchema = new Schema({

@@ -352,7 +352,7 @@ router.post("/lista", (req,res) => {
 
 
 router.put('/comentario', function(req, res) {
-	console.log('Entrei no post de comentários')
+	console.log('Entrei no put de comentários')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
 		if(!erro){
@@ -369,6 +369,28 @@ router.put('/comentario', function(req, res) {
 		}
 		else{
 			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS", erro)
+		}
+	})
+});
+
+router.put('/gostos', function(req, res) {
+	console.log('Entrei no put de gostos')
+    var form = new formidable.IncomingForm()
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            console.log("Passei o parse")         
+			console.log('Fields: \n' + JSON.stringify(fields))
+			axios.put("http://localhost:3000/api/pubs/gostos", fields.pubID)
+				.then(dados =>{
+					res.render("respostaPub", {pub : dados.data})
+				})
+				.catch(error =>{
+					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
+					res.status(500).send("ERRO NO AXIOS PUT GOSTOS", error)
+				})
+		}
+		else{
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
 		}
 	})
 });

@@ -8,6 +8,24 @@ $(()=>{
 		$('#' + this.id).val('Gosto (' + (y+1) + ')')
 		$('#' + this.id).attr('name',y+1);
 
+        $.ajax({
+            url: '/pubs/comentario',
+            type: 'PUT',
+            contentType: "application/json",
+            data: formData,
+            success: data =>{
+                alert('Comentário enviado');
+                $('#' + this.id).trigger("reset");
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                $('#' + this.id).trigger("reset");
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+			processData: false
+        });
     });
 
     $("input.commentLike:button").click(function() {

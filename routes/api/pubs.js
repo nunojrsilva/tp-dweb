@@ -75,7 +75,7 @@ router.post('/pub', (req, res) =>{
 })
 
 router.put('/comentario', (req, res) =>{
-    console.log("PASSEI PELO /PUB")
+    console.log("PASSEI PELO /api/comentario")
     console.dir(req.body)
     User.consultarUsername(req.body.username)
         .then(username =>{
@@ -103,6 +103,20 @@ router.put('/comentario', (req, res) =>{
         .catch(erroUsername =>{
             console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
             res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+        })
+})
+
+router.put('/gostos', (req, res) =>{
+    console.log("PASSEI PELO /api/gostos")
+    console.dir(req.body)
+    Pubs.incGostos(req.body.pubID)
+        .then(pub => {
+            console.log("GOSTO FEITO COM SUCESSO", pub)
+            res.jsonp(pub)
+        })
+        .catch(erro => {
+            console.log('Errei no incrementar gosto\n' + erro)
+            res.status(500).send('Erro na incrementação de gostos: ' + erro)
         })
 })
 
