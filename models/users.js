@@ -1,5 +1,7 @@
 var mongoose = require('mongoose')
 
+var bcrypt = require('bcrypt')
+
 var Schema = mongoose.Schema
 
 var ObjectId = Schema.Types.ObjectId
@@ -12,5 +14,22 @@ var UserSchema = new Schema({
     pubs : [{type: ObjectId, required : true, ref : 'Pub'}]
 })
 
+UserSchema.pre('save', async function (next) {
+    var hash = await bcrypt.hash(this.password, 10)
+    this.password = hash
+    next()
+    
+})
 
-module.exports = mongoose.model('User', UserSchema, 'users')
+UserSchema.methods.isValidPassword = async function(password) {
+    var user = this
+    var compare = await bcrypt.compare(password, user.password)
+
+    return compare
+}
+
+
+var UserModel = mongoose.model('user', UserSchema)
+
+
+module.exports = UserModel

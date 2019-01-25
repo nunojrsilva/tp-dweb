@@ -18,6 +18,7 @@ var pubsRouter = require("./routes/pubs");
 var indexRouter = require("./routes/index");
 
 var uuid = require('uuid/v4')
+
 var session = require('express-session')
 
 var FileStore = require('session-file-store') (session)
@@ -33,6 +34,10 @@ var mongoose = require('mongoose')
 
 var flash = require('connect-flash')
 
+var app = express();
+
+require('./auth/auth')
+
 
 mongoose.connect('mongodb://127.0.0.1:27017/tp-web', {useNewUrlParser: true})
   .then(() => console.log("Mongo ready " + mongoose.connection.readyState))
@@ -46,7 +51,7 @@ mongoose.connect('mongodb://127.0.0.1:27017/tp-web', {useNewUrlParser: true})
 //   },
 
 //   (email, password, done) => {
-//     axios.get('http://localhost:5011/users?email=' + email)
+//     axios.get('http://localhost:3000/users?email=' + email)
 //       .then(dados => {
 //         const user = dados.data[0]
 //         if (!user) {
@@ -63,41 +68,22 @@ mongoose.connect('mongodb://127.0.0.1:27017/tp-web', {useNewUrlParser: true})
 
 // ))
 
-//Serialização do utilizador
-
-// passport.serializeUser((user, done) => {
-//   done(null, user.id)
-// })
-
-// //funcao inversa
-
-// passport.deserializeUser((uid, done) => {
-//   axios.get("http://localhost:5011/users/" + uid)
-//     .then(dados => done(null, dados.data))
-//     .catch(erro => done(erro, false))
-
-// })
-
-
-var app = express();
-
-
 //Middleware da sessão
 
 
-// app.use(session({
-//   genid: req => {
-//     console.log('Dentro do middleware da sessão - ' + req.sessionID)
-//     return uuid()
-//   },
-//   store: new FileStore () ,
-//   secret: 'aula dweb 2018',
-//   resave : false,
-//   saveUninitialized : true
-// }))
+app.use(session({
+  genid: req => {
+    console.log('Dentro do middleware da sessão - ' + req.sessionID)
+    return uuid()
+  },
+  store: new FileStore () ,
+  secret: 'dweb2018',
+  resave : false,
+  saveUninitialized : true
+}))
 
-// app.use(passport.initialize())
-// app.use(passport.session())
+app.use(passport.initialize())
+app.use(passport.session())
 
 
 //Conf da estrategia de autenticacao
@@ -122,7 +108,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// app.use('/', indexRouter);
 
 app.use('/api/users', usersAPIRouter);
 app.use('/api/pubs', pubsAPIRouter);
