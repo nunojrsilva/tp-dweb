@@ -83,7 +83,7 @@ router.put('/comentario', (req, res) =>{
                 var comentario = {}
                 comentario.utilizador = username
                 comentario.texto = req.body.comentario
-                comentario.gostos = 0;
+                comentario.gostos = []
             
                 Pubs.inserirComentario(req.body.pubID, comentario)
                     .then(pub => {
@@ -109,17 +109,106 @@ router.put('/comentario', (req, res) =>{
 router.put('/pubGostos', (req, res) =>{
     console.log("PASSEI PELO /api/pubGostos")
     console.dir(req.body)
-    Pubs.pubIncGostos(req.body.pubID)
-        .then(pub => {
-            console.log("GOSTO FEITO COM SUCESSO", pub)
-            res.jsonp(pub)
-        })
-        .catch(erro => {
-            console.log('Errei no incrementar gosto\n' + erro)
-            res.status(500).send('Erro na incrementação de gostos: ' + erro)
-        })
+    User.consultarUsername("ricardo15")
+    .then(username =>{
+        if(username != null){
+
+            Pubs.consultarUserPubGosto(req.body.pubID, username)
+            .then( dados => {
+                console.log("Consultar User Pub Gosto Res: ", dados)
+                if(dados == 0){
+                    console.log("User gostou da pub")
+                    Pubs.pubIncGostos(req.body.pubID, username)
+                    .then(pub => {
+                        console.log("GOSTO ADICIONADO COM SUCESSO", pub)
+                        res.jsonp(dados+1)
+                    })
+                    .catch(erro => {
+                        console.log('Errei no incrementar gosto\n' + erro)
+                        res.status(500).send('Erro na incrementação de gostos: ' + erro)
+                    })
+                }
+                else{
+                    console.log("User não gostou da pub")
+                    Pubs.pubDecGostos(req.body.pubID, username)
+                    .then(pub => {
+                        console.log("GOSTO RETIRADO COM SUCESSO", pub)
+                        res.jsonp(dados-1)
+                    })
+                    .catch(erro => {
+                        console.log('Errei no decrementar gosto\n' + erro)
+                        res.status(500).send('Erro na decrementação de gostos: ' + erro)
+                    })
+                }
+            })
+            .catch( erroGostos => {
+                console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
+                res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+            })
+        }
+        else{
+            console.log('Utilizador inexistente\n' + erro)
+            res.status(500).send('Utilizador inexistente: ' + erro)
+        }
+    })
+    .catch(erroUsername =>{
+        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
+        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+    })
 })
 
+
+router.put('/comentGostos', (req, res) =>{
+    console.log("PASSEI PELO /api/comentGostos")
+    console.dir(req.body)
+    User.consultarUsername("ricardo15")
+    .then(username =>{
+        if(username != null){
+
+            Pubs.consultarUserComentGosto(req.body.comentID, username)
+            .then( dados => {
+                console.log("Consultar User Coment Gosto Res: ", dados)
+                if(dados == 0){
+                    console.log("User gostou do comentário")
+                    Pubs.comentIncGostos(req.body.comentID, username)
+                    .then(pub => {
+                        console.log("GOSTO ADICIONADO COM SUCESSO", pub)
+                        res.jsonp(dados+1)
+                    })
+                    .catch(erro => {
+                        console.log('Errei no incrementar gosto\n' + erro)
+                        res.status(500).send('Erro na incrementação de gostos: ' + erro)
+                    })
+                }
+                else{
+                    console.log("User não gostou do comentário")
+                    Pubs.comentDecGostos(req.body.comentID, username)
+                    .then(pub => {
+                        console.log("GOSTO RETIRADO COM SUCESSO", pub)
+                        res.jsonp(dados-1)
+                    })
+                    .catch(erro => {
+                        console.log('Errei no decrementar gosto\n' + erro)
+                        res.status(500).send('Erro na decrementação de gostos: ' + erro)
+                    })
+                }
+            })
+            .catch( erroGostos => {
+                console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
+                res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+            })
+        }
+        else{
+            console.log('Utilizador inexistente\n' + erro)
+            res.status(500).send('Utilizador inexistente: ' + erro)
+        }
+    })
+    .catch(erroUsername =>{
+        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
+        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+    })
+})
+/*
 router.put('/comentGostos', (req, res) =>{
     console.log("PASSEI PELO /api/comentGostos")
     console.dir(req.body)
@@ -132,7 +221,7 @@ router.put('/comentGostos', (req, res) =>{
             console.log('Errei no incrementar gosto\n' + erro)
             res.status(500).send('Erro na incrementação de gostos: ' + erro)
         })
-})
+})*/
 
 /////////////////////////////////////////////////////////
 ///////////////////DELETES///////////////////////////////

@@ -14,10 +14,8 @@ $(()=>{
             contentType: "application/json",
             data: formData,
             success: data =>{
-                var number = $('#' + this.id).attr('name');
-                var y = parseInt(number);
-                $('#' + this.id).val('Gostos (' + (y+1) + ')')
-                $('#' + this.id).attr('name',y+1);
+                console.dir(data.size)
+                $('#' + this.id).val('Gostos (' + (data.size) + ')')
                 alert('Gosto adicionado');
             },
             error: e =>{
@@ -44,10 +42,9 @@ $(()=>{
             contentType: "application/json",
             data: formData,
             success: data =>{
-                var number = $('#' + this.id).attr('name');
-                var y = parseInt(number);
-                $('#' + this.id).val('Gostos (' + (y+1) + ')')
-                $('#' + this.id).attr('name',y+1);
+                console.dir(data.size)
+                $('#' + this.id).val('Gostos (' + (data.size) + ')')
+                alert('Gosto adicionado');
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))

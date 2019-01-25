@@ -131,7 +131,7 @@ router.post('/opiniao', (req, res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.elems = []
-			publicacao.gostos = 0
+			publicacao.gostos = []
 
 			var elem1 = {}
 			elem1.tipo = "opiniao"
@@ -178,7 +178,7 @@ router.post('/evento', (req, res) => {
 			console.log("ISTO È A PRIVACIDADE", fields.publico)
 			publicacao.publico = fields.publico
 			publicacao.elems = []
-			publicacao.gostos = 0
+			publicacao.gostos = []
 
 			var elem1 = {}
 			elem1.tipo = "evento"
@@ -227,7 +227,7 @@ router.post('/ficheiros', (req, res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.elems = []
-			publicacao.gostos = 0
+			publicacao.gostos = []
 
 			if(Object.keys(files).length){
 				parseFicheiros(fields, files, publicacao.data)
@@ -263,7 +263,7 @@ router.post("/narracao", (req,res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["narracao"]
-			publicacao.gostos = 0
+			publicacao.gostos = []
 
 
 			var elemNarracao = {}
@@ -314,7 +314,7 @@ router.post("/lista", (req,res) => {
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["lista"]
 			publicacao.elems = []
-			publicacao.gostos = 0
+			publicacao.gostos = []
 
 			var listaElem = {}
 			listaElem.tipo = "lista"
@@ -384,8 +384,7 @@ router.put('/pubGostos', function(req, res) {
 			console.log('Fields: \n' + JSON.stringify(fields))
 			axios.put("http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
 				.then(dados =>{
-					//res.render("respostaPub", {pub : dados.data})
-					res.end()
+					res.send({size : dados.data})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
@@ -407,8 +406,7 @@ router.put('/comentGostos', function(req, res) {
 			console.log('Fields: \n' + JSON.stringify(fields))
 			axios.put("http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
 				.then(dados =>{
-					//res.render("respostaPub", {pub : dados.data})
-					res.end()
+					res.send({size : dados.data})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)

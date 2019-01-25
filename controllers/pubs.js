@@ -94,19 +94,54 @@ module.exports.inserirComentario = (pub_id, comentario) => {
         {new : true})
 }
 
-
-module.exports.pubIncGostos = pub_id => {
-	console.log("No controller Pub : " + pub_id)
-    return Pub.findOneAndUpdate(
-		{_id : pub_id}, 
-		{$inc: { gostos: 1 } })
+module.exports.consultarUserPubGosto = (pub_id, user_id) => {
+	console.log("Pub : " + pub_id)
+    console.log("User : " + user_id)
+    return Pub
+		.find({_id: pub_id, gostos: { "$in" : [user_id]}})
+		.count()
+		.exec()
 }
 
-module.exports.comentIncGostos = coment_id => {
-	console.log("No controller Pub : " + coment_id)
+module.exports.consultarUserComentGosto = (coment_id, user_id) => {
+	console.log("Pub : " + coment_id)
+    console.log("User : " + user_id)
+    return Pub
+		.find({"comentarios._id": coment_id, "comentarios.gostos": { "$in" : [user_id]}})
+		.count()
+		.exec()
+}
+
+module.exports.pubIncGostos = (pub_id, user_id) => {
+	console.log("Pub : " + pub_id)
+    console.log("User : " + user_id)
+    return Pub.findOneAndUpdate(
+		{_id : pub_id}, 
+        {"$push": { gostos: user_id } }, 
+        {new : true})
+}
+
+module.exports.pubDecGostos = (pub_id, user_id) => {
+	console.log("Pub : " + pub_id)
+    console.log("User : " + user_id)
+    return Pub.findOneAndUpdate(
+		{_id : pub_id}, 
+        {"$pull": { gostos: { $in: [user_id] } } })
+}
+
+module.exports.comentIncGostos = (coment_id, user_id) => {
+	console.log("No controller comentInc : " + coment_id)
     return Pub.findOneAndUpdate(
 		{"comentarios._id": coment_id}, 
-		{$inc: { 'comentarios.$.gostos': 1 } })
+        {"$push": { "comentarios.$.gostos": user_id } }, 
+        {new : true})
+}
+
+module.exports.comentDecGostos = (coment_id, user_id) => {
+	console.log("No controller comentDec : " + coment_id)
+    return Pub.findOneAndUpdate(
+		{"comentarios._id": coment_id}, 
+        {"$pull": { "comentarios.$.gostos": { $in: [user_id] } } })
 }
 
 module.exports.consultarFicheiro = (idPub, idFich) => {
