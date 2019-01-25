@@ -45,7 +45,11 @@ block content
                                                 ul
                                                     each item in e.ficheiros.ficheiros
                                                         li
-                                                            a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)= item.nome
+                                                            if (item.isImage == true)
+                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                                    img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                            else
+                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)= item.nome
                                             if e.tipo =="narracao"
                                                 h2 Narração!
                                                 if e.narracao.titulo
