@@ -60,7 +60,6 @@ router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) =
 
 router.post('/login', async (req,res,next) => {
     console.log("No login da api")
-    //console.log(req)
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
@@ -75,9 +74,6 @@ router.post('/login', async (req,res,next) => {
                 var token = jwt.sign({
                     user : myuser}, 'dweb2018');
                 
-                // req.session.token = token
-                // // next()
-                // // res.redirect("/api/users")
                 res.send({token})
 
                 })
@@ -90,51 +86,26 @@ router.post('/login', async (req,res,next) => {
 
 router.post('/', function(req, res, next) {
     console.log("Entrei no post de /api/users")
-    passport.authenticate('registo', function(err, user, info) {
+    passport.authenticate('registo', function(err, user, info){
         if (err) { return next(err); }
         if (!user) { return res.jsonp({erro: "Utilizador não existe"}); }
         console.log("Body no post de /api/users " + JSON.stringify(req.body))
         console.log("Passport já atuou")
-        fs.mkdirSync(__dirname + '/../../uploaded/'+req.body.username+'/')
+        console.log("User : " + user)
+        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
+        //return res.jsonp(user)
 
-        User.atualizarFotoPerfil(dados._id, dados.fotoPerfil.fotos[0]._id)
-        .then(dados2 =>{
-            fs.mkdirSync(__dirname + '/../../uploaded/'+ utilizador.username+'/');
-            res.jsonp(dados2)
-        })
-        .catch(erroAtualizaFotoPerfil => res.status(500).send("ERRO NA ATUALIZAÇÃO DA FOTO DE PERFIL: " + erroAtualizaFotoPerfil))
-        console.log("Pasta criada")
-        return res.jsonp(user)
-        })(req, res, next);
+        User.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
+            .then(dados2 =>{
+                return res.jsonp(dados2)
+            })
+            .catch(e =>
+                { 
+                console.log("Erro ao atualizar foto" + e)
+                return res.jsonp(e)
+            })
+    })(req, res, next);
 })
-
-// router.post('/', (req,res) => {
-//     // var utilizador = req.body
-//     // console.log('Entrei no post de users', utilizador)
-//     // var fotoPerfil = {}
-//     // fotoPerfil.idAtual = null
-//     // fotoPerfil.fotos = []
-
-//     // var fotoDefault = {}
-//     // fotoDefault.nome = "default.jpeg"
-//     // fotoDefault.nomeGuardado = fotoDefault.nome
-
-//     // fotoPerfil.fotos.push(fotoDefault)
-
-//     // utilizador.fotoPerfil = fotoPerfil
-    
-//     User.inserir(utilizador)
-//     .then(dados => {
-//         console.log('Entrei no then do post de users')
-//         User.atualizarFotoPerfil(dados._id, dados.fotoPerfil.fotos[0]._id)
-//         .then(dados2 =>{
-//             fs.mkdirSync(__dirname + '/../../uploaded/'+ utilizador.username+'/');
-//             res.jsonp(dados2)
-//         })
-//         .catch(erroAtualizaFotoPerfil => res.status(500).send("ERRO NA ATUALIZAÇÃO DA FOTO DE PERFIL: " + erroAtualizaFotoPerfil))
-//     })    
-//     .catch(erro => res.status(500).send('Erro na inserção de utilizador' + erro))
-// })
 
 router.post('/novaFotoPerfil', (req, res) => {
     var form = new formidable.IncomingForm()

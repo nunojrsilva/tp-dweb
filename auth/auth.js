@@ -27,7 +27,8 @@ passport.use('registo', new localStrategy({
     usernameField : 'username',
     passwordField : 'password',
     passReqToCallback: true,
-},async (req, username, password, done) => {
+},  async (req, username, password, done) => {
+    console.log("U : " + username)
     try {
         console.log("Body no registo" + JSON.stringify(req.body))
         var nome = req.body.nome
@@ -48,7 +49,7 @@ passport.use('registo', new localStrategy({
 
     catch (error) {
 
-        console.log("Erro no auth de registo" + JSON.stringify(error))
+        console.log("Erro no auth de registo" + error)
 
         return done(error)
 

@@ -58,13 +58,15 @@ router.get('/', function(req, res) {
 	} else{
 		axios.get('http://localhost:3000/api/pubs')
 		.then(resposta =>{
+			console.log(resposta.data)
 			removeNomeGuardado(resposta.data)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
-			console.log('Erro ao carregar da BD.')
-			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+			console.log('Erro ao carregar da BD.' + erro)
+			//res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+			res.status(500).send(erro)
 		})
 	}
 });
@@ -147,7 +149,7 @@ router.post('/opiniao', (req, res) => {
 					axiosPost(res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
@@ -200,8 +202,8 @@ router.post('/evento', (req, res) => {
 					axiosPost(res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 
 			}
@@ -236,8 +238,8 @@ router.post('/ficheiros', (req, res) => {
 					axiosPost(res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
@@ -287,8 +289,8 @@ router.post("/narracao", (req,res) => {
 					axiosPost(res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
@@ -339,8 +341,8 @@ router.post("/lista", (req,res) => {
 					axiosPost(res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
@@ -364,12 +366,12 @@ router.put('/comentario', function(req, res) {
 					res.render("comentario", {comentario : dados.data})
 				})
 				.catch(error =>{
-					console.log("ERRO NO AXIOS PUT: ", error)
-					res.status(500).send("ERRO NO AXIOS PUT", error)
+					console.log("ERRO NO AXIOS PUT: " + error)
+					res.status(500).send("ERRO NO AXIOS PUT" + error)
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS" + erro)
 		}
 	})
 });
@@ -391,7 +393,7 @@ router.put('/pubGostos', function(req, res) {
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM" + erro)
 		}
 	})
 });
@@ -413,7 +415,7 @@ router.put('/comentGostos', function(req, res) {
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM" + erro)
 		}
 	})
 });

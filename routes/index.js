@@ -73,6 +73,10 @@ router.post("/registo", (req,res) => {
       console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
       res.redirect("/login")
     })
+    .catch(e => {
+      console.log("Erro no /registo " + JSON.stringify(e) )
+      res.jsonp(e)
+    })
 })
 
 

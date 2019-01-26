@@ -37,9 +37,16 @@ router.get('/', (req, res) => {
 			.then(dados => res.jsonp(dados))
 			.catch(erro => res.status(500).send('Erro na listagem por data: ' + erro))
 	} else{
-        Pubs.listar()
+        console.log("CHEGUEI AQUI")
+        try{
+            Pubs.listar()
             .then(dados => res.jsonp(dados))
-            .catch(erro => res.status(500).send('Erro na listagem de publicações'))
+            .catch(erro => res.send(erro))
+        }
+        catch(e){
+            console.log(e)
+            res.status(500).send('Erro na listagem de publicações' + e)
+        }
     }
 });
 
