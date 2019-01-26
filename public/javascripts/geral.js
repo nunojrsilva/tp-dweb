@@ -4,6 +4,8 @@ $(()=>{
 	var item = 1;
 	var tipo = "opiniao"
 
+	$('#formDiv').load('http://localhost:3000/pubs/opiniaoPub')
+
 	$('input:file').bind('change', function() {
 		if (this.files[0].size > 200*1024*1024) {
 			alert("Tamanho do ficheiro excedeu o limite de 200MB");

@@ -31,7 +31,18 @@ passport.use('registo', new localStrategy({
     try {
         console.log("Body no registo" + JSON.stringify(req.body))
         var nome = req.body.nome
-        var user = await UserModel.create({nome, username, password})
+        var fotoPerfil = {}
+        fotoPerfil.idAtual = null
+        fotoPerfil.fotos = []
+
+        var fotoDefault = {}
+        fotoDefault.nome = "default.jpeg"
+        fotoDefault.nomeGuardado = fotoDefault.nome
+    
+        fotoPerfil.fotos.push(fotoDefault)
+    
+
+        var user = await UserModel.create({nome, username, password, fotoPerfil})
         return done(null, user)
     }   
 

@@ -7,6 +7,8 @@ var path = require('path');
 var hash = require('crypto').createHash;
 var isImage = require('is-image')
 
+var randomstring = require('randomstring')
+
 
 router.get('/', function(req, res) {
 	if(req.query.username && req.query.publico){
@@ -129,6 +131,8 @@ router.post('/opiniao', (req, res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.elems = []
+			publicacao.gostos = []
+
 			var elem1 = {}
 			elem1.tipo = "opiniao"
 			elem1.opiniao = {}
@@ -174,6 +178,7 @@ router.post('/evento', (req, res) => {
 			console.log("ISTO È A PRIVACIDADE", fields.publico)
 			publicacao.publico = fields.publico
 			publicacao.elems = []
+			publicacao.gostos = []
 
 			var elem1 = {}
 			elem1.tipo = "evento"
@@ -222,6 +227,7 @@ router.post('/ficheiros', (req, res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.elems = []
+			publicacao.gostos = []
 
 			if(Object.keys(files).length){
 				parseFicheiros(fields, files, publicacao.data)
@@ -257,6 +263,7 @@ router.post("/narracao", (req,res) => {
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["narracao"]
+			publicacao.gostos = []
 
 
 			var elemNarracao = {}
@@ -307,11 +314,12 @@ router.post("/lista", (req,res) => {
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["lista"]
 			publicacao.elems = []
+			publicacao.gostos = []
 
 			var listaElem = {}
 			listaElem.tipo = "lista"
 			listaElem.lista = {}
-			listaElem.lista.titulo = fields.tituloLista
+			listaElem.lista.titulo = fields.titulo
 			listaElem.lista.itens = []
 
 			var i = 1;
@@ -344,6 +352,73 @@ router.post("/lista", (req,res) => {
     })
 })
 
+router.put('/comentario', function(req, res) {
+	console.log('Entrei no put de comentários')
+    var form = new formidable.IncomingForm()
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            console.log("Passei o parse")         
+			console.log('Fields: \n' + JSON.stringify(fields))
+			axios.put("http://localhost:3000/api/pubs/comentario", fields)
+				.then(dados =>{
+					res.render("comentario", {comentario : dados.data})
+				})
+				.catch(error =>{
+					console.log("ERRO NO AXIOS PUT: ", error)
+					res.status(500).send("ERRO NO AXIOS PUT", error)
+				})
+		}
+		else{
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS", erro)
+		}
+	})
+});
+
+router.put('/pubGostos', function(req, res) {
+	console.log('Entrei no put de gostos')
+    var form = new formidable.IncomingForm()
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            console.log("Passei o parse")         
+			console.log('Fields: \n' + JSON.stringify(fields))
+			axios.put("http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
+				.then(dados =>{
+					res.send({size : dados.data})
+				})
+				.catch(error =>{
+					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
+					res.status(500).send("ERRO NO AXIOS PUT GOSTOS", error)
+				})
+		}
+		else{
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+		}
+	})
+});
+
+router.put('/comentGostos', function(req, res) {
+	console.log('Entrei no put de gostos')
+    var form = new formidable.IncomingForm()
+    form.parse(req, (erro, fields, files)=>{
+		if(!erro){
+            console.log("Passei o parse")         
+			console.log('Fields: \n' + JSON.stringify(fields))
+			axios.put("http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
+				.then(dados =>{
+					res.send({size : dados.data})
+				})
+				.catch(error =>{
+					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
+					res.status(500).send("ERRO NO AXIOS PUT GOSTOS", error)
+				})
+		}
+		else{
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+		}
+	})
+});
+
+
 ////////////////////////////////////////////////////////
 //////////////////////FUNCOES///////////////////////////
 ////////////////////////////////////////////////////////
@@ -353,6 +428,7 @@ async function parseFicheiros(fields, files, data){
     return new Promise((elemento, erro) =>{
 		var ficheirosArray = []
 		var ficheiro = {}
+		var salt = null
 
         for(var fich in files){
 			var nome = files[fich].name
@@ -362,9 +438,10 @@ async function parseFicheiros(fields, files, data){
 			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/' + dataCalendario)
 			
+			salt = randomstring.generate(64)
 
 			ficheiro = {}
-			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + dataCalendario).digest('hex')
+			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + salt + dataCalendario).digest('hex')
 			ficheiro.nome = nome
 			ficheiro.isImage = isImage(nome)
 			
