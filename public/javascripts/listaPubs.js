@@ -15,7 +15,7 @@ $(()=>{
             data: formData,
             success: data =>{
                 console.dir(data.size)
-                $('#' + this.id).val('Gostos (' + (data.size) + ')')
+                $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
@@ -43,7 +43,7 @@ $(()=>{
             data: formData,
             success: data =>{
                 console.dir(data.size)
-                $('#' + comentID).val('Gostos (' + (data.size) + ')')
+                $('#' + comentID).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
