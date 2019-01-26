@@ -47,12 +47,8 @@ $(()=>{
 			contentType: "application/json",
 			data:formData,
 			success: data =>{
-				$("#listaImg").empty()
-				for(foto in data.fotos)
-					$("#listaImg").append("<li><a href=\"http://localhost:3000/api/files/foto?userId=" + $('#id').attr('name') + "fotoId=" + foto._id + "><img style=\"max-width: 250px; max-height: 250px;\" src=\"http://localhost:3000/api/files/foto?userId=" + $('#id').attr('name') + "fotoId=" + foto._id + "\"></a><br><br></li>")
-					
-				alert('Ficheiros enviados' + JSON.stringify(data));
 				console.log(JSON.stringify(data))
+				$("#listaImg").append(data)
 				$('#filesDiv').trigger("reset");
 			},
 			error: e =>{

@@ -7,8 +7,8 @@ block content
 			.w3-card-4
 				header.w3-container.w3-blue
 					h3 Fotos de Perfil
-				.w3-container(id="listaImg" style=" width: 50%; float: left;")
-					ul
+				.w3-container(style=" width: 50%; float: left;")
+					ul(id="listaImg")
 						for file in fotos.fotoPerfil.fotos
 							li
 								a(href="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
@@ -18,10 +18,10 @@ block content
 
 					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='margin-left:25px; margin-top:10px')
 
-				.w3-container(id="filesDiv" name="filesDiv" enctype="multipart/form-data" method="post" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
+				form.w3-container(id="filesDiv" name="filesDiv" enctype="multipart/form-data" method="post" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
 						.w3-card-4(style='width: 80%')
 							header.w3-container.w3-blue
-								h3 Escolha a Foto de Perfil
+								h3 Selecione uma nova Foto de Perfil
 							table
 								tr
 									td
@@ -43,3 +43,4 @@ block content
 		address Powered by Desenvolvimento de Aplicações Web
 		
 	script(src="/javascripts/fotosPerfil.js")
+	script(src="/javascripts/axios.min.js")
