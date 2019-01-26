@@ -1,6 +1,6 @@
 .w3-container.w3-border.w3-round-xxlarge.w3-light-grey(style='margin-top:20px;')
     .w3-container(style='margin-bottom:10px;')    
         p
-            b(style='margin-right:20px; color: rgba(0, 0, 130, 0.9);')= comentario.utilizador.nome
+            b(style='margin-right:20px; color: rgba(0, 0, 160, 0.9);')= comentario.utilizador.nome
             | #{comentario.texto}
-        input.commentLike.w3-btn.w3-blue.w3-small.w3-round-xxlarge(type='button' id=comentario._id value='Gostos (' + comentario.gostos.length + ')' name=comentario.gostos.length style='margin-left:5px;')
+        input.commentLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=comentario._id value='Gostos (' + comentario.gostos.length + ')' name=comentario.gostos.length style='background-color: blue; color: white; margin-left:5px;')
