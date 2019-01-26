@@ -5,8 +5,8 @@ block content
         .w3-card-4
             header.w3-container.w3-blue
                 h1 Publicações
-            .w3-container
-                h3 Procurar por id
+            .w3-container(style='margin-left:40px; margin-top:15px;')
+                h3 Procurar Publicação
                 .w3-container
                     table
                         tr
@@ -20,91 +20,93 @@ block content
                                 input#fileData.w3-input.w3-border(placeholder='Data mínima: yyyy-mm-dd')
                             td
                                 button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação
-                    each p in pubs
-                        publicacao(id=p._id)
+            
+            .w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
+                each p in pubs
+                    publicacao.w3-container(id=p._id)
+                        .w3-card-4
+                            header.w3-container.w3-blue
+                                h1=p.utilizador.nome
                             .w3-container
-                                .w3-card-4
-                                    header.w3-container.w3-blue
-                                        h1=p.utilizador.nome
-                                    .w3-container
-                                        if p.tituloPub
-                                            h2=p.tituloPub
-                                        h4="Publicado em " + p.data
-                                        if p.local
-                                            h4="Local: " + p.local
-                                        h5="Público: " + p.publico
-                                        each e in p.elems
-                                            h4="TIPO: "+ e.tipo
-                                            if e.tipo == "lista"
-                                                h2= e.lista.titulo
-                                                ul.w3-ul.w3-hoverable
-                                                each item in e.lista.itens
-                                                    li=item
-                                            if e.tipo == "ficheiros"
-                                                p= e.ficheiros.titulo
-                                                ul
-                                                    each item in e.ficheiros.ficheiros
-                                                        li
-                                                            if (item.isImage == true)
-                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
-                                                                    img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
-                                                            else
-                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)= item.nome
-                                            if e.tipo =="narracao"
-                                                h2 Narração!
-                                                if e.narracao.titulo
-                                                    p(style="text-align: center;")= e.narracao.titulo
-                                                cite= e.narracao.texto
-                                                if e.narracao.autor
-                                                    p="Autor: " +  e.narracao.autor
-                                            if e.tipo =="opiniao"
-                                                h2 Opinião!
-                                                p= e.opiniao.opiniao
-                                            if e.tipo =="evento"
-                                                h2 Evento!
-                                                h2=e.evento.titulo
-                                                h3=e.evento.data
-                                                h3="Tipo de evento: " + e.evento.atividade
-                                                if e.evento.duracao
-                                                    h3="Duração: " + e.evento.duracao
-                                                if e.evento.descricao
-                                                    h4 Descrição
-                                                    p=e.evento.descricao
+                                if p.tituloPub
+                                    h2=p.tituloPub
+                                h4="Publicado em " + p.data
+                                if p.local
+                                    h4="Local: " + p.local
+                                h5="Público: " + p.publico
+                                each e in p.elems
+                                    h4="TIPO: "+ e.tipo
+                                    if e.tipo == "lista"
+                                        h2= e.lista.titulo
+                                        ul.w3-ul.w3-hoverable
+                                        each item in e.lista.itens
+                                            li=item
+                                    if e.tipo == "ficheiros"
+                                        p= e.ficheiros.titulo
+                                        ul
+                                            each item in e.ficheiros.ficheiros
+                                                li
+                                                    if (item.isImage == true)
+                                                        a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                            img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                    else
+                                                        a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)= item.nome
+                                    if e.tipo =="narracao"
+                                        h2 Narração!
+                                        if e.narracao.titulo
+                                            p(style="text-align: center;")= e.narracao.titulo
+                                        cite= e.narracao.texto
+                                        if e.narracao.autor
+                                            p="Autor: " +  e.narracao.autor
+                                    if e.tipo =="opiniao"
+                                        h2 Opinião!
+                                        p= e.opiniao.opiniao
+                                    if e.tipo =="evento"
+                                        h2 Evento!
+                                        h2=e.evento.titulo
+                                        h3=e.evento.data
+                                        h3="Tipo de evento: " + e.evento.atividade
+                                        if e.evento.duracao
+                                            h3="Duração: " + e.evento.duracao
+                                        if e.evento.descricao
+                                            h4 Descrição
+                                            p=e.evento.descricao
+                                        br
+                                input.pubLike.w3-btn.w3-blue(type='button' id=p._id+"_Gostos" value='Gostos (' + p.gostos.length + ')' name=p.gostos.length style='margin-left:10px;')
+                                br
+                                br
+                        .w3-card-4(style='margin-top:5px;')
+                            header.w3-container.w3-grey
+                                h6 
+                                    b Comentários
+                            .w3-container
+                                form.w3.container.w3-bottombar.w3-border-black(id=p._id+"novoComent")
+                                    br
+                                    table(style='width:100%')
+                                        tr
+                                            td
+                                                input#username.w3-input.w3-border.w3-light-grey(type='text' placeholder='Insira o seu username' style='width:30%' required)
+                                        tr
+                                            td(style='width:80%')
+                                                input#comentario.w3-input.w3-border.w3-light-grey(type='text' placeholder='Escreve um comentário' style='margin-top:15px;' required)
+                                            td
+                                                input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:20px; margin-top:15px;')
+                                    br
+                                comentarios
+                                    if p.comentarios.length
+                                        each c in p.comentarios
+                                            .w3-container.w3-border-bottom.w3-border-black(style='margin-top:20px;')
+                                                b= c.utilizador.nome
+                                                p= "Texto: " + c.texto
+                                                input.commentLike.w3-btn.w3-blue(type='button' id=c._id value='Gostos (' + c.gostos.length + ')' name=c.gostos.length style='margin-left:10px;')
                                                 br
-                                        input.pubLike.w3-btn.w3-blue(type='button' id=p._id+"_Gostos" value='Gostos (' + p.gostos.length + ')' name=p.gostos.length style='margin-left:10px;')
-                                        br
-                                        br
-                                .w3-card-4(style='margin-top:5px;')
-                                    header.w3-container.w3-grey
-                                        h6 
-                                            b Comentários
-                                    .w3-container
-                                        form.w3.container.w3-border-bottom(id=p._id+"novoComent" name=p._id enctype="multipart/form-data" method="post")
-                                            br
-                                            table(style='width:100%')
-                                                tr
-                                                    td
-                                                        input#username.w3-input.w3-border.w3-light-grey(type='text' placeholder='Insira o seu username' style='width:30%' required)
-                                                tr
-                                                    td(style='width:80%')
-                                                        input#comentario.w3-input.w3-border.w3-light-grey(type='text' placeholder='Escreve um comentário' style='margin-top:20px;' required)
-                                                    td
-                                                        input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:20px; margin-top:20px;')
-                                            br
-                                        if p.comentarios.length
-                                            each c in p.comentarios
-                                                .w3-container.w3-border-bottom
-                                                    br
-                                                    b= c.utilizador.nome
-                                                    p= "Texto: " + c.texto
-                                                    input.commentLike.w3-btn.w3-blue(type='button' id=c._id value='Gostos (' + c.gostos.length + ')' name=c.gostos.length style='margin-left:10px;')
-                                                    br
-                                                    br
-                                        else 
-                                            p Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
-                                        br
+                                                br
+                                    else 
+                                        .w3-container(id=p._id+"NoComments" style='margin-top:20px;')
+                                            b Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
                                 br
-                                br
+                        br
+                        br
 
                 br
 

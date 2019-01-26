@@ -1,0 +1,7 @@
+.w3-container.w3-border-bottom
+    br
+    b= comentario.utilizador.nome
+    p= "Texto: " + comentario.texto
+    input.commentLike.w3-btn.w3-blue(type='button' id=comentario._id value='Gostos (' + comentario.gostos.length + ')' name=comentario.gostos.length style='margin-left:10px;')
+    br
+    br

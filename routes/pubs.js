@@ -319,7 +319,7 @@ router.post("/lista", (req,res) => {
 			var listaElem = {}
 			listaElem.tipo = "lista"
 			listaElem.lista = {}
-			listaElem.lista.titulo = fields.tituloLista
+			listaElem.lista.titulo = fields.titulo
 			listaElem.lista.itens = []
 
 			var i = 1;
@@ -361,7 +361,7 @@ router.put('/comentario', function(req, res) {
 			console.log('Fields: \n' + JSON.stringify(fields))
 			axios.put("http://localhost:3000/api/pubs/comentario", fields)
 				.then(dados =>{
-					res.render("respostaPub", {pub : dados.data})
+					res.render("comentario", {comentario : dados.data})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT: ", error)
