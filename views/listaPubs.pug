@@ -3,7 +3,7 @@ extends layout
 block content
     .w3-container
         .w3-card-4
-            header.w3-container.w3-blue
+            header.w3-container(style='background-color: blue; color: white;')
                 h1 Publicações
             .w3-container(style='margin-left:40px; margin-top:15px;')
                 h3 Procurar Publicação
@@ -13,19 +13,19 @@ block content
                             td(style='width:20%')
                                 input#fileID.w3-input.w3-border(placeholder='ID da publicação')
                             td
-                                button#fid.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação 
+                                button#fid.w3-button( style='background-color: blue; color: white; margin-left:25px;') Procurar publicação 
  
                         tr
                             td(style='width:20%')
                                 input#fileData.w3-input.w3-border(placeholder='Data mínima: yyyy-mm-dd')
                             td
-                                button#fdata.w3-button.w3-blue( style='margin-left:25px;') Procurar publicação
+                                button#fdata.w3-button(style='background-color: blue; color: white; margin-left:25px;') Procurar publicação
             
             .w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
                 each p in pubs
                     publicacao.w3-container(id=p._id)
                         .w3-card-4
-                            header.w3-container.w3-blue
+                            header.w3-container(style='background-color: blue; color: white;')
                                 h1=p.utilizador.nome
                             .w3-container
                                 if p.tituloPub
@@ -72,15 +72,15 @@ block content
                                             h4 Descrição
                                             p=e.evento.descricao
                                         br
-                                input.pubLike.w3-btn.w3-blue.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gostos" value='Gostos (' + p.gostos.length + ')' name=p.gostos.length style='margin-left:10px;')
+                                input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gostos" value='Gostos (' + p.gostos.length + ')' name=p.gostos.length style='background-color: blue; color: white; margin-left:10px; margin-top:15px;')
                                 br
                                 br
                         .w3-card-4(style='margin-top:5px;')
-                            header.w3-container.w3-grey
-                                h6 
+                            header.w3-container(style='background-color: blue; color: white;')
+                                h6
                                     b Comentários
                             .w3-container
-                                form.w3.container.w3-bottombar.w3-border-black(id=p._id+"novoComent")
+                                form.w3.container.w3-bottombar.w3-border-dark-grey(id=p._id+"novoComent")
                                     br
                                     table(style='width:100%')
                                         tr
@@ -90,7 +90,7 @@ block content
                                             td(style='width:80%')
                                                 input#comentario.w3-input.w3-border.w3-light-grey(type='text' placeholder='Escreve um comentário' style='margin-top:15px;' required)
                                             td
-                                                input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:20px; margin-top:15px;')
+                                                input.w3-btn(type='submit' value='Publicar' style='background-color: blue; color: white; margin-left:20px; margin-top:15px;')
                                     br
                                 comentarios
                                     if p.comentarios.length
@@ -98,12 +98,12 @@ block content
                                             .w3-container.w3-border.w3-round-xxlarge.w3-light-grey(style='margin-top:20px;')
                                                 .w3-container(style='margin-bottom:10px;')    
                                                     p
-                                                        b(style='margin-right:20px; color: rgba(0, 0, 130, 0.9);')= c.utilizador.nome
+                                                        b(style='margin-right:20px; color: rgba(0, 0, 160, 0.9);')= c.utilizador.nome
                                                         | #{c.texto}
-                                                    input.commentLike.w3-btn.w3-blue.w3-small.w3-round-xxlarge(type='button' id=c._id value='Gostos (' + c.gostos.length + ')' name=c.gostos.length style='margin-left:5px;')
+                                                    input.commentLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=c._id value='Gostos (' + c.gostos.length + ')' name=c.gostos.length style='background-color: blue; color: white; margin-left:5px;')
                                     else 
                                         .w3-container(id=p._id+"NoComments" style='margin-top:20px;')
-                                            b Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
+                                            b(style='color:dark-grey;') Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
                                 br
                         br
                         br
