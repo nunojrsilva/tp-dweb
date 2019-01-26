@@ -9,9 +9,9 @@ block content
                 form(action="/login" method = "POST")
                     label(for="username")
                         b Username
-                    input.w3-input(name="username" type="text" placeholder = "email")
+                    input.w3-input(name="username" type="text" placeholder = "Username" required)
                     label(for="password")
                         b Password
-                    input.w3-input(name="password" type="password" placeholder = "password")
+                    input.w3-input(name="password" type="password" placeholder = "Password" required)
                     .w3-container
                         input.w3-button.w3-black(type = "submit" value = "login")
