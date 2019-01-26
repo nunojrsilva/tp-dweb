@@ -8,11 +8,18 @@ var randomstring = require('randomstring')
 
 
 
+var passport = require('passport')
+
+var jwt = require('jsonwebtoken')
+
 var User = require('../../controllers/users')
 
 
-router.get('/', (req,res) => {
-    console.log("Entrou no get de /users")
+router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
+    console.log("Entrou no get de /users, é protegido")
+    console.log(req.headers)
+    console.log(req.headers['authorization'])
+    //console.log(req.user)
     User.listar()
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na listagem de utilizadores' + erro))
@@ -38,38 +45,61 @@ router.get('/verFotoPerfil', (req, res)=>{
    
 })
 
-router.get('/:uid', (req,res) => {
+router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) => {
     User.consultar(req.params.uid)
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na consulta do Utilizador ' + erro + req.params.uid))
 })
+//                                 CRIACAO DE UTILIZADOR 
+// Usando passport para autenticacao, é o passport que insere o utilizador , ver auth.js
 
-router.post('/', (req,res) => {
-    var utilizador = req.body
-    console.log('Entrei no post de users', utilizador)
-    var fotoPerfil = {}
-    fotoPerfil.idAtual = null
-    fotoPerfil.fotos = []
+router.post('/login', async (req,res,next) => {
+    console.log("No login da api")
+    passport.authenticate('login', async (err, user, info) => {
+        try {
+            if (err || !user) {
+                if (err) return next(err)
+                else return new Error('Utilizador inexistente')
+            }
+            req.login(user, {session : false }, async (error) => {
+                console.log("login com sucesso na api")
+                if (error) return next.error
+                var myuser = {_id : user._id, username : user.username};
 
-    var fotoDefault = {}
-    fotoDefault.nome = "default.jpeg"
-    fotoDefault.nomeGuardado = fotoDefault.nome
+                var token = jwt.sign({
+                    user : myuser}, 'dweb2018');
+                
+                res.send({token})
 
-    fotoPerfil.fotos.push(fotoDefault)
+                })
+            }
+        catch (error) {
+                return next(error)
+        }
+    })(req,res,next);
+})
 
-    utilizador.fotoPerfil = fotoPerfil
-    
-    User.inserir(utilizador)
-    .then(dados => {
-        console.log('Entrei no then do post de users')
-        User.atualizarFotoPerfil(dados._id, dados.fotoPerfil.fotos[0]._id)
-        .then(dados2 =>{
-            fs.mkdirSync(__dirname + '/../../uploaded/'+ utilizador.username+'/');
-            res.jsonp(dados2)
-        })
-        .catch(erroAtualizaFotoPerfil => res.status(500).send("ERRO NA ATUALIZAÇÃO DA FOTO DE PERFIL: " + erroAtualizaFotoPerfil))
-    })    
-    .catch(erro => res.status(500).send('Erro na inserção de utilizador' + erro))
+router.post('/', function(req, res, next) {
+    console.log("Entrei no post de /api/users")
+    passport.authenticate('registo', function(err, user, info){
+        if (err) { return next(err); }
+        if (!user) { return res.jsonp({erro: "Utilizador não existe"}); }
+        console.log("Body no post de /api/users " + JSON.stringify(req.body))
+        console.log("Passport já atuou")
+        console.log("User : " + user)
+        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
+        //return res.jsonp(user)
+
+        User.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
+            .then(dados2 =>{
+                return res.jsonp(dados2)
+            })
+            .catch(e =>
+                { 
+                console.log("Erro ao atualizar foto" + e)
+                return res.jsonp(e)
+            })
+    })(req, res, next);
 })
 
 router.post('/novaFotoPerfil', (req, res) => {
@@ -140,5 +170,7 @@ async function parseFicheiros(fields, files){
         })
     })        
 }
+
+
 
 module.exports = router;

@@ -12,9 +12,9 @@ var randomstring = require('randomstring')
 
 router.get('/', function(req, res) {
 	if(req.query.username && req.query.publico){
-		axios.get('http://localhost:3000/api/pubs?username=' + req.query.username + '&publico=' + req.query.publico)
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username + '&publico=' + req.query.publico)
         .then(resposta =>{
-			removeNomeGuardado(resposta.data)
+			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
@@ -23,9 +23,9 @@ router.get('/', function(req, res) {
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else if(req.query.username){
-		axios.get('http://localhost:3000/api/pubs?username=' + req.query.username)
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username)
         .then(resposta =>{
-			removeNomeGuardado(resposta.data)
+			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
@@ -34,9 +34,9 @@ router.get('/', function(req, res) {
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
     } else if(req.query.hashtag){
-		axios.get('http://localhost:3000/api/pubs?hashtag=' + req.query.hashtag)
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?hashtag=' + req.query.hashtag)
 		.then(resposta =>{
-			removeNomeGuardado(resposta.data)
+			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
@@ -45,9 +45,9 @@ router.get('/', function(req, res) {
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else if(req.query.data){
-		axios.get('http://localhost:3000/api/pubs?data=' + req.query.data)
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?data=' + req.query.data)
 		.then(resposta =>{
-			removeNomeGuardado(resposta.data)
+			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
@@ -56,15 +56,17 @@ router.get('/', function(req, res) {
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else{
-		axios.get('http://localhost:3000/api/pubs')
+		axiosGet(req, res, 'http://localhost:3000/api/pubs')
 		.then(resposta =>{
-			removeNomeGuardado(resposta.data)
+			console.log(resposta)
+			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
-			console.log('Erro ao carregar da BD.')
-			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+			console.log('Erro ao carregar da BD.' + erro)
+			//res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+			res.status(500).send(erro)
 		})
 	}
 });
@@ -144,15 +146,15 @@ router.post('/opiniao', (req, res) => {
 				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(res, publicacao, fields)
+					axiosPost(req, res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
-				axiosPost(res, publicacao, fields)		
+				axiosPost(req, res, publicacao, fields)		
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA OPINIAO"})
@@ -197,16 +199,16 @@ router.post('/evento', (req, res) => {
 				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(res, publicacao, fields)
+					axiosPost(req, res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 
 			}
 			else
-				axiosPost(res, publicacao, fields)
+				axiosPost(req, res, publicacao, fields)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA EVENTO"})
@@ -233,15 +235,15 @@ router.post('/ficheiros', (req, res) => {
 				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(res, publicacao, fields)
+					axiosPost(req, res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
-				axiosPost(res, publicacao, fields)
+				axiosPost(req, res, publicacao, fields)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -284,15 +286,15 @@ router.post("/narracao", (req,res) => {
 				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(res, publicacao, fields)
+					axiosPost(req, res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
-				axiosPost(res, publicacao, fields)			
+				axiosPost(req, res, publicacao, fields)			
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -336,15 +338,15 @@ router.post("/lista", (req,res) => {
 				parseFicheiros(fields, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(res, publicacao, fields)
+					axiosPost(req, res, publicacao, fields)
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
 				})
 			}
 			else
-				axiosPost(res, publicacao, fields)
+				axiosPost(req, res, publicacao, fields)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -359,17 +361,17 @@ router.put('/comentario', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/comentario", fields)
+			axiosPut(req, res, "http://localhost:3000/api/pubs/comentario", fields)
 				.then(dados =>{
-					res.render("comentario", {comentario : dados.data})
+					res.render("comentario", {comentario : dados})
 				})
 				.catch(error =>{
-					console.log("ERRO NO AXIOS PUT: ", error)
-					res.status(500).send("ERRO NO AXIOS PUT", error)
+					console.log("ERRO NO AXIOS PUT: " + error)
+					res.status(500).send("ERRO NO AXIOS PUT" + error)
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM DA FICHEIROS" + erro)
 		}
 	})
 });
@@ -381,9 +383,9 @@ router.put('/pubGostos', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
+			axiosPut(req, res, "http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
 				.then(dados =>{
-					res.send({size : dados.data})
+					res.send({size : dados})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
@@ -391,7 +393,7 @@ router.put('/pubGostos', function(req, res) {
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM" + erro)
 		}
 	})
 });
@@ -403,9 +405,9 @@ router.put('/comentGostos', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
+			axiosPut(req, res, "http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
 				.then(dados =>{
-					res.send({size : dados.data})
+					res.send({size : dados})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
@@ -413,7 +415,7 @@ router.put('/comentGostos', function(req, res) {
 				})
 		}
 		else{
-			res.status(500).send("ERRO AO FAZER PARSE DO FORM", erro)
+			res.status(500).send("ERRO AO FAZER PARSE DO FORM" + erro)
 		}
 	})
 });
@@ -476,19 +478,74 @@ async function parseFicheiros(fields, files, data){
     })
 }
 
-function axiosPost (res, publicacao, fields){
+
+
+function axiosPut (req, res, url, data){
+	return new Promise((info, erroAxios)=> {
+		axios({
+			method: 'put', //you can set what request you want to be
+			url: url,
+			data: data,
+			headers: {
+				Authorization: 'Bearer ' + req.session.token
+			}
+		})
+		.then(dados =>{
+			info(dados.data)
+		})
+		.catch(error =>{
+			console.log("ERRO NO AXIOS PUT " +  error)
+			erroAxios(error)
+		})
+	})
+}
+
+function axiosPost (req, res, publicacao, fields){
 
 	console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
 	console.log(JSON.stringify(publicacao))
 	console.log("--------------------------------------------------------------------------------")
 
-	axios.post("http://localhost:3000/api/pubs/pub", {pub: publicacao, username: fields.username})
+	axios({
+		method: 'post', //you can set what request you want to be
+		url: 'http://localhost:3000/api/pubs/pub',
+		data:{
+			pub: publicacao,
+			username: fields.username
+		},
+		headers: {
+			Authorization: 'Bearer ' + req.session.token
+		}
+  	})
 	.then(dados =>{
 		res.render("respostaPub", {pub : dados.data})
 	})
 	.catch(error =>{
-		console.log("ERRO NA INSERÇÃO DA BASE DE DADOS: ", error)
+		console.log("ERRO AXIOS POST: " + error)
 	})
+}
+
+function axiosGet (req, res, url){
+	console.log("Token no axios get " + req.session.token )
+
+	return new Promise((dados, erroAxios) =>{
+
+		axios({
+			method: 'get', //you can set what request you want to be
+			url: url,
+			headers: {
+				Authorization: 'Bearer ' + req.session.token
+			}
+		})
+		.then(info =>{
+			dados(info.data)
+		})
+		.catch(error =>{
+			console.log("ERRO AXIOS GET: " + error)
+			erroAxios(error)
+		})
+	})
+
 }
 
 async function removeNomeGuardado(pubs){

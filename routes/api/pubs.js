@@ -1,16 +1,17 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs')
-var formidable = require('formidable')
-var isImage = require('is-image')
+var passport = require('passport')
 
 
 var Pubs = require('../../controllers/pubs')
 var User = require('../../controllers/users')
 
 
-router.get('/', (req, res) => {
+router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
     console.log("Entrou no get de /pubs")
+
+    console.log(req.user)
+
 	if(req.query.username && req.query.publico){
         User.consultarUsername(req.query.username)
             .then(uid => {
@@ -37,9 +38,16 @@ router.get('/', (req, res) => {
 			.then(dados => res.jsonp(dados))
 			.catch(erro => res.status(500).send('Erro na listagem por data: ' + erro))
 	} else{
-        Pubs.listar()
+        console.log("CHEGUEI AQUI")
+        try{
+            Pubs.listar()
             .then(dados => res.jsonp(dados))
-            .catch(erro => res.status(500).send('Erro na listagem de publicações'))
+            .catch(erro => res.send(erro))
+        }
+        catch(e){
+            console.log(e)
+            res.status(500).send('Erro na listagem de publicações' + e)
+        }
     }
 });
 
@@ -47,9 +55,10 @@ router.get('/', (req, res) => {
 ///////////////////POSTS/////////////////////////////////
 /////////////////////////////////////////////////////////
 
-router.post('/pub', (req, res) =>{
+router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)
+
 
     User.consultarUsername(req.body.username)
     .then(username =>{
@@ -74,7 +83,7 @@ router.post('/pub', (req, res) =>{
 
 })
 
-router.put('/comentario', (req, res) =>{
+router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/comentario")
     console.dir(req.body)
     User.consultarUsername(req.body.username)
@@ -107,7 +116,7 @@ router.put('/comentario', (req, res) =>{
         })
 })
 
-router.put('/pubGostos', (req, res) =>{
+router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/pubGostos")
     console.dir(req.body)
     User.consultarUsername("ricardo15")
@@ -169,7 +178,7 @@ router.put('/pubGostos', (req, res) =>{
     })
 })
 
-router.put('/comentGostos', (req, res) =>{
+router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/comentGostos")
     console.dir(req.body)
     User.consultarUsername("ricardo15")
@@ -235,7 +244,7 @@ router.put('/comentGostos', (req, res) =>{
 ///////////////////DELETES///////////////////////////////
 /////////////////////////////////////////////////////////
 
-router.delete('/:pid', (req,res) => {
+router.delete('/:pid', passport.authenticate('jwt', {session : false}), (req,res) => {
     Pubs.remover(req.params.pid)
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro ao apagar publicação ' + req.params.pid))

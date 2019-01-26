@@ -4,14 +4,14 @@ block content
     .w3-container
         h1 Página de Login
     .w3-container(align="center")
-        .w3-card-4.w3-dark-grey(style= "width:50%")
+        .w3-card-4.w3-dark-grey(style= "width:20%")
             .w3-container
                 form(action="/login" method = "POST")
                     label(for="username")
                         b Username
-                    input.w3-input(name="username" type="text" placeholder = "email")
+                    input.w3-input(name="username" type="text" placeholder = "Username" required)
                     label(for="password")
                         b Password
-                    input.w3-input(name="password" type="password" placeholder = "password")
+                    input.w3-input(name="password" type="password" placeholder = "Password" required)
                     .w3-container
                         input.w3-button.w3-black(type = "submit" value = "login")
