@@ -16,11 +16,9 @@ $(()=>{
             success: data =>{
                 console.dir(data.size)
                 $('#' + this.id).val('Gostos (' + (data.size) + ')')
-                alert('Gosto adicionado');
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
-                $('#' + this.id).trigger("reset");
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -28,13 +26,15 @@ $(()=>{
 			processData: false
         });
     });
+    
 
-    $("input.commentLike:button").click(function() {
+    $('comentarios').on("click", 'input.commentLike:button', e => {
 
-        alert("ID do comentário: " + this.id);
+        comentID = e.target.id
+        alert("ID do comentário: " +  comentID);
 
         var formData = new FormData();
-        formData.append('comentID', this.id)
+        formData.append('comentID', comentID)
         
         $.ajax({
             url: '/pubs/comentGostos',
@@ -43,12 +43,10 @@ $(()=>{
             data: formData,
             success: data =>{
                 console.dir(data.size)
-                $('#' + this.id).val('Gostos (' + (data.size) + ')')
-                alert('Gosto adicionado');
+                $('#' + comentID).val('Gostos (' + (data.size) + ')')
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
-                $('#' + this.id).trigger("reset");
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -60,7 +58,8 @@ $(()=>{
     $("form").submit(function(e) {
 		e.preventDefault();        
 
-        var pubID = $('#' + this.id).attr('name')
+        var pubID = $(this).closest('publicacao').attr('id')
+        alert("ID da publicação: " + pubID);
 
         var formData = new FormData();
 		formData.append('pubID', pubID)
@@ -73,8 +72,11 @@ $(()=>{
             contentType: "application/json",
             data: formData,
             success: data =>{
-                alert('Comentário enviado');
+                console.dir(data)
                 $('#' + this.id).trigger("reset");
+                $('comentarios').append(data)
+                $("#"+pubID+"NoComments").remove()
+                alert('Comentário enviado');
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))

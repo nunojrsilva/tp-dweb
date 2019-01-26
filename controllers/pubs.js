@@ -88,27 +88,57 @@ module.exports.remover = pid => {
 module.exports.inserirComentario = (pub_id, comentario) => {
 	console.log("Pub : " + pub_id)
     console.log("Comentario : " + comentario)
-    return Pub.findOneAndUpdate(
-        {_id : pub_id}, 
-        {"$push": { comentarios: comentario } }, 
-        {new : true})
+	return Pub
+			.findOneAndUpdate(
+				{_id : pub_id}, 
+				{"$push": { comentarios: comentario } },
+				{"fields": { "comentarios":1}, new : true})
+			.populate(pop_config2)			
+}
+
+module.exports.contaPubGostos = (pub_id) => {
+	var pID = mongoose.Types.ObjectId(pub_id)
+    console.log("Pub : " + pID)
+	return Pub
+		.aggregate([
+			{ $match: {_id: pID}},
+			{ $project: {gostos: {$size: '$gostos'}}}])	
+}
+
+module.exports.contaComentGostos = (coment_id) => {
+	var cID = mongoose.Types.ObjectId(coment_id)
+    console.log("Coment : " + cID)
+	return Pub
+		.aggregate([
+			{ $match: {"comentarios._id": cID}},
+			{ $unwind: '$comentarios'},
+			{ $match: {"comentarios._id": cID}},
+			{ $project: {gostos: {$size: '$comentarios.gostos'}}}])	
 }
 
 module.exports.consultarUserPubGosto = (pub_id, user_id) => {
-	console.log("Pub : " + pub_id)
-    console.log("User : " + user_id)
+	var pID = mongoose.Types.ObjectId(pub_id)
+	var uID = mongoose.Types.ObjectId(user_id)
+	console.log("Pub : " + pID)
+    console.log("User : " + uID)
     return Pub
-		.find({_id: pub_id, gostos: { "$in" : [user_id]}})
-		.count()
+		.aggregate([
+			{ $match: {_id: pID}},
+			{ $match: {"gostos": { "$in" : [uID]}}}])
 		.exec()
 }
 
 module.exports.consultarUserComentGosto = (coment_id, user_id) => {
-	console.log("Pub : " + coment_id)
-    console.log("User : " + user_id)
-    return Pub
-		.find({"comentarios._id": coment_id, "comentarios.gostos": { "$in" : [user_id]}})
-		.count()
+	var cID = mongoose.Types.ObjectId(coment_id)
+	var uID = mongoose.Types.ObjectId(user_id)
+	console.log("Coment : " + cID)
+	console.log("User : " + uID)
+	return Pub
+		.aggregate([
+			{ $match: {"comentarios._id": cID}},
+			{ $unwind: '$comentarios'},
+			{ $match: {"comentarios._id": cID}},
+			{ $match: {"comentarios.gostos": { "$in" : [uID]}}}])
 		.exec()
 }
 
@@ -124,17 +154,19 @@ module.exports.pubIncGostos = (pub_id, user_id) => {
 module.exports.pubDecGostos = (pub_id, user_id) => {
 	console.log("Pub : " + pub_id)
     console.log("User : " + user_id)
-    return Pub.findOneAndUpdate(
-		{_id : pub_id}, 
-        {"$pull": { gostos: { $in: [user_id] } } })
+	return Pub
+		.findOneAndUpdate(
+			{_id : pub_id}, 
+			{"$pull": { gostos: { $in: [user_id] } } })
 }
 
 module.exports.comentIncGostos = (coment_id, user_id) => {
 	console.log("No controller comentInc : " + coment_id)
-    return Pub.findOneAndUpdate(
-		{"comentarios._id": coment_id}, 
-        {"$push": { "comentarios.$.gostos": user_id } }, 
-        {new : true})
+	return Pub
+		.findOneAndUpdate(
+			{"comentarios._id": coment_id}, 
+			{"$push": { "comentarios.$.gostos": user_id } }, 
+			{new : true})
 }
 
 module.exports.comentDecGostos = (coment_id, user_id) => {
