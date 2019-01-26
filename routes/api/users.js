@@ -14,8 +14,6 @@ var jwt = require('jsonwebtoken')
 
 var User = require('../../controllers/users')
 
-var UserModel = require('../../models/users')
-
 
 router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
     console.log("Entrou no get de /users, é protegido")
@@ -54,9 +52,6 @@ router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) =
 })
 //                                 CRIACAO DE UTILIZADOR 
 // Usando passport para autenticacao, é o passport que insere o utilizador , ver auth.js
-
-
-
 
 router.post('/login', async (req,res,next) => {
     console.log("No login da api")

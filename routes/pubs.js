@@ -361,9 +361,9 @@ router.put('/comentario', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/comentario", fields)
+			axiosPut(req, res, "http://localhost:3000/api/pubs/comentario", fields)
 				.then(dados =>{
-					res.render("comentario", {comentario : dados.data})
+					res.render("comentario", {comentario : dados})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT: " + error)
@@ -383,9 +383,9 @@ router.put('/pubGostos', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
+			axiosPut(req, res, "http://localhost:3000/api/pubs/pubGostos", {pubID: fields.pubID})
 				.then(dados =>{
-					res.send({size : dados.data})
+					res.send({size : dados})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
@@ -405,9 +405,9 @@ router.put('/comentGostos', function(req, res) {
 		if(!erro){
             console.log("Passei o parse")         
 			console.log('Fields: \n' + JSON.stringify(fields))
-			axios.put("http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
+			axiosPut(req, res, "http://localhost:3000/api/pubs/comentGostos", {comentID: fields.comentID})
 				.then(dados =>{
-					res.send({size : dados.data})
+					res.send({size : dados})
 				})
 				.catch(error =>{
 					console.log("ERRO NO AXIOS PUT GOSTOS: ", error)
@@ -480,6 +480,26 @@ async function parseFicheiros(fields, files, data){
 
 
 
+function axiosPut (req, res, url, data){
+	return new Promise((info, erroAxios)=> {
+		axios({
+			method: 'put', //you can set what request you want to be
+			url: url,
+			data: data,
+			headers: {
+				Authorization: 'Bearer ' + req.session.token
+			}
+		})
+		.then(dados =>{
+			info(dados.data)
+		})
+		.catch(error =>{
+			console.log("ERRO NO AXIOS PUT " +  error)
+			erroAxios(error)
+		})
+	})
+}
+
 function axiosPost (req, res, publicacao, fields){
 
 	console.log("-----------------------------------PUBLICAÇÃO-----------------------------------")
@@ -501,7 +521,7 @@ function axiosPost (req, res, publicacao, fields){
 		res.render("respostaPub", {pub : dados.data})
 	})
 	.catch(error =>{
-		console.log("ERRO NA INSERÇÃO DA BASE DE DADOS: ", error)
+		console.log("ERRO AXIOS POST: " + error)
 	})
 }
 
@@ -521,7 +541,7 @@ function axiosGet (req, res, url){
 			dados(info.data)
 		})
 		.catch(error =>{
-			console.log("ERRO AXIOS GET: ", error)
+			console.log("ERRO AXIOS GET: " + error)
 			erroAxios(error)
 		})
 	})

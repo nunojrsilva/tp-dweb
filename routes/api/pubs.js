@@ -1,8 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var fs = require('fs')
-var formidable = require('formidable')
-var isImage = require('is-image')
 var passport = require('passport')
 
 
