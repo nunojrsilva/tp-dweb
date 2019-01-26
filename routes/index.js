@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport')
-
+var querystring = require('querystring')
 var axios = require('axios')
 
 
@@ -79,5 +79,43 @@ router.post("/registo", (req,res) => {
     })
 })
 
+router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+  console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+  
+  axios({
+    method: 'get', 
+    url: "http://localhost:3000/api/users/FotosPerfil",
+    headers: {
+      Authorization: 'Bearer ' + req.session.token
+    }
+  })
+  .then(info =>{
+    res.render('alterarFotoPerfil', {fotos: info.data, userid: req.user._id})
+  })
+  .catch(error =>{
+    console.log("ERRO AXIOS GET: " + error)
+    res.status(500).send("ERRO AO PEDIR AS FOTOS DE PERFIL PARA ATUALIZAR" + error)
+  })
 
+})
+router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+  console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+  
+  axios({
+    method: 'get', 
+    url: "http://localhost:3000/api/users/FotosPerfil",
+    headers: {
+      Authorization: 'Bearer ' + req.session.token
+    }
+  })
+  .then(info =>{
+    res.render('fotosPerfil', {fotos: info.data, userid: req.user._id})
+  })
+  .catch(error =>{
+    console.log("ERRO AXIOS GET: " + error)
+    res.status(500).send("ERRO AO PEDIR AS FOTOS DE DO UTILIZADOR" + error)
+  })
+
+ 
+})
 module.exports = router;

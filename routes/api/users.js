@@ -25,23 +25,27 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
         .catch(erro => res.status(500).send('Erro na listagem de utilizadores' + erro))
 })
 
-/*  ATENÇÃO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
-    ESTE POST VAI FAZER UM RES.RENDER MAS SE FOR PARA FAZER UM /USERS PASSA A JSONP 
-    E O RES.RENDER PASSA PARA ESSE FICHEIRO
-    */
-router.get('/verFotoPerfil', (req, res)=>{
-    console.log("Entrou no get de /users/verFotoPerfil")
-    User.consultarUsername(req.query.username)
-    .then(id =>{
-        User.obterFotosPerfil(id._id)
-        .then(fotosArray => {
-            var fotosObj = fotosArray[0]
-            fotosObj.userid = id._id
-            res.render('fotosPerfil', {fotos: fotosObj})
-        })
-        .catch(erroFotos => res.status(500).send('Erro na listagem de fotos de um utilizador' + erroFotos))
+router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+    console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+
+    User.obterFotosPerfil(req.user._id)
+    .then(fotosArray => {
+        var fotosObj = fotosArray[0]
+        res.jsonp(fotosObj)
     })
-    .catch(erroUsername => res.status(500).send('Erro na consulta de utilizadores' + erroUsername))
+    .catch(erroFotos => res.status(500).send('Erro na listagem de fotos de um utilizador' + erroFotos))
+   
+})
+
+router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+    console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+
+    User.atualizarFotoPerfil(req.user._id, req.body.fotoId)
+    .then(user => {
+        console.log(JSON.stringify(user))
+        res.jsonp(user)
+    })
+    .catch(erroFoto => res.status(500).send('ERRO AO TENTAR ATUALIZAR A FOTO DE PERFIL ' + erroFoto))
    
 })
 
