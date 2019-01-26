@@ -13,8 +13,9 @@ var UserModel = require('../../models/users')
 
 router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
     console.log("Entrou no get de /users, é protegido")
-    console.log(req.session)
-    console.log(req.user)
+    console.log(req.headers)
+    console.log(req.headers['authorization'])
+    //console.log(req.user)
     User.listar()
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na listagem de utilizadores'))
@@ -39,18 +40,6 @@ router.post('/', function(req, res, next) {
       return res.jsonp(user)
       })(req, res, next);
 })
-
-
-// app.get('/login', function(req, res, next) {
-//     passport.authenticate('local', function(err, user, info) {
-//       if (err) { return next(err); }
-//       if (!user) { return res.redirect('/login'); }
-//       req.logIn(user, function(err) {
-//         if (err) { return next(err); }
-//         return res.redirect('/users/' + user.username);
-//       });
-//     })(req, res, next);
-//   });
 
 router.post('/login', async (req,res,next) => {
     console.log("No login da api")

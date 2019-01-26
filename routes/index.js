@@ -5,6 +5,7 @@ var passport = require('passport')
 var axios = require('axios')
 
 
+
 router.get('/', (req,res) => {
   res.render("homepage")
 })
@@ -23,17 +24,40 @@ router.get('/registo', (req,res) => {
 
 })
 
+router.get('/users',  (req,res) => {
+  
+  console.log("Token é : " + req.session.token )
+  
+  axios({
+    method: 'get', //you can set what request you want to be
+    url: 'http://localhost:3000/api/users',
+    headers: {
+      Authorization: 'Bearer ' + req.session.token
+    }
+  })
+  .then(dados => res.jsonp(dados.data))
+  .catch(e => {
+          console.log("erro no get de /users : " + e)
+          res.send();
+
+  })
+})
+
 
 router.post("/login", (req,res) => {
   console.log("No login da pagina")
   var username = req.body.username
   var password = req.body.password
-  //axios.post('/login', { username, password }, { withCredentials: true })
-  axios.post("http://localhost:3000/api/users/login", {username, password}, { withCredentials: true })
+  axios.post("http://localhost:3000/api/users/login", {username, password})
     .then(dados => {
-      console.log("Token: "+ JSON.stringify(dados.data))
+      console.log("Token: "+ JSON.stringify(dados.data.token))
+      // Guardar o token
       req.session.token = dados.data.token
-      res.redirect("/api/users")
+      res.redirect("/")
+    })
+    .catch(e => {
+      console.log("Erro no /login" + e)
+      res.status(500).send()
     })
 })
 
@@ -51,34 +75,5 @@ router.post("/registo", (req,res) => {
     })
 })
 
-
-
-// router.post('/login', passport.authenticate('local', {
-//   successRedirect: '/protegida',
-//   failureRedirect: '/login'
-// }))
-
-//Proteger com middleware
-
-// function verificaAutenticacao(req, res, next) {
-//   if (req.isAuthenticated()) next()
-//   else res.redirect('/login')
-// }
-
-// router.get('/protegida', verificaAutenticacao, (req,res) => {
-//   res.send("Atingiste a área protegida")
-// })
-
-
-// router.get('/users', verificaAutenticacao, (req,res) => {
-//   axios.get("http://localhost:5011/users")
-//     .then(dados => {
-//       res.render('users', {usersList : dados.data})
-//     }
-//   )
-//     .catch(erro => {
-//       res.render('error', {error: erro})
-//     })
-// })
 
 module.exports = router;

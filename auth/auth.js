@@ -33,10 +33,6 @@ passport.use('registo', new localStrategy({
         var nome = req.body.nome
         var user = await UserModel.create({nome, username, password})
         return done(null, user)
-
-        
-
-
     }   
 
     catch (error) {
@@ -89,14 +85,24 @@ var JWTStrategy = require('passport-jwt').Strategy
 var ExtractJWT = require('passport-jwt').ExtractJwt
 
 var ExtractFromSession = function (req) {
+    console.log("Usar extract from session")
     var token = null
     if (req && req.session) token = req.session.token
     return token
 }
 
+var ExtractFromHeader = function (req) {
+    console.log("Usar extract from header")
+    console.log("Header = " + req.headers['authorization'])
+    var token = null
+    if (req && req.headers['authorization']) token = req.headers['authorization'].split(" ")[1]
+    console.log("Token recolhido no header :" + token)
+    return token
+}
+
 passport.use('jwt', new JWTStrategy({
     secretOrKey : "dweb2018",
-    jwtFromRequest : ExtractJWT.fromExtractors([ExtractFromSession])
+    jwtFromRequest : ExtractJWT.fromExtractors([ExtractFromSession, ExtractFromHeader])
 }, async (token, done) => {
     try {
         return done(null, token.user)
