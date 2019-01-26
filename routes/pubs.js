@@ -352,7 +352,6 @@ router.post("/lista", (req,res) => {
     })
 })
 
-
 router.put('/comentario', function(req, res) {
 	console.log('Entrei no put de comentários')
     var form = new formidable.IncomingForm()
@@ -439,7 +438,7 @@ async function parseFicheiros(fields, files, data){
 			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/' + dataCalendario)
 			
-			salt = randomstring.generate(68)
+			salt = randomstring.generate(64)
 
 			ficheiro = {}
 			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + salt + dataCalendario).digest('hex')
