@@ -157,7 +157,8 @@ module.exports.pubDecGostos = (pub_id, user_id) => {
 	return Pub
 		.findOneAndUpdate(
 			{_id : pub_id}, 
-			{"$pull": { gostos: { $in: [user_id] } } })
+			{"$pull": { gostos: { $in: [user_id] } } },
+			{new: true})
 }
 
 module.exports.comentIncGostos = (coment_id, user_id) => {
@@ -173,7 +174,8 @@ module.exports.comentDecGostos = (coment_id, user_id) => {
 	console.log("No controller comentDec : " + coment_id)
     return Pub.findOneAndUpdate(
 		{"comentarios._id": coment_id}, 
-        {"$pull": { "comentarios.$.gostos": { $in: [user_id] } } })
+		{"$pull": { "comentarios.$.gostos": { $in: [user_id] } }},
+		{new: true})
 }
 
 module.exports.consultarFicheiro = (idPub, idFich) => {

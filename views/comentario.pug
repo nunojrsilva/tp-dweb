@@ -1,7 +1,5 @@
-.w3-container.w3-border-bottom
-    br
-    b= comentario.utilizador.nome
-    p= "Texto: " + comentario.texto
-    input.commentLike.w3-btn.w3-blue(type='button' id=comentario._id value='Gostos (' + comentario.gostos.length + ')' name=comentario.gostos.length style='margin-left:10px;')
-    br
-    br
+.w3-container.w3-border.w3-round-xxlarge.w3-light-grey(style='margin-top:20px;')
+    .w3-container(style='margin-top:10px; margin-bottom:10px;')    
+        b= comentario.utilizador.nome
+        p= "Texto: " + comentario.texto
+        input.commentLike.w3-btn.w3-blue.w3-small.w3-round-xxlarge(type='button' id=comentario._id value='Gostos (' + comentario.gostos.length + ')' name=comentario.gostos.length style='margin-left:5px;')
