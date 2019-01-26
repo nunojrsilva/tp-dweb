@@ -2,6 +2,11 @@ var express = require('express');
 var router = express.Router();
 let fs = require('fs');
 var hash = require('crypto').createHash;
+var formidable = require('formidable')
+var path = require('path');
+var randomstring = require('randomstring')
+
+
 
 var User = require('../../controllers/users')
 
@@ -74,13 +79,17 @@ router.post('/novaFotoPerfil', (req, res) => {
             if(Object.keys(files).length){
 				parseFicheiros(fields, files)
 				.then(objFoto => {
+                    console.log(JSON.stringify(objFoto))
                     User.inserirFotoPerfil(fields.uid, objFoto)
-                    .then(dados =>{console.log(JSON.stringify(dados))})
-                    .catch(erroGuardarFoto => res.status(500).send("ERRO AO TENTAR GUARDAR A FOTO DE PERFIL ", erroGuardarFoto))
+                    .then(dados =>{
+                        console.log(JSON.stringify(dados.fotoPerfil))
+                        res.jsonp(dados.fotoPerfil)
+                    })
+                    .catch(erroGuardarFoto => res.status(500).send("ERRO AO TENTAR GUARDAR A FOTO DE PERFIL " + erroGuardarFoto))
 				})
 				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO ", erro)
+					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
+					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO "+ erro)
 				})
 			}
         }
@@ -90,35 +99,44 @@ router.post('/novaFotoPerfil', (req, res) => {
 async function parseFicheiros(fields, files){
     
     return new Promise((objFoto, erro) =>{
-        var nome = files[fich].name
-        var parts = nome.split('.')
-        var extention = "." + parts[parts.length - 1]
-        
-        var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/fotos/')
-        
-        salt = randomstring.generate(64)
+        User.consultar(fields.uid)
+        .then(user =>{
+            var nome = files.file1.name
+            var parts = nome.split('.')
+            var extention = "." + parts[parts.length - 1]
+            
+            
+            var pasta = path.resolve(__dirname + '/../../uploaded/' + user.username +'/fotos/')
+            
+            salt = randomstring.generate(64)
 
-        var foto = {}
-        foto.nomeGuardado = hash('sha1').update(fields.username + nome + salt + dataCalendario).digest('hex')
-        foto.nome = nome
-        
-        var fnovo =  pasta + '/' + foto.nomeGuardado + extention
-        var fenviado = files[fich].path
+            var foto = {}
+            foto.nomeGuardado = hash('sha1').update(fields.uid + nome + salt).digest('hex')
+            foto.nome = nome
+            
+            var fnovo =  pasta + '/' + foto.nomeGuardado + extention
+            var fenviado = files.file1.path
 
-        //Verificação da existencia da pasta do dia (será que cria a do utilizador também?)
-        if(!fs.existsSync(pasta)){
-            fs.mkdirSync(pasta)
-        }
-
-        fs.rename(fenviado, fnovo, error => {
-            if(error){
-                console.log('errou no rename: ' + error) 
-                erro(error)
+            //Verificação da existencia da pasta do dia (será que cria a do utilizador também?)
+            if(!fs.existsSync(pasta)){
+                fs.mkdirSync(pasta)
             }
-            else
-                objFoto(foto)
+
+            fs.rename(fenviado, fnovo, error => {
+                if(error){
+                    console.log('errou no rename: ' + error) 
+                    erro(error)
+                }
+                else{
+                    objFoto(foto)
+                }
+            })
         })
-    })
+        .catch(error => {
+            console.log(JSON.stringify(error))
+            erro(erro)
+        })
+    })        
 }
 
 module.exports = router;

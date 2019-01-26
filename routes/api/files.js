@@ -74,28 +74,34 @@ router.get('/foto', (req,res) => {
 
 	User.obterFotoPerfil(req.query.userId, req.query.fotoId)
 	.then(dados =>{
-		
-		var foto = dados[0]
-		if (foto.fotoPerfil.fotos.nomeGuardado == "default.jpeg"){
-			var filepath = __dirname + "/../../uploaded/" + "default.jpeg"
-			var resolvedFilepath = path.resolve(filepath)
-		}
-		else{
-			var parts = foto.fotoPerfil.fotos.nome.split('.')
-			var extention = "." + parts[parts.length - 1]
-			var filepath = __dirname + "/../../uploaded/" + req.query.username + "/fotos/" + foto.fotoPerfil.fotos.nomeGuardado + extention
-			var resolvedFilepath = path.resolve(filepath)
-		}
-
-
-		fs.stat(resolvedFilepath, (erro, _) =>{
-			if(erro){
-				console.log("FICHEIRO QUE PRETENDE NÃO SE ENCONTRA DISPONÍVEL: ", erro)
-				res.status(500).send("FICHEIRO QUE PRETENDE NÃO SE ENCONTRA DISPONÍVEL: " + erro)
+		User.consultar(req.query.userId)
+		.then(user =>{
+			var foto = dados[0]
+			if (foto.fotoPerfil.fotos.nomeGuardado == "default.jpeg"){
+				var filepath = __dirname + "/../../uploaded/" + "default.jpeg"
+				var resolvedFilepath = path.resolve(filepath)
 			}
-			else
-				res.sendFile(resolvedFilepath)
-			
+			else{
+				var parts = foto.fotoPerfil.fotos.nome.split('.')
+				var extention = "." + parts[parts.length - 1]
+				var filepath = __dirname + "/../../uploaded/" + user.username + "/fotos/" + foto.fotoPerfil.fotos.nomeGuardado + extention
+				var resolvedFilepath = path.resolve(filepath)
+
+			}
+
+			fs.stat(resolvedFilepath, (erro, _) =>{
+				if(erro){
+					console.log("FICHEIRO QUE PRETENDE NÃO SE ENCONTRA DISPONÍVEL: ", erro)
+					res.status(500).send("FICHEIRO QUE PRETENDE NÃO SE ENCONTRA DISPONÍVEL: " + erro)
+				}
+				else
+					res.sendFile(resolvedFilepath)
+				
+			})
+		})
+		.catch(erroConsultaId =>{
+			console.log(JSON.stringify(erroConsultaId))
+			res.status(500).send("ERO NA CONSULTA DE UM UTILIZADOR PELO ID: " + erroConsultaId)
 		})
 	})
 	.catch(erro => res.status(500).send('ERRO NA CONSULTA DA FOTO DE PERFIL 1' + erro))

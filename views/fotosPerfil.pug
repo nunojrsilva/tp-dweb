@@ -3,20 +3,37 @@ extends layout
 block content
 	#inicioPagina
 
-		.w3-container
+		.w3-container(id="id" name=fotos.userid)
 			.w3-card-4
 				header.w3-container.w3-blue
 					h3 Fotos de Perfil
-				.w3-container(style=" width: 50%; float: left;")
+				.w3-container(id="listaImg" style=" width: 50%; float: left;")
 					ul
 						for file in fotos.fotoPerfil.fotos
 							li
 								a(href="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
-									img(src="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
-					
-					input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
-					input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
-					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Ficheiros ao Evento' style='margin-left:25px; margin-top:10px')
+									img(style="max-width: 250px; max-height: 250px;" src="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
+								br
+								br
+
+					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='margin-left:25px; margin-top:10px')
+
+				.w3-container(id="filesDiv" name="filesDiv" enctype="multipart/form-data" method="post" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
+						.w3-card-4(style='width: 80%')
+							header.w3-container.w3-blue
+								h3 Escolha a Foto de Perfil
+							table
+								tr
+									td
+										label
+											b Ficheiros
+										#listaFiles
+											input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+										br
+							input.w3-btn.w3-blue(id="Enviar" type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
+							input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
+							input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Foto' style='margin-left:25px; margin-top:10px')
+
 	br
 	br
 	a(href="/pubs") Voltar ao Feed
@@ -25,4 +42,4 @@ block content
 	footer.w3-container.w3-blue(style="text-align: center;")
 		address Powered by Desenvolvimento de Aplicações Web
 		
-	script(src="/javascripts/evento.js")
+	script(src="/javascripts/fotosPerfil.js")
