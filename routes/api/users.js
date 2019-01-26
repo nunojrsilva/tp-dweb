@@ -82,8 +82,10 @@ router.post('/novaFotoPerfil', (req, res) => {
                     console.log(JSON.stringify(objFoto))
                     User.inserirFotoPerfil(fields.uid, objFoto)
                     .then(dados =>{
-                        console.log(JSON.stringify(dados.fotoPerfil))
-                        res.jsonp(dados.fotoPerfil)
+                        console.log("FIELDS")
+                        console.log(JSON.stringify(fields))
+                        console.log(JSON.stringify(dados.fotoPerfil.fotos[dados.fotoPerfil.fotos.length - 1]))
+                        res.render('renderImageToDiv', {foto: dados.fotoPerfil.fotos[dados.fotoPerfil.fotos.length - 1], uid: fields.uid})
                     })
                     .catch(erroGuardarFoto => res.status(500).send("ERRO AO TENTAR GUARDAR A FOTO DE PERFIL " + erroGuardarFoto))
 				})
