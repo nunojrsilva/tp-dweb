@@ -319,7 +319,7 @@ router.post("/lista", (req,res) => {
 			var listaElem = {}
 			listaElem.tipo = "lista"
 			listaElem.lista = {}
-			listaElem.lista.titulo = fields.tituloLista
+			listaElem.lista.titulo = fields.titulo
 			listaElem.lista.itens = []
 
 			var i = 1;
