@@ -3,15 +3,15 @@ extends layout
 block content
 	#inicioPagina
 
-		.w3-container(id="id" name=fotos.userid)
+		.w3-container(id="id" name=userid)
 			.w3-card-4
 				header.w3-container.w3-blue
 					h3 Fotos de Perfil
 				.w3-container(style="float: left;")
 					div(id="listaImg" style="flex: 50%;padding: 4px;")
 						for file in fotos.fotoPerfil.fotos
-							a(href="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
-								img(style="max-width: 250px; max-height: 250px; margin-top: 80px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + fotos.userid + "&fotoId=" + file._id)
+							a(href="http://localhost:3000/api/files/foto?userId=" + userid + "&fotoId=" + file._id)
+								img(style="max-width: 250px; max-height: 250px; margin-top: 80px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + userid + "&fotoId=" + file._id)
 						
 					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='margin-left:25px; margin-top:10px')
 

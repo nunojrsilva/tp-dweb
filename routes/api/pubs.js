@@ -19,7 +19,7 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
                     .then(dados => res.jsonp(dados))
                     .catch(erro => res.status(500).send('Erro na consulta de publicações do autor: ' + req.query.username + ' -> Público: ' + req.query.publico))
             })  
-            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUserPublico"))
+            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUserPublico ") + erro)
 
     } else if(req.query.username){
         User.consultarUsername(req.query.username)
