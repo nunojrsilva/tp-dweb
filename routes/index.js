@@ -23,7 +23,16 @@ router.get('/', (req,res) => {
 
 router.get('/login', (req,res) => {
   console.log('Na cb do GET /login ...')
-  res.render('login')
+  var str = req.flash('info')
+  console.log(str)
+  if (str.length > 0){
+    console.log("Tem mensagens!")
+    res.render('login' , {msg : str})
+  }
+  else{
+    console.log("Vazio")
+    res.render('login')
+  }
 
 })
 
@@ -74,7 +83,8 @@ router.post("/login", (req,res) => {
     })
     .catch(e => {
       console.log("Erro no /login" + e)
-      res.status(500).send()
+      req.flash('info', 'Erro no login, por favor tente novamente!')
+      res.redirect('/login')
     })
 })
 
