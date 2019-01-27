@@ -4,7 +4,7 @@ block content
     
     .w3-container
         .w3-card-4
-            header.w3-container.w3-blue
+            header.w3-container(style='background-color: rgb(59,100,170); color: white;')
                 h3 Publicação
             .w3-container
                 form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
@@ -12,45 +12,41 @@ block content
                         tr
                             td(style='width:50%' valign='top')
                                 br
-                                input#opiniaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Opinião' style='margin-right:10px;')
-                                input#narracaobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Narração' style='margin-right:10px;')
-                                input#filesbtn.w3-btn.w3-border.w3-light-grey(type='button' value='Ficheiros' style='margin-right:10px;')
-                                input#listabtn.w3-btn.w3-border.w3-light-grey(type='button' value='Lista' style='margin-right:10px;')
-                                input#eventobtn.w3-btn.w3-border.w3-light-grey(type='button' value='Evento' style='margin-right:10px;')
-                                input#livrebtn.w3-btn.w3-border.w3-light-grey(type='button' value='Livre' style='margin-right:10px;')
+                                input#opiniaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Opinião' style='margin-right:10px;')
+                                input#narracaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Narração' style='margin-right:10px;')
+                                input#filesbtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Ficheiros' style='margin-right:10px;')
+                                input#listabtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Lista' style='margin-right:10px;')
+                                input#eventobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Evento' style='margin-right:10px;')
+                                input#livrebtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Livre' style='margin-right:10px;')
                                 br
                                 br
 
-                                label
-                                    b Username
-                                input#username.w3-input.w3-border.w3-light-grey(type='text' name='username' required)
-                                br
                                 #formDiv
                                 
-                                input#AdicaoFicheiros.w3-btn.w3-blue(type='button' value='Adicionar ficheiros' style='font-size:12px; margin-left:25px; margin-top:10px')
+                                input#AdicaoFicheiros.w3-btn.w3-round-large(type='button' value='Adicionar ficheiros' style='background-color: rgb(59,100,170); color: white; font-size:12px; margin-left:25px; margin-top:10px')
                                 br
                             td(style='width:5%')
 
                             td(style='width:45%')
                                 .w3-container(id="filesDiv" style='visibility: hidden')
                                     .w3-card-4.w3-margin
-                                        header.w3-container.w3-blue
+                                        header.w3-container(style='background-color: rgb(59,100,170); color: white;')
                                             h7 Adicionar Ficheiros
                                         .w3-container
                                             br
                                             label
                                                 b Titulo
-                                            input.w3-input.w3-border.w3-light-grey(id='filesTitulo' type='text' name='fTitulo')
+                                            input.w3-input.w3-border.w3-light-grey.w3-round-large(id='filesTitulo' type='text' name='fTitulo')
                                             br
                                             label
                                                 b Ficheiros
                                             #listaFiles
-                                                input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+                                                input.w3-input.w3-border.w3-light-grey.w3-round-large(type='file' name='files0' multiple)
                                             br
-                                            input.w3-btn.w3-border(id='more_files' type='button' value='Mais ficheiros' style='font-size:10px;')
+                                            input.w3-btn.w3-border.w3-round-large(id='more_files' type='button' value='Mais ficheiros' style='font-size:10px;')
                                             br
                                             br
-                                            input#cancelarAdicaoFicheiros.w3-btn.w3-blue(type='button' value='Cancelar Adição de Ficheiros' style='font-size:12px; margin-left:25px; margin-top:10px')
+                                            input#cancelarAdicaoFicheiros.w3-btn.w3-round-large(type='button' value='Cancelar Adição de Ficheiros' style='background-color: rgb(59,100,170); color: white; font-size:12px; margin-left:25px; margin-top:10px')
                                             br
                                             br
                     br
@@ -66,15 +62,15 @@ block content
                     br
                     br
                     
-                    input.w3-btn.w3-blue(type='submit' value='Publicar' style='margin-left:25px;')
-                    input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px;')
+                    input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
+                    input.w3-btn.w3-round-large(type='reset' value='Limpar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
 
                 br
                 br
                 a(href="/pubs") Voltar ao Feed
                 br
                 br
-            footer.w3-container.w3-blue(style="text-align: center;")
+            footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center;")
                 address Powered by Desenvolvimento de Aplicações Web
                 
     script(src='/javascripts/geral.js')

@@ -63,7 +63,6 @@ $(()=>{
 
         var formData = new FormData();
 		formData.append('pubID', pubID)
-		formData.append('username', $('#'+pubID).find('#username').val())
 		formData.append('comentario', $('#'+pubID).find('#comentario').val())
         
         $.ajax({
