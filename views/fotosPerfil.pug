@@ -13,7 +13,7 @@ block content
 					div(id="listaImg" style="flex: 50%;padding: 4px;")
 						for file in fotos.fotoPerfil.fotos
 							a(href="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
-								img(style="max-width: 250px; max-height: 250px; margin-top: 80px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
+								img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
 						
 					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='margin-left:25px; margin-top:10px')
 

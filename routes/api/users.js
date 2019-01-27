@@ -38,6 +38,24 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
    
 })
 
+router.get('/FotoPerfil', (req, res)=>{
+    console.log("Entrou no get de /users/FotoPerfil " + req.query.idUserPublicacao)
+
+    User.getIdAtual(req.query.idUserPublicacao)
+    .then(obj =>{
+        console.log(obj[0])
+        User.obterFotoPerfil(req.query.idUserPublicacao, obj[0].fotoPerfil.idAtual)
+        .then(fotosArray => {
+            var fotosObj = fotosArray[0]
+            res.jsonp(fotosObj)
+        })
+        .catch(erroFotos => res.status(500).send('Erro na listagem de fotos de um utilizador' + erroFotos))
+    })
+    .catch(erroID => res.status(500).send('Erro ao obter o id da foto de perfil atual' + erroID))
+   
+   
+})
+
 router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
     console.log("Entrou no get de /users/FotosPerfil " + req.user._id + "ID DA FOTO " + req.query.fotoId)
 

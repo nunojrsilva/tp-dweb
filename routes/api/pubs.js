@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport')
+var axios = require('axios')
 
 
 var Pubs = require('../../controllers/pubs')
@@ -41,7 +42,10 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
         console.log("CHEGUEI AQUI")
         try{
             Pubs.listar()
-            .then(dados => res.jsonp(dados))
+            .then(dados =>{ 
+                console.log(JSON.stringify(dados))        
+                res.jsonp(dados)
+            })
             .catch(erro => res.send(erro))
         }
         catch(e){
@@ -215,5 +219,4 @@ router.delete('/:pid', passport.authenticate('jwt', {session : false}), (req,res
 /////////////////////////////////////////////////////////
 ///////////////////FUNCOES///////////////////////////////
 /////////////////////////////////////////////////////////
-
 module.exports = router;
