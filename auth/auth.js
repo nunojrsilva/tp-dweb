@@ -11,6 +11,7 @@ var UserController = require('../controllers/users')
 let fs = require('fs');
 var hash = require('crypto').createHash;
 var randomstring = require('randomstring');
+var request = require('request');
 
 //Registo de um utilizador
 
@@ -100,7 +101,7 @@ passport.use('facebook', new FacebookStrategy({
     clientID: '2271866706375412',
     clientSecret: 'd3d4bd057aa4a8b25401e6d79287fa7c',
     callbackURL: 'http://localhost:3000/auth/facebook/callback',
-    profileFields: ['id','name','email']
+    profileFields: ['id','name','email','picture.type(large)']
   },
   async function(accessToken, refreshToken, profile, done) {
       console.log(accessToken)
@@ -115,46 +116,58 @@ passport.use('facebook', new FacebookStrategy({
         var nome = profile.name.givenName
 
         var salt = randomstring.generate(128)
-        
-        var password = hash('sha1').update(username + nome + salt).digest('hex')
 
+        var data = new Date()
+
+        var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+        
+        var password = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
+
+        
         var fotoPerfil = {}
         fotoPerfil.idAtual = null
         fotoPerfil.fotos = []
 
-        var fotoDefault = {}
-        fotoDefault.nome = "default.jpeg"
-        fotoDefault.nomeGuardado = fotoDefault.nome
-    
-        fotoPerfil.fotos.push(fotoDefault)
+        var fotoHashed = hash('sha1').update(username + nome + salt).digest('hex')
 
-        var user = await UserModel.create({nome, username, password, salt, fotoPerfil})
+        // Tem de ser feito aqui porque o download vai guardar nessa pasta
 
-        fs.mkdirSync(__dirname + '/../uploaded/'+ user.username +'/')
+        fs.mkdirSync(__dirname + '/../uploaded/'+ username +'/')
+        fs.mkdirSync(__dirname + '/../uploaded/'+ username +'/fotos')
 
-        UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
-            .then(dados2 =>{
-                return done(null, dados2, {message: "Registo com sucesso"})
-            })
-            .catch(e =>
-                { 
-                console.log("Erro ao atualizar foto com login no FB : " + e)
-                return done(null, user, {message: "Registo com sucesso, erro ao atribuir foto"})
-            })
+        download(profile.photos[0].value, __dirname + '/../uploaded/'+ username +'/fotos/'+ fotoHashed +'.jpeg', async function(){
+            
+            var foto = {}
+            foto.nome = username + 'profileFB.jpeg'
+            foto.nomeGuardado = fotoHashed
+            foto.isImage = true
+
+            fotoPerfil.fotos.push(foto)
+
+            var user = await UserModel.create({nome, username, password, salt, fotoPerfil})
+
+
+            UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
+                .then(dados2 =>{
+                    return done(null, dados2, {message: "Registo com sucesso"})
+                })
+                .catch(e =>
+                    { 
+                    console.log("Erro ao atualizar foto com login no FB : " + e)
+                    return done(null, user, {message: "Registo com sucesso, erro ao atribuir foto"})
+                })
+        })
+    }
+    else {
+
+        var password = hash('sha1').update(user.username + user.nome + user.salt).digest('hex')
         
-      }
-      else {
-          var password = hash('sha1').update(user.username + user.nome + user.salt).digest('hex')
-         
-          var valid = await user.isValidPassword(password)
-          if (valid) {
-              console.log("password correta")
-              return done(null, user, {message: "Login com sucesso"})
-          }
-          else return done(null, false, {message: "Erro no login"})
-
-        
-
+        var valid = await user.isValidPassword(password)
+        if (valid) {
+            console.log("password correta")
+            return done(null, user, {message: "Login com sucesso"})
+        }
+        else return done(null, false, {message: "Erro no login"})
       }
   }
 ));
@@ -195,3 +208,14 @@ passport.use('jwt', new JWTStrategy({
     }
 
 }))
+
+
+
+var download = function(uri, filename, callback){
+  request.head(uri, function(err, res, body){
+    console.log('content-type:', res.headers['content-type']);
+    console.log('content-length:', res.headers['content-length']);
+
+    request(uri).pipe(fs.createWriteStream(filename)).on('close', callback);
+  });
+};

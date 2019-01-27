@@ -8,6 +8,7 @@ var path = require('path');
 var randomstring = require('randomstring')
 var hash = require('crypto').createHash;
 let fs = require('fs');
+var flash = require('connect-flash');
 
 
 var jwt = require('jsonwebtoken')
@@ -23,6 +24,14 @@ router.get('/', (req,res) => {
 router.get('/login', (req,res) => {
   console.log('Na cb do GET /login ...')
   res.render('login')
+
+})
+
+
+router.get('/logout', (req,res) => {
+  console.log('Na cb do GET /logout ...')
+  req.session.token = null
+  res.redirect('/')
 
 })
 
@@ -140,6 +149,7 @@ router.get('/auth/facebook/callback', (req,res) => {
     .then(dados => {
       console.log("Token: "+ JSON.stringify(dados.data.token))
       req.session.token = dados.data.token
+      //req.flash('cenas')
       res.redirect('/')
     })
     .catch(e => {

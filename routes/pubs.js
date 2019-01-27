@@ -499,7 +499,8 @@ function axiosPut (req, res, url, data){
 		})
 		.catch(error =>{
 			console.log("ERRO NO AXIOS PUT " +  error)
-			erroAxios(error)
+			res.render("semPermissao")
+			//erroAxios(error)
 		})
 	})
 }
@@ -525,6 +526,8 @@ function axiosPost (req, res, publicacao, fields){
 	})
 	.catch(error =>{
 		console.log("ERRO AXIOS POST: " + error)
+		res.render("semPermissao")
+		//erroAxios(error)
 	})
 }
 
@@ -545,7 +548,7 @@ function axiosGet (req, res, url){
 		})
 		.catch(error =>{
 			console.log("ERRO AXIOS GET: " + error)
-			res.send("NAO TEM PERMISSOES")
+			res.render("semPermissao")
 			//erroAxios(error)
 		})
 	})
