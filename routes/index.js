@@ -3,6 +3,12 @@ var router = express.Router();
 var passport = require('passport')
 var querystring = require('querystring')
 var axios = require('axios')
+var formidable = require('formidable')
+var path = require('path');
+var randomstring = require('randomstring')
+var hash = require('crypto').createHash;
+let fs = require('fs');
+
 
 
 
@@ -98,6 +104,7 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
   })
 
 })
+
 router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
   console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
   
@@ -109,13 +116,91 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
     }
   })
   .then(info =>{
-    res.render('fotosPerfil', {fotos: info.data, userid: req.user._id})
+
+    info.data.uid = req.user._id
+    res.render('fotosPerfil', {fotos: info.data})
   })
   .catch(error =>{
     console.log("ERRO AXIOS GET: " + error)
     res.status(500).send("ERRO AO PEDIR AS FOTOS DE DO UTILIZADOR" + error)
   })
-
- 
 })
+
+router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+  var form = new formidable.IncomingForm()
+  console.log("CHEGUEI AO /novaFotoPerfil")
+  form.parse(req, (erro, fields, files)=>{
+      if(!erro){
+
+          if(Object.keys(files).length){
+              
+            parseFicheiros(req, files)
+            .then(objFoto => {
+            
+              axios({
+                method: 'post', 
+                url: 'http://localhost:3000/api/users/novaFotoPerfil',
+                data:{
+                  foto: objFoto
+                },
+                headers: {
+                  Authorization: 'Bearer ' + req.session.token
+                }
+                })
+                .then(dados =>{
+                  res.render('renderImageToDiv', {foto: dados.data.fotoPerfil.fotos[dados.data.fotoPerfil.fotos.length - 1], uid: req.user._id})
+                })
+                .catch(error =>{
+                  console.log("ERRO AXIOS POST: " + error)
+                })
+            })
+            .catch(erro =>{
+              console.log("ERRO NO PARSE DO FICHEIRO (INDEX.JS) " + erro)
+              res.status(500).send("ERRO NO PARSE DO FICHEIRO (INDEX.JS) "+ erro)
+            })
+          }
+      }
+  })
+})
+
+async function parseFicheiros(req, files){
+    
+  return new Promise((objFoto, erro) =>{
+
+    var nome = files.file1.name
+    var parts = nome.split('.')
+    var extention = "." + parts[parts.length - 1]
+    console.log("HERE")
+    
+    
+    var pasta = path.resolve(__dirname + '/../uploaded/' + req.user.username +'/fotos/')
+    
+    salt = randomstring.generate(64)
+    console.log("HERE")
+
+    var foto = {}
+    foto.nomeGuardado = hash('sha1').update(req.user._id + nome + salt).digest('hex')
+    foto.nome = nome
+    
+    var fnovo =  pasta + '/' + foto.nomeGuardado + extention
+    var fenviado = files.file1.path
+    console.log("HERE")
+
+    if(!fs.existsSync(pasta)){
+        fs.mkdirSync(pasta)
+    }
+    console.log("HERE")
+
+    fs.rename(fenviado, fnovo, error => {
+        if(error){
+            console.log('errou no rename: ' + error) 
+            erro(error)
+        }
+        else{
+            objFoto(foto)
+        }
+    })
+  })
+}
+
 module.exports = router;

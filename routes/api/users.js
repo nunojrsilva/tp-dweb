@@ -5,6 +5,7 @@ var hash = require('crypto').createHash;
 var formidable = require('formidable')
 var path = require('path');
 var randomstring = require('randomstring')
+var querystring = require('querystring')
 
 
 
@@ -38,12 +39,12 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
 })
 
 router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
-    console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+    console.log("Entrou no get de /users/FotosPerfil " + req.user._id + "ID DA FOTO " + req.query.fotoId)
 
-    User.atualizarFotoPerfil(req.user._id, req.body.fotoId)
+    User.atualizarFotoPerfil(req.user._id, req.query.fotoId)
     .then(user => {
         console.log(JSON.stringify(user))
-        res.jsonp(user)
+        res.redirect("http://localhost:3000/FotosPerfil")
     })
     .catch(erroFoto => res.status(500).send('ERRO AO TENTAR ATUALIZAR A FOTO DE PERFIL ' + erroFoto))
    
@@ -92,6 +93,7 @@ router.post('/', function(req, res, next) {
         console.log("Passport já atuou")
         console.log("User : " + user)
         fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
+        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/fotos/')
         //return res.jsonp(user)
 
         User.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
@@ -106,74 +108,17 @@ router.post('/', function(req, res, next) {
     })(req, res, next);
 })
 
-router.post('/novaFotoPerfil', (req, res) => {
-    var form = new formidable.IncomingForm()
-    form.parse(req, (erro, fields, files)=>{
-        if(!erro){
-            if(Object.keys(files).length){
-				parseFicheiros(fields, files)
-				.then(objFoto => {
-                    console.log(JSON.stringify(objFoto))
-                    User.inserirFotoPerfil(fields.uid, objFoto)
-                    .then(dados =>{
-                        console.log("FIELDS")
-                        console.log(JSON.stringify(fields))
-                        console.log(JSON.stringify(dados.fotoPerfil.fotos[dados.fotoPerfil.fotos.length - 1]))
-                        res.render('renderImageToDiv', {foto: dados.fotoPerfil.fotos[dados.fotoPerfil.fotos.length - 1], uid: fields.uid})
-                    })
-                    .catch(erroGuardarFoto => res.status(500).send("ERRO AO TENTAR GUARDAR A FOTO DE PERFIL " + erroGuardarFoto))
-				})
-				.catch(erro =>{
-					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
-					res.status(500).send("ERRO NA CRIAÇÃO DO ELEMFICHEIRO "+ erro)
-				})
-			}
-        }
+router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+    console.log("CHEGUEI AO /novaFotoPerfil " + req.user._id + JSON.stringify(req.body.foto))
+    console.log(JSON.stringify(req.body.foto))
+    User.inserirFotoPerfil(req.user._id, req.body.foto)
+    .then(dados =>{
+        res.jsonp(dados)
     })
+    .catch(erroGuardarFoto => res.status(500).send("ERRO AO TENTAR GUARDAR A FOTO DE PERFIL " + erroGuardarFoto))
+
 })
 
-async function parseFicheiros(fields, files){
-    
-    return new Promise((objFoto, erro) =>{
-        User.consultar(fields.uid)
-        .then(user =>{
-            var nome = files.file1.name
-            var parts = nome.split('.')
-            var extention = "." + parts[parts.length - 1]
-            
-            
-            var pasta = path.resolve(__dirname + '/../../uploaded/' + user.username +'/fotos/')
-            
-            salt = randomstring.generate(64)
-
-            var foto = {}
-            foto.nomeGuardado = hash('sha1').update(fields.uid + nome + salt).digest('hex')
-            foto.nome = nome
-            
-            var fnovo =  pasta + '/' + foto.nomeGuardado + extention
-            var fenviado = files.file1.path
-
-            //Verificação da existencia da pasta do dia (será que cria a do utilizador também?)
-            if(!fs.existsSync(pasta)){
-                fs.mkdirSync(pasta)
-            }
-
-            fs.rename(fenviado, fnovo, error => {
-                if(error){
-                    console.log('errou no rename: ' + error) 
-                    erro(error)
-                }
-                else{
-                    objFoto(foto)
-                }
-            })
-        })
-        .catch(error => {
-            console.log(JSON.stringify(error))
-            erro(erro)
-        })
-    })        
-}
 
 
 
