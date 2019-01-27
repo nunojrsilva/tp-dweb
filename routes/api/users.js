@@ -132,8 +132,14 @@ router.post('/login', async (req,res,next) => {
     passport.authenticate('login', async (err, user, info) => {
         try {
             if (err || !user) {
-                if (err) return next(err)
-                else return new Error('Utilizador inexistente')
+                if (err) {
+                    res.status(500).send(err)
+                    return next(err)
+                }
+                else {
+                    res.status(500).send("Utilizador não existe!")
+                    return new Error('Utilizador inexistente')
+                }
             }
             req.login(user, {session : false }, async (error) => {
                 console.log("login com sucesso na api")
@@ -148,6 +154,7 @@ router.post('/login', async (req,res,next) => {
                 })
             }
         catch (error) {
+                res.status(500).send("Erro no login")
                 return next(error)
         }
     })(req,res,next);
