@@ -6,24 +6,12 @@ var FacebookStrategy = require('passport-facebook').Strategy
 
 var UserModel = require('../models/users')
 
+var UserController = require('../controllers/users')
+
+let fs = require('fs');
+
 //Registo de um utilizador
 
-
-// function isAuth(req, res, next) {
-//     if (req.headers.authorization) {
-//         passport.authenticate('jwt', {session: false}, function (err, user, info) {
-//             if ((!err || !info) && user) {
-//                 req.user = user;
-//                 return next();
-//             }
-//             res.status(401).json({authenticated: false, message: "Login expired."});
-//         })(req, res, next);
-//     } else {
-//         if (req.isAuthenticated())
-//             return next();
-//         res.status(401).json({authenticated: false});
-//     }
-// }
 
 passport.use('registo', new localStrategy({
     usernameField : 'username',
@@ -46,6 +34,18 @@ passport.use('registo', new localStrategy({
     
 
         var user = await UserModel.create({nome, username, password, fotoPerfil})
+
+        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
+
+        UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
+            .then(dados2 =>{
+                return res.jsonp(dados2)
+            })
+            .catch(e =>
+                { 
+                console.log("Erro ao atualizar foto" + e)
+                return res.jsonp(user)
+            })
         return done(null, user)
     }   
 
@@ -122,10 +122,21 @@ passport.use('facebook', new FacebookStrategy({
         fotoDefault.nomeGuardado = fotoDefault.nome
     
         fotoPerfil.fotos.push(fotoDefault)
-    
 
         var user = await UserModel.create({nome, username, password, fotoPerfil})
-        return done(null, user, {message: "Login com sucesso"})
+
+        fs.mkdirSync(__dirname + '/../uploaded/'+ user.username +'/')
+
+        UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
+            .then(dados2 =>{
+                return done(null, dados2, {message: "Registo com sucesso"})
+            })
+            .catch(e =>
+                { 
+                console.log("Erro ao atualizar foto com login no FB : " + e)
+                return done(null, user, {message: "Registo com sucesso, erro ao atribuir foto"})
+            })
+        
       }
       else {
         return done(null, user, {message: "Login com sucesso"})
@@ -133,16 +144,6 @@ passport.use('facebook', new FacebookStrategy({
       }
   }
 ));
-
-
-passport.serializeUser(function(user, done) {
-    done(null, user);
-  });
-  
-  passport.deserializeUser(function(user, done) {
-    done(null, user);
-  });
-
 
 // Autenticacao com JWT
 

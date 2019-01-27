@@ -126,24 +126,23 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
   // Facebook
 
 
-router.get('/auth/facebook', passport.authenticate('facebook'), (req,res) => {
-  console.log("Get de /auth/facebook")
-  res.jsonp("YA")
+router.get('/auth/facebook', passport.authenticate('facebook'))
+
+router.get('/auth/facebook/callback', (req,res) => {
+  console.log(req.query)
+
+  axios.get('http://localhost:3000/api/auth/facebook/callback?code=' + req.query.code)
+    .then(dados => {
+      console.log("Token: "+ JSON.stringify(dados.data.token))
+      req.session.token = dados.data.token
+      res.redirect('/')
+    })
+    .catch(e => {
+      console.log("Erro na autenticacao com fb : " + e)
+      res.redirect('/login')
+    })
 })
 
-router.get('/auth/facebook/callback',
-  passport.authenticate('facebook', { session : false,
-  failureRedirect: '/' }),
-  function(req, res) {
-    console.log("User: " + req.user)
-    var myuser = {_id : req.user._id, username : req.user.username};
-
-    var token = jwt.sign({
-        user : myuser}, 'dweb2018');
-
-    req.session.token = token
-    res.redirect('/')
-  })
 
 
  

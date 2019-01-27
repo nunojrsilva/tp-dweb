@@ -16,6 +16,7 @@ var pubsAPIRouter = require('./routes/api/pubs');
 var filesAPIRouter = require('./routes/api/files');
 var pubsRouter = require("./routes/pubs");
 var indexRouter = require("./routes/index");
+var authRouter = require("./routes/api/auth");
 
 var uuid = require('uuid/v4')
 
@@ -112,6 +113,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/api/users', usersAPIRouter);
 app.use('/api/pubs', pubsAPIRouter);
 app.use('/api/files', filesAPIRouter);
+app.use('/api/auth', authRouter)
 app.use('/pubs', pubsRouter);
 app.use('/', indexRouter);
 

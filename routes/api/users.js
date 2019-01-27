@@ -91,18 +91,7 @@ router.post('/', function(req, res, next) {
         console.log("Body no post de /api/users " + JSON.stringify(req.body))
         console.log("Passport já atuou")
         console.log("User : " + user)
-        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
-        //return res.jsonp(user)
-
-        User.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
-            .then(dados2 =>{
-                return res.jsonp(dados2)
-            })
-            .catch(e =>
-                { 
-                console.log("Erro ao atualizar foto" + e)
-                return res.jsonp(e)
-            })
+        return res.jsonp(user)
     })(req, res, next);
 })
 
