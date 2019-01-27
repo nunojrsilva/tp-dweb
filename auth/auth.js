@@ -2,6 +2,8 @@ var passport = require('passport')
 
 var localStrategy = require('passport-local').Strategy
 
+var FacebookStrategy = require('passport-facebook').Strategy
+
 var UserModel = require('../models/users')
 
 //Registo de um utilizador
@@ -87,6 +89,59 @@ passport.use('login', new localStrategy({
 
     }
 }) )
+
+// Autenticacao com Facebook
+
+
+
+passport.use('facebook', new FacebookStrategy({
+    clientID: '2271866706375412',
+    clientSecret: 'd3d4bd057aa4a8b25401e6d79287fa7c',
+    callbackURL: 'http://localhost:3000/auth/facebook/callback',
+    profileFields: ['id','name','email']
+  },
+  async function(accessToken, refreshToken, profile, done) {
+      console.log(accessToken)
+      console.log(refreshToken)
+      console.log(profile)
+      var username = profile.id
+
+      var user = await (UserModel.findOne({username}))
+        
+      if (!user) {
+        var nome = profile.name.givenName
+        
+        var password = "1234"
+
+        var fotoPerfil = {}
+        fotoPerfil.idAtual = null
+        fotoPerfil.fotos = []
+
+        var fotoDefault = {}
+        fotoDefault.nome = "default.jpeg"
+        fotoDefault.nomeGuardado = fotoDefault.nome
+    
+        fotoPerfil.fotos.push(fotoDefault)
+    
+
+        var user = await UserModel.create({nome, username, password, fotoPerfil})
+        return done(null, user, {message: "Login com sucesso"})
+      }
+      else {
+        return done(null, user, {message: "Login com sucesso"})
+
+      }
+  }
+));
+
+
+passport.serializeUser(function(user, done) {
+    done(null, user);
+  });
+  
+  passport.deserializeUser(function(user, done) {
+    done(null, user);
+  });
 
 
 // Autenticacao com JWT

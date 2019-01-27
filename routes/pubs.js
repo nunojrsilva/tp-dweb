@@ -63,11 +63,11 @@ router.get('/', function(req, res) {
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
-		.catch(erro => {
-			console.log('Erro ao carregar da BD.' + erro)
-			//res.render('error', {e: erro, message: "Erro ao carregar da BD"})
-			res.status(500).send(erro)
-		})
+		// .catch(erro => {
+		// 	console.log('Erro ao carregar da BD.' + erro)
+		// 	//res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+		// 	res.status(500).send(erro)
+		//})
 	}
 });
 
@@ -542,7 +542,8 @@ function axiosGet (req, res, url){
 		})
 		.catch(error =>{
 			console.log("ERRO AXIOS GET: " + error)
-			erroAxios(error)
+			res.send("NAO TEM PERMISSOES")
+			//erroAxios(error)
 		})
 	})
 
