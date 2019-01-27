@@ -23,6 +23,7 @@ $(()=>{
 	$("#cancelarAdicaoFicheiros").click(e =>{
 		e.preventDefault()
 
+		$('.moreFiles').remove();
 		$('#filesDiv').find('input:text').val('');
 		$('#filesDiv').find('input:file').val('');
 		$('#filesDiv').css('visibility', 'hidden')
@@ -45,7 +46,7 @@ $(()=>{
 
         item = item + 1
  
-        var input = $("<input class='w3-input w3-border w3-round-large w3-light-grey' id='item" + item + "' style='width:40%; margin-top:2px;' type='text' placeholder='Item da Lista'>");
+        var input = $("<input class='w3-input w3-border w3-round-large' id='item" + item + "' style='width:100%; margin-top:2px;' type='text' placeholder='Item da Lista'>");
         $("#listaItens").append(input)
       
 	})
@@ -55,7 +56,7 @@ $(()=>{
 
 		fileInputs = fileInputs + 1
  
-		var input = $("<input type='file' class='w3-input w3-border w3-round-large w3-light-grey' name='file" + fileInputs + "' multiple/>");
+		var input = $("<input type='file' class='w3-input w3-border w3-round-large w3-light-grey moreFiles' name='file" + fileInputs + "' multiple/>");
 		$("#listaFiles").append(input);
 	})
 
@@ -67,11 +68,6 @@ $(()=>{
 	$("#narracaobtn").click(e=>{
 		tipo = "narracao"
 		$('#formDiv').load('http://localhost:3000/pubs/narracaoPub')
-	})
-
-	$("#filesbtn").click(e=>{
-		tipo = "ficheiros"
-		$('#formDiv').empty()
 	})
 
 	$("#listabtn").click(e=>{

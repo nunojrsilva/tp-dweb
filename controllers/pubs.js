@@ -8,7 +8,7 @@ var pop_config = {
 
 var pop_config2 = {
 	path: 'comentarios.utilizador',
-	select: 'nome username'
+	select: 'nome username fotoPerfil.idAtual'
 }
 
 //Lista de publicações

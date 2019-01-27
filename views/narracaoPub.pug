@@ -1,21 +1,18 @@
-.w3-card-4
-    header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-        h5 Criar Nova Narração
-    .w3-container.w3-border(style="width:100%; float: left;")
-        br
-        table(style="width:100%;")
-            tr
-                td(style="width:48%;")
-                    label
-                        b Titulo
-                    input#titulo.w3-input.w3-border.w3-light-grey(type='text' name='titulo' placeholder='Título da obra')
-                td(style="width:4%;")
-                td(style="width:48%;")
-                    label 
-                        b Autor
-                    input#autor.w3-input.w3-border.w3-light-grey(type='text' name='autor' placeholder='Autor da obra')
-        br
-        label
-            b Citação
-        textarea#texto.w3-input.w3-border.w3-light-grey(rows='5' cols='40' type='text' name='texto' placeholder='Insira aqui a citação' required)
-        br
+.w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(59,100,170); color: white;')
+    h7
+        b Citação
+table(style='width:100%; margin-top:10px; margin-bottom:5px;')
+    tr(align='left')
+        th(style='width:48%') &nbsp; Título
+        th(style='width:4%')
+        th(style='width:48%') &nbsp; Autor
+    tr
+        td(style='width:48%')
+            input#titulo.w3-input.w3-border.w3-round-large(type='text' name='titulo' placeholder='Título da obra')
+        td(style='width:4%')
+        td(style='width:48%')
+            input#autor.w3-input.w3-border.w3-round-large(type='text' name='autor' placeholder='Autor da obra')
+label
+    b &nbsp; Citação
+textarea#texto.w3-input.w3-border.w3-round-large(rows='4' cols='40' type='text' name='texto' placeholder='Insira aqui a citação' required)
+br

@@ -15,7 +15,7 @@ var jwt = require('jsonwebtoken')
 
 
 router.get('/', (req,res) => {
-  res.render("homepage")
+  res.render("userHomepage")
 })
 
 //Login

@@ -1,32 +1,28 @@
-.w3-card-4
-	header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-		h5 Criar Novo Evento
-	.w3-container.w3-border(style="float: left;")
-		br
-		table(style='width:100%')
-			tr(align="left")
-				th(style='width:55%') Título
-				th(style='width:5%')
-				th(style='width:40%') Duração
-			tr
-				td(style='width:55%')
-					input.w3-input.w3-border.w3-light-grey.w3-round-large(id='titulo' type='text' name='titulo' placeholder='Título do Evento' required)
-				td(style='width:5%')
-				td(style='width:40%')
-					input.w3-input.w3-border.w3-light-grey.w3-round-large(id='duracao' type='text' placeholder='Duração do evento' name='duracao')
-			
-			tr(align="left")
-				th(style='width:55%') Atividade
-				th(style='width:5%')
-				th(style='width:40%') Data de Realização
-			tr
-				td(style='width:55%')
-					input.w3-input.w3-border.w3-light-grey.w3-round-large(id='atividade' type='text' name='atividade' placeholder='Tipo de atividade praticada' required)
-				td(style='width:5%')
-				td(style='width:40%')
-					input.w3-input.w3-border.w3-light-grey.w3-round-large(id='data' type='text' name='data' placeholder='Data de início' required)
-		br
-		label
-			b Descrição
-		textarea.w3-input.w3-border.w3-light-grey.w3-round-large(id='descricao' type='text' name='descricao' rows='6' cols='80' required)
-		br
+.w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(59,100,170); color: white;')
+	h7
+		b Evento
+table(style='padding:0; margin:0; width:100%; margin-top:10px; margin-bottom:5px;')
+	tr(align="left")
+		th(style='width:55%') &nbsp; Título
+		th(style='width:3%')
+		th(style='width:40%') &nbsp; Duração
+	tr
+		td(style='width:55%')
+			input.w3-input.w3-border.w3-round-large(id='titulo' type='text' name='titulo' placeholder='Título do Evento' required)
+		td(style='width:3%')
+		td(style='width:40%')
+			input.w3-input.w3-border.w3-round-large(id='duracao' type='text' placeholder='Duração' name='duracao')
+	tr(align="left" style='margin-top:10px;')
+		th(style='padding-top: 0.5em; width:55%') &nbsp; Atividade
+		th(style='padding-top: 0.5em; width:3%')
+		th(style='padding-top: 0.5em; width:40%') &nbsp; Data
+	tr
+		td(style='width:55%')
+			input.w3-input.w3-border.w3-round-large(id='atividade' type='text' name='atividade' placeholder='Atividade praticada' required)
+		td(style='width:3%')
+		td(style='width:40%')
+			input.w3-input.w3-border.w3-round-large(id='data' type='text' name='data' placeholder='Data de início' required)
+label
+	b &nbsp; Descrição
+textarea.w3-input.w3-border.w3-round-large(id='descricao' type='text' name='descricao' rows='4' cols='80' required)
+br

@@ -28,7 +28,7 @@ $(()=>{
     });
     
 
-    $('comentarios').on("click", 'input.commentLike:button', e => {
+    $('.comentarios').on("click", 'input.commentLike:button', e => {
 
         comentID = e.target.id
         alert("ID do comentário: " +  comentID);
@@ -73,7 +73,7 @@ $(()=>{
             success: data =>{
                 console.dir(data)
                 $('#' + this.id).trigger("reset");
-                $('comentarios').append(data)
+                $('#'+pubID+'comentarios').append(data)
                 $("#"+pubID+"NoComments").remove()
                 alert('Comentário enviado');
             },
