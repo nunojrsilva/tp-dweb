@@ -35,7 +35,7 @@ passport.use('registo', new localStrategy({
 
         var user = await UserModel.create({nome, username, password, fotoPerfil})
 
-        fs.mkdirSync(__dirname + '/../../uploaded/'+ user.username +'/')
+        fs.mkdirSync(__dirname + '/../uploaded/'+ user.username +'/')
 
         UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
             .then(dados2 =>{
