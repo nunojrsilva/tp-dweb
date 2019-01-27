@@ -6,6 +6,7 @@ var fs = require('fs')
 var path = require('path');
 var hash = require('crypto').createHash;
 var isImage = require('is-image')
+var passport = require('passport')
 
 var randomstring = require('randomstring')
 
@@ -120,7 +121,7 @@ router.get('/publicar', function(req, res) {
 //////////////////////POSTS/////////////////////////////
 ////////////////////////////////////////////////////////
 
-router.post('/opiniao', (req, res) => {
+router.post('/opiniao', passport.authenticate('jwt', {session : false}), (req, res) =>{
 	
 	var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -129,8 +130,9 @@ router.post('/opiniao', (req, res) => {
 			console.log('fields: \n' + JSON.stringify(fields))             
 			console.log('files: \n' + JSON.stringify(files))       
 			var publicacao = {}
-			publicacao.hashtags = ["War", "Terror"]
+			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
+			publicacao.hashtags = ["War", "Terror"]
 			publicacao.publico = fields.publico
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -143,10 +145,10 @@ router.post('/opiniao', (req, res) => {
 
 			if(Object.keys(files).length){
 				
-				parseFicheiros(fields, files, publicacao.data)
+				parseFicheiros(req.user.username, fields.fileTitle, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(req, res, publicacao, fields)
+					axiosPost(req, res, publicacao)
 				})
 				.catch(erro =>{
 					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
@@ -154,7 +156,7 @@ router.post('/opiniao', (req, res) => {
 				})
 			}
 			else
-				axiosPost(req, res, publicacao, fields)		
+				axiosPost(req, res, publicacao)		
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA OPINIAO"})
@@ -162,7 +164,7 @@ router.post('/opiniao', (req, res) => {
     })
 });
 
-router.post('/evento', (req, res) => {
+router.post('/evento', passport.authenticate('jwt', {session : false}), (req, res) =>{
     
     var form = new formidable.IncomingForm()
 
@@ -174,10 +176,9 @@ router.post('/evento', (req, res) => {
 			console.log('files: \n' + JSON.stringify(files))       
 			
 			var publicacao = {}
-			publicacao.hashtags = ["Evento"]
-
+			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
-			console.log("ISTO È A PRIVACIDADE", fields.publico)
+			publicacao.hashtags = ["Evento"]
 			publicacao.publico = fields.publico
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -196,10 +197,10 @@ router.post('/evento', (req, res) => {
 
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files, publicacao.data)
+				parseFicheiros(req.user.username, fields.fileTitle, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(req, res, publicacao, fields)
+					axiosPost(req, res, publicacao)
 				})
 				.catch(erro =>{
 					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
@@ -208,7 +209,7 @@ router.post('/evento', (req, res) => {
 
 			}
 			else
-				axiosPost(req, res, publicacao, fields)
+				axiosPost(req, res, publicacao)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA EVENTO"})
@@ -216,7 +217,7 @@ router.post('/evento', (req, res) => {
 	})
 });
 
-router.post('/ficheiros', (req, res) => {
+router.post('/ficheiros', passport.authenticate('jwt', {session : false}), (req, res) =>{
 
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -225,6 +226,7 @@ router.post('/ficheiros', (req, res) => {
             console.log('files: \n' + JSON.stringify(files))
 
 			var publicacao = {}
+			publicacao.utilizador = req.user._id
 			publicacao.hashtags = ["ficheiros"]
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
@@ -232,10 +234,10 @@ router.post('/ficheiros', (req, res) => {
 			publicacao.gostos = []
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files, publicacao.data)
+				parseFicheiros(req.user.username, fields.fileTitle, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(req, res, publicacao, fields)
+					axiosPost(req, res, publicacao)
 				})
 				.catch(erro =>{
 					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
@@ -243,7 +245,7 @@ router.post('/ficheiros', (req, res) => {
 				})
 			}
 			else
-				axiosPost(req, res, publicacao, fields)
+				axiosPost(req, res, publicacao)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -252,7 +254,7 @@ router.post('/ficheiros', (req, res) => {
 		
 });
 
-router.post("/narracao", (req,res) => {
+router.post("/narracao", passport.authenticate('jwt', {session : false}), (req, res) =>{
     var form = new formidable.IncomingForm()
     console.log("Post de /narracao")
     form.parse(req, (erro, fields, files)=>{
@@ -262,6 +264,7 @@ router.post("/narracao", (req,res) => {
             console.log('files form: \n' + JSON.stringify(files))
 
 			var publicacao = {}
+			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["narracao"]
@@ -283,10 +286,10 @@ router.post("/narracao", (req,res) => {
 			publicacao.elems.push(elemNarracao)
 			
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files, publicacao.data)
+				parseFicheiros(req.user.username, fields.fileTitle, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(req, res, publicacao, fields)
+					axiosPost(req, res, publicacao)
 				})
 				.catch(erro =>{
 					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
@@ -294,7 +297,7 @@ router.post("/narracao", (req,res) => {
 				})
 			}
 			else
-				axiosPost(req, res, publicacao, fields)			
+				axiosPost(req, res, publicacao)			
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -302,7 +305,7 @@ router.post("/narracao", (req,res) => {
     })
 })
 
-router.post("/lista", (req,res) => {
+router.post("/lista", passport.authenticate('jwt', {session : false}), (req, res) =>{
     var form = new formidable.IncomingForm()
     console.log("Post de /lista")
     form.parse(req, (erro, fields, files)=>{
@@ -312,6 +315,7 @@ router.post("/lista", (req,res) => {
             console.log('files form: \n' + JSON.stringify(files))
 	
 			var publicacao = {}
+			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
 			publicacao.publico = fields.publico
 			publicacao.hashtags = ["lista"]
@@ -335,10 +339,10 @@ router.post("/lista", (req,res) => {
 			publicacao.elems = [listaElem]
 
 			if(Object.keys(files).length){
-				parseFicheiros(fields, files, publicacao.data)
+				parseFicheiros(req.user.username, fields.fileTitle, files, publicacao.data)
 				.then(elemFicheiro => {
 					publicacao.elems.push(elemFicheiro)
-					axiosPost(req, res, publicacao, fields)
+					axiosPost(req, res, publicacao)
 				})
 				.catch(erro =>{
 					console.log("ERRO NA CRIAÇÃO DO ELEMFICHEIRO " + erro)
@@ -346,7 +350,7 @@ router.post("/lista", (req,res) => {
 				})
 			}
 			else
-				axiosPost(req, res, publicacao, fields)
+				axiosPost(req, res, publicacao)
 		}
 		else{
 			res.render('error', {error: erro, message: "ERRO AO FAZER PARSE DO FORM DA FICHEIROS"})
@@ -354,7 +358,7 @@ router.post("/lista", (req,res) => {
     })
 })
 
-router.put('/comentario', function(req, res) {
+router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
 	console.log('Entrei no put de comentários')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -376,7 +380,7 @@ router.put('/comentario', function(req, res) {
 	})
 });
 
-router.put('/pubGostos', function(req, res) {
+router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
 	console.log('Entrei no put de gostos')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -398,7 +402,7 @@ router.put('/pubGostos', function(req, res) {
 	})
 });
 
-router.put('/comentGostos', function(req, res) {
+router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
 	console.log('Entrei no put de gostos')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -425,7 +429,7 @@ router.put('/comentGostos', function(req, res) {
 //////////////////////FUNCOES///////////////////////////
 ////////////////////////////////////////////////////////
 
-async function parseFicheiros(fields, files, data){
+async function parseFicheiros(username, fileTitle, files, data){
 
     return new Promise((elemento, erro) =>{
 		var ficheirosArray = []
@@ -438,12 +442,12 @@ async function parseFicheiros(fields, files, data){
 			var extention = "." + parts[parts.length - 1]
 			
 			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
-			var pasta = path.resolve(__dirname + '/../uploaded/' + fields.username+'/' + dataCalendario)
+			var pasta = path.resolve(__dirname + '/../uploaded/' + username+'/' + dataCalendario)
 			
 			salt = randomstring.generate(64)
 
 			ficheiro = {}
-			ficheiro.nomeGuardado = hash('sha1').update(fields.username + nome + salt + dataCalendario).digest('hex')
+			ficheiro.nomeGuardado = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
 			ficheiro.nome = nome
 			ficheiro.isImage = isImage(nome)
 			
@@ -471,8 +475,8 @@ async function parseFicheiros(fields, files, data){
         elem.tipo = "ficheiros"
         elem.ficheiros = {}
         elem.ficheiros.ficheiros = ficheirosArray
-        if(fields.fileTitle)
-            elem.ficheiros.titulo = fields.fileTitle
+        if(fileTitle)
+            elem.ficheiros.titulo = fileTitle
 
 		elemento(elem)
     })
@@ -510,8 +514,7 @@ function axiosPost (req, res, publicacao, fields){
 		method: 'post', //you can set what request you want to be
 		url: 'http://localhost:3000/api/pubs/pub',
 		data:{
-			pub: publicacao,
-			username: fields.username
+			pub: publicacao
 		},
 		headers: {
 			Authorization: 'Bearer ' + req.session.token

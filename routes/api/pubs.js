@@ -62,30 +62,23 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
 router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)
-
-
-    User.consultarUsername(req.body.username)
-    .then(username =>{
-        req.body.pub.utilizador = username
-        Pubs.inserir(req.body.pub)
-            .then(dados => {
-                User.inserirPub(username, dados._id)
-                    .then(user => {
-                        console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
-                        res.jsonp(dados)
-                    })
-            })
-            .catch(erro => {
-                console.log('Errei no inserir publicação\n' + erro)
-                res.status(500).send('2 na inserção de publicações: ' + erro)
-            })
-    })
-    .catch(erroUsername =>{
-        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
-        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
-    })
-
+    Pubs.inserir(req.body.pub)
+        .then(dados => {
+            User.inserirPub(req.user._id, dados._id)
+                .then(user => {
+                    console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
+                    res.jsonp(dados)
+                })
+        })
+        .catch(erro => {
+            console.log('Errei no inserir publicação\n' + erro)
+            res.status(500).send('2 na inserção de publicações: ' + erro)
+        })
 })
+
+/////////////////////////////////////////////////////////
+/////////////////////////PUTS////////////////////////////
+/////////////////////////////////////////////////////////
 
 router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/comentario")
