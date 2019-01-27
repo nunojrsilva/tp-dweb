@@ -175,11 +175,12 @@ $(()=>{
 			contentType: "application/json",
 			data:formData,
 			success: data =>{
+				console.log(data)
 				alert('Publicação efetuada com sucesso');
+				$('#listaPublicacoes').prepend(data)
 				$('#formPub').trigger("reset");
 			},
 			error: e =>{
-				alert('Erro no post: ' + JSON.stringify(e))
 				$('#myForm').trigger("reset");
 				console.log('Erro no post: ' + JSON.stringify(e))
 			},

@@ -76,7 +76,8 @@ module.exports.listarPorData = data => {
 }
 
 module.exports.inserir = publicacao => {
-    return Pub.create(publicacao)
+	return Pub
+			.create(publicacao)
 }
 
 module.exports.remover = pid => {

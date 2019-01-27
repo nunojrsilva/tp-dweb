@@ -1,5 +1,5 @@
 $(()=>{
-    $("input.pubLike:button").click(function() {
+    $('#listaPublicacoes').on("click", 'input.pubLike:button', function(e){
 
         var pubID = $(this).closest('publicacao').attr('id')
 
@@ -28,9 +28,9 @@ $(()=>{
     });
     
 
-    $('.comentarios').on("click", 'input.commentLike:button', e => {
+    $('#listaPublicacoes').on("click", 'input.commentLike:button', function(e){
 
-        comentID = e.target.id
+        var comentID = $(this).closest('.comentarioDiv').attr('id')
         alert("ID do comentário: " +  comentID);
 
         var formData = new FormData();
@@ -43,7 +43,7 @@ $(()=>{
             data: formData,
             success: data =>{
                 console.dir(data.size)
-                $('#' + comentID).val('Gosto (' + (data.size) + ')')
+                $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
                 alert('Erro no post: ' + JSON.stringify(e))
@@ -55,7 +55,8 @@ $(()=>{
         });
     });
     
-    $(".formComentarios").submit(function(e) {
+    $('#listaPublicacoes').on('submit','.formComentarios', function(e){
+
 		e.preventDefault();        
 
         var pubID = $(this).closest('publicacao').attr('id')

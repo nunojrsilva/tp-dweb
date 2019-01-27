@@ -522,6 +522,7 @@ function axiosPost (req, res, publicacao, fields){
 		}
   	})
 	.then(dados =>{
+		console.log("respostaPub: \n" + JSON.stringify(dados.data))
 		res.render("respostaPub", {pub : dados.data})
 	})
 	.catch(error =>{
