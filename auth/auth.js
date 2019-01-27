@@ -9,6 +9,8 @@ var UserModel = require('../models/users')
 var UserController = require('../controllers/users')
 
 let fs = require('fs');
+var hash = require('crypto').createHash;
+var randomstring = require('randomstring');
 
 //Registo de um utilizador
 
@@ -104,14 +106,17 @@ passport.use('facebook', new FacebookStrategy({
       console.log(accessToken)
       console.log(refreshToken)
       console.log(profile)
+
       var username = profile.id
 
       var user = await (UserModel.findOne({username}))
         
       if (!user) {
         var nome = profile.name.givenName
+
+        var salt = randomstring.generate(128)
         
-        var password = "1234"
+        var password = hash('sha1').update(username + nome + salt).digest('hex')
 
         var fotoPerfil = {}
         fotoPerfil.idAtual = null
@@ -123,7 +128,7 @@ passport.use('facebook', new FacebookStrategy({
     
         fotoPerfil.fotos.push(fotoDefault)
 
-        var user = await UserModel.create({nome, username, password, fotoPerfil})
+        var user = await UserModel.create({nome, username, password, salt, fotoPerfil})
 
         fs.mkdirSync(__dirname + '/../uploaded/'+ user.username +'/')
 
@@ -139,7 +144,16 @@ passport.use('facebook', new FacebookStrategy({
         
       }
       else {
-        return done(null, user, {message: "Login com sucesso"})
+          var password = hash('sha1').update(user.username + user.nome + user.salt).digest('hex')
+         
+          var valid = await user.isValidPassword(password)
+          if (valid) {
+              console.log("password correta")
+              return done(null, user, {message: "Login com sucesso"})
+          }
+          else return done(null, false, {message: "Erro no login"})
+
+        
 
       }
   }
