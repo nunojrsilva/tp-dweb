@@ -16,7 +16,7 @@ var jwt = require('jsonwebtoken')
 
 
 router.get('/', (req,res) => {
-  res.render("homepage")
+  res.render("userHomepage")
 })
 
 //Login
@@ -107,7 +107,7 @@ router.post("/registo", (req,res) => {
 })
 
 router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
-  console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+  console.log("Entrou no get de /atualizarFotoPerfil " + req.user._id)
   
   axios({
     method: 'get', 
@@ -127,7 +127,7 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
 })
 
 router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
-  console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
+  console.log("Entrou no get de /FotosPerfil " + req.user._id)
   
   axios({
     method: 'get', 
@@ -206,6 +206,54 @@ router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), 
   })
 })
 
+router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+  console.log("ENTREI NO /PERFIL " + req.user._id + req.query.idUser)
+
+  if(req.query.idUser){
+    console.log("AXIOS DO PERFIL DE OUTRO USER")
+    axios({
+      method: 'get', 
+      url: 'http://localhost:3000/api/users/Perfil',
+      data:{
+        idUser: req.query.idUser
+      },
+      headers: {
+        Authorization: 'Bearer ' + req.session.token
+      }
+      })
+    .then(dados =>{
+      console.log(dados.data)
+      res.render('perfil', {perfil: dados.data})
+    })
+    .catch(error =>{
+      console.log("ERRO AXIOS POST: " + error)
+    })
+  }
+  else{
+    console.log("AXIOS DO PERFIL DO USER")
+    axios({
+      method: 'get', 
+      url: 'http://localhost:3000/api/users/Perfil',
+      headers: {
+        Authorization: 'Bearer ' + req.session.token
+      }
+      })
+    .then(dados =>{
+      console.log(dados.data)
+      res.render('perfil', {perfil: dados.data})
+    })
+    .catch(error =>{
+      console.log("ERRO AXIOS POST: " + error)
+    })
+  }
+
+})
+
+
+////////////////////////////////////////////////////////////
+//////////////////////FUNÇÕES///////////////////////////////
+////////////////////////////////////////////////////////////
+
 async function parseFicheiros(req, files){
     
   return new Promise((objFoto, erro) =>{
@@ -245,5 +293,6 @@ async function parseFicheiros(req, files){
     })
   })
 }
+
 
 module.exports = router;

@@ -1,76 +1,61 @@
-extends layout
+extends layoutBase
 
-block content
+block content1
     
     .w3-container
         .w3-card-4
-            header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-                h3 Publicação
-            .w3-container
-                form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
-                    table(style='width:100%')
-                        tr
-                            td(style='width:50%' valign='top')
-                                br
-                                input#opiniaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Opinião' style='margin-right:10px;')
-                                input#narracaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Narração' style='margin-right:10px;')
-                                input#filesbtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Ficheiros' style='margin-right:10px;')
-                                input#listabtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Lista' style='margin-right:10px;')
-                                input#eventobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Evento' style='margin-right:10px;')
-                                input#livrebtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Livre' style='margin-right:10px;')
-                                br
-                                br
-
-                                #formDiv
+            header.w3-container(style='height:50px; background-color: rgb(59,100,170); color: white;')
+                h5(style='flex: 50%; float: left; margin-top:8px;') Nova Publicação
+                .w3-container(style='flex: 50%; float: right; margin-top:-2px;')
+                    input#opiniaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Opinião' style='font-size:12px; margin-right:10px;')
+                    input#narracaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Narração' style='font-size:12px; margin-right:10px;')
+                    input#listabtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Lista' style='font-size:12px; margin-right:10px;')
+                    input#eventobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Evento' style='font-size:12px; margin-right:10px;')
+                    input#livrebtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Livre' style='font-size:12px;')
                                 
-                                input#AdicaoFicheiros.w3-btn.w3-round-large(type='button' value='Adicionar ficheiros' style='background-color: rgb(59,100,170); color: white; font-size:12px; margin-left:25px; margin-top:10px')
+            form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
+                table(style='width:100%')
+                    tr
+                        td(style='width:55%' valign='top')
+                            .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                    #formDiv
+                            br
+                            br
+                            br
+                            .w3-container
+                                b Pretende fazer a sua publicação pública?
                                 br
-                            td(style='width:5%')
+                                lable Sim
+                                    input(id="checkboxSim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+                                br
+                                label Não
+                                    input(id="checkboxNao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
 
-                            td(style='width:45%')
-                                .w3-container(id="filesDiv" style='visibility: hidden')
-                                    .w3-card-4.w3-margin
-                                        header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-                                            h7 Adicionar Ficheiros
-                                        .w3-container
-                                            br
-                                            label
-                                                b Titulo
-                                            input.w3-input.w3-border.w3-light-grey.w3-round-large(id='filesTitulo' type='text' name='fTitulo')
-                                            br
-                                            label
-                                                b Ficheiros
-                                            #listaFiles
-                                                input.w3-input.w3-border.w3-light-grey.w3-round-large(type='file' name='files0' multiple)
-                                            br
-                                            input.w3-btn.w3-border.w3-round-large(id='more_files' type='button' value='Mais ficheiros' style='font-size:10px;')
-                                            br
-                                            br
-                                            input#cancelarAdicaoFicheiros.w3-btn.w3-round-large(type='button' value='Cancelar Adição de Ficheiros' style='background-color: rgb(59,100,170); color: white; font-size:12px; margin-left:25px; margin-top:10px')
-                                            br
-                                            br
-                    br
-                    lable 
-                        b Pretende fazer a sua publicação pública?
-                        br
-                        lable Sim
-                            input(id="checkboxSim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
-                        br
-                        label Não
-                            input(id="checkboxNao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
+                        td(style='width:45%' valign='top')
+                            .w3-container(style='display: table; margin: 0 auto;')
+                                input#AdicaoFicheiros.w3-border.w3-btn.w3-tiny.w3-round-large(type='button' value='Adicionar ficheiros' style='background-color: rgb(220,220,220); font-size:12px; margin-top:5px;  margin-right:-10px;')
 
-                    br
-                    br
-                    
-                    input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
-                    input.w3-btn.w3-round-large(type='reset' value='Limpar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
+                            .w3-container(id="filesDiv" style='visibility: hidden; margin-right:-10px')
+                                .w3-card-4.w3-round-large(style=' display: table; margin: 0 auto;')
+                                    header.w3-container.w3-round-large(style='margin-top:-50px; background-color: rgb(59,100,170); color: white;')
+                                        h7 Adicionar Ficheiros
+                                        input#cancelarAdicaoFicheiros.w3-button.w3-circle.w3-border(type='button' value='X' style='padding: 0px 5px; float:right; background-color: rgb(220,220,220); color:black; margin-left:25px; margin-right:-10px;')
+                                    .w3-container(style='background-color:rgb(245,245,245);')
+                                        label
+                                            b Titulo
+                                        input.w3-input.w3-border.w3-round-large(id='filesTitulo' type='text' name='fTitulo' style='margin-bottom:10px;')
+                                        label
+                                            b Ficheiros
+                                        #listaFiles
+                                            input.w3-input.w3-border.w3-white.w3-round-large(type='file' name='files0' multiple)
+                                        input.w3-btn.w3-border.w3-round-large(id='more_files' type='button' value='Mais ficheiros' style='margin-top:5px; background-color: rgb(59,100,170); color:white; margin-bottom:5px; font-size:10px;')
+                                        br
+                br
+                
+                input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
+                input.w3-btn.w3-round-large(type='reset' value='Limpar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
 
-                br
-                br
-                a(href="/pubs") Voltar ao Feed
-                br
-                br
-            footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center;")
-                address Powered by Desenvolvimento de Aplicações Web
+            br
                 
     script(src='/javascripts/geral.js')

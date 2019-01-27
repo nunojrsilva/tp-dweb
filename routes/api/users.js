@@ -14,13 +14,14 @@ var passport = require('passport')
 var jwt = require('jsonwebtoken')
 
 var User = require('../../controllers/users')
+var Pubs = require('../../controllers/pubs')
 
 
-router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
-    User.listar()
-        .then(dados => res.jsonp(dados))
-        .catch(erro => res.status(500).send('Erro na listagem de utilizadores' + erro))
-})
+// router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
+//     User.listar()
+//         .then(dados => res.jsonp(dados))
+//         .catch(erro => res.status(500).send('Erro na listagem de utilizadores' + erro))
+// })
 
 router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
     console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
@@ -58,10 +59,64 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
     User.atualizarFotoPerfil(req.user._id, req.query.fotoId)
     .then(user => {
         console.log(JSON.stringify(user))
-        res.redirect("http://localhost:3000/FotosPerfil")
+        res.redirect("http://localhost:3000/Perfil")
     })
     .catch(erroFoto => res.status(500).send('ERRO AO TENTAR ATUALIZAR A FOTO DE PERFIL ' + erroFoto))
    
+})
+
+router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+    console.log("Entrou no get de /Perfil " + req.user._id)
+    var userID = null
+    var proprioPerfil = null
+    if(req.body.idUser){
+        userID = req.body.idUser
+        proprioPerfil = false
+    }
+    else{
+        userID = req.user._id
+        proprioPerfil = true    
+    }
+    console.log("ESTE É O USER " + userID)
+    User.getIdAtual(userID)
+    .then(foto =>{
+        console.log("ESTE É O ID DA FOTO DE PERFIL ATUAL " + JSON.stringify(foto))
+        User.consultarPerfil(userID, foto[0].fotoPerfil.idAtual)
+        .then(userArray => {
+            var user = userArray[0]
+            console.log(JSON.stringify(user))
+            if(proprioPerfil){
+                Pubs.listarPorUser(user._id)
+                .then(pubs =>{
+                    console.log(JSON.stringify(pubs))
+                    user.pubs = pubs
+                    user.npubs = pubs.length
+                    res.jsonp(user)
+                })
+                .catch(erroProprio =>{
+                    console.log(erroProprio)
+                    res.status(500).send("ERRO AO TENTAR CARREGAR AS PRÓPRIAS PUBS " + erroProprio)
+                })
+            }
+            else{
+                Pubs.listarPorUserPublico(user._id, true)
+                .then(pubs =>{
+                    console.log(JSON.stringify(pubs))
+                    user.pubs = pubs
+                    user.npubs = pubs.length
+                    res.jsonp(user)
+                })
+                .catch(erroPubs =>{
+                    console.log(erroPubs)
+                    res.status(500).send("ERRO AO TENTAR CARREGAR AS PUBS DOUTRO USER" + erroPubs)
+                })
+
+            }
+        })
+        .catch(erroFoto => res.status(500).send('ERRO AO TENTAR OBTER PERFIL DO USER COM ID ' + userID + erroFoto))
+
+    })
+    
 })
 
 router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) => {

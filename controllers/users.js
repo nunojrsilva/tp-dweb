@@ -1,7 +1,6 @@
 var User = require('../models/users')
 var mongoose = require ('mongoose')
 
-
 //Lista de Utilizadores
 
 module.exports.listar = () => {
@@ -23,6 +22,19 @@ module.exports.consultar = uid => {
 module.exports.consultarUsername = un => {
     return User
             .findOne({username: un},{_id: 1})
+            .exec()
+}
+
+module.exports.consultarPerfil = (_id, fotoID) => {
+    var uid = mongoose.Types.ObjectId(_id)
+    var idAtual = mongoose.Types.ObjectId(fotoID)
+    return User
+            .aggregate([
+            {$match: {_id: uid}},
+            {$unwind: '$fotoPerfil.fotos'},
+            {$match:{'fotoPerfil.idAtual': idAtual}},
+            {$project: {'_id': 1, 'nome': 1, 'username': 1, 'fotoPerfil.idAtual': 1}}
+            ])
             .exec()
 }
 

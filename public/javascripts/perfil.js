@@ -27,8 +27,12 @@ $(()=>{
         });
     });
     
+    $('#fotosPerfil').click(e =>{
+        e.preventDefault()
+        location.href = "http://localhost:3000/FotosPerfil";
+    })
 
-    $('.comentarios').on("click", 'input.commentLike:button', e => {
+    $('comentarios').on("click", 'input.commentLike:button', e => {
 
         comentID = e.target.id
         alert("ID do comentário: " +  comentID);
@@ -73,7 +77,7 @@ $(()=>{
             success: data =>{
                 console.dir(data)
                 $('#' + this.id).trigger("reset");
-                $('#'+pubID+'comentarios').append(data)
+                $('comentarios').append(data)
                 $("#"+pubID+"NoComments").remove()
                 alert('Comentário enviado');
             },

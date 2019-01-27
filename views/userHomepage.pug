@@ -1,0 +1,22 @@
+extends layoutBase
+
+block content1
+    .w3-card-4
+        div.w3-bar(style='background-color: rgb(59,100,170); color: white;')
+            a.w3-bar-item.w3-button(href="/") Home
+            a.w3-bar-item.w3-button(href="/login") Login
+            a.w3-bar-item.w3-button(href="/pubs/publicar") Nova Publicação
+        .w3-container
+            table(width='100%')
+                tr
+                    td(width='20%')
+                    td(width='60%')
+                        #novaPublicacao
+                        #publicacoes
+                    td(width='20%')
+
+            
+        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center;")
+            address Powered by Desenvolvimento de Aplicações Web
+
+    script(src='/javascripts/userHomepage.js')

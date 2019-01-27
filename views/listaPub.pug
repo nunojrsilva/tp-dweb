@@ -1,16 +1,16 @@
-.w3-card-4
-    header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-        h5 Criar Nova Lista
-    .w3-container.w3-border(style="width:100%; float: left;")
-        br
-        label(style="width:30px")
-            b Título
-        input.w3-input.w3-border.w3-light-grey.w3-round-large(id="titulo" type="text" placeholder="Título da Lista" style="width:40%" required)
-        br
-        label
-            b Lista
-        #listaItens
-            input.w3-input.w3-border.w3-light-grey.w3-round-large(id="item1" type="text" placeholder = "Item da Lista" style="width:40%" required)
-        input.w3-btn.w3-round-large(type = "button" id = "adicionarIten" value = "Adicionar novo item" style='background-color: rgb(59,100,170); color: white; font-size:10px; margin-left:25px; margin-top:10px')                        
-        br
-        br
+.w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(59,100,170); color: white;')
+    h7
+        b Lista
+table(style='width:100%; margin-top:10px; margin-bottom:5px;')
+    tr(align='left')
+        th(style='width:100%') &nbsp; Título
+    tr
+        td(style='width:100%')
+            input.w3-input.w3-border.w3-round-large(id='titulo' type='text' placeholder='Título da Lista' style='width:50%' required)
+    tr(align='left' style='margin-top:10px;')
+        th(style='padding-top: 0.5em; width:100%') &nbsp; Lista
+    tr
+        td(style='width:100%')
+            #listaItens
+                input.w3-input.w3-border.w3-round-large(id='item1' type='text' placeholder = 'Item da Lista' style='width:100%' required)
+            input.w3-btn.w3-border.w3-round-large(type = 'button' id = 'adicionarIten' value = 'Adicionar item' style='background-color: rgb(59,100,170); color: white; font-size:10px; margin-top:10px; margin-left:10px;')                        
