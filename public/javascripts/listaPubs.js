@@ -55,7 +55,7 @@ $(()=>{
         });
     });
     
-    $("form").submit(function(e) {
+    $(".formComentarios").submit(function(e) {
 		e.preventDefault();        
 
         var pubID = $(this).closest('publicacao').attr('id')

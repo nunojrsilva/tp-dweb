@@ -75,6 +75,8 @@ module.exports.listarPorData = data => {
 			.exec()
 }
 
+Pub.find({'utilizador': { $in: listaSeguidos}})
+
 module.exports.inserir = publicacao => {
     return Pub.create(publicacao)
 }
