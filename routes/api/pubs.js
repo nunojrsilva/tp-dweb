@@ -1,6 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport')
+var axios = require('axios')
 
 
 var Pubs = require('../../controllers/pubs')
@@ -41,7 +42,10 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
         console.log("CHEGUEI AQUI")
         try{
             Pubs.listar()
-            .then(dados => res.jsonp(dados))
+            .then(dados =>{ 
+                console.log(JSON.stringify(dados))        
+                res.jsonp(dados)
+            })
             .catch(erro => res.send(erro))
         }
         catch(e){
@@ -58,185 +62,140 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
 router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)
-
-
-    User.consultarUsername(req.body.username)
-    .then(username =>{
-        req.body.pub.utilizador = username
-        Pubs.inserir(req.body.pub)
-            .then(dados => {
-                User.inserirPub(username, dados._id)
-                    .then(user => {
-                        console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
-                        res.jsonp(dados)
-                    })
-            })
-            .catch(erro => {
-                console.log('Errei no inserir publicação\n' + erro)
-                res.status(500).send('2 na inserção de publicações: ' + erro)
-            })
-    })
-    .catch(erroUsername =>{
-        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
-        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
-    })
-
+    Pubs.inserir(req.body.pub)
+        .then(dados => {
+            User.inserirPub(req.user._id, dados._id)
+                .then(user => {
+                    console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
+                    res.jsonp(dados)
+                })
+        })
+        .catch(erro => {
+            console.log('Errei no inserir publicação\n' + erro)
+            res.status(500).send('2 na inserção de publicações: ' + erro)
+        })
 })
+
+/////////////////////////////////////////////////////////
+/////////////////////////PUTS////////////////////////////
+/////////////////////////////////////////////////////////
 
 router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/comentario")
     console.dir(req.body)
-    User.consultarUsername(req.body.username)
-        .then(username =>{
-            if(username != null){
-                var comentario = {}
-                comentario.utilizador = username
-                comentario.texto = req.body.comentario
-                comentario.gostos = []
-            
-                Pubs.inserirComentario(req.body.pubID, comentario)
-                    .then(pub => {
-                        var novoComentario = pub.comentarios[pub.comentarios.length - 1]
-                        console.log("COMENTÁRIO SUBMETIDO COM SUCESSO", novoComentario)
-                        res.jsonp(novoComentario)
-                    })
-                    .catch(erro => {
-                        console.log('Errei no inserir comentário\n' + erro)
-                        res.status(500).send('Erro na inserção de comentários: ' + erro)
-                    })
-            }
-            else{
-                console.log('Utilizador inexistente\n' + erro)
-                res.status(500).send('Utilizador inexistente: ' + erro)
-            }
+    console.dir("REQ USER: " + JSON.stringify(req.user))
+
+    var comentario = {}
+    comentario.utilizador = req.user._id
+    comentario.texto = req.body.comentario
+    comentario.gostos = []
+
+    Pubs.inserirComentario(req.body.pubID, comentario)
+        .then(pub => {
+            var novoComentario = pub.comentarios[pub.comentarios.length - 1]
+            console.log("COMENTÁRIO SUBMETIDO COM SUCESSO", novoComentario)
+            res.jsonp(novoComentario)
         })
-        .catch(erroUsername =>{
-            console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
-            res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+        .catch(erro => {
+            console.log('Errei no inserir comentário\n' + erro)
+            res.status(500).send('Erro na inserção de comentários: ' + erro)
         })
 })
 
 router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/pubGostos")
     console.dir(req.body)
-    User.consultarUsername("ricardo15")
-    .then(username =>{
-        if(username != null){
-            username = username._id
-            Pubs.contaPubGostos(req.body.pubID)
-            .then(gostos => {
-                console.log(gostos[0])
-                var nGostos = gostos[0].gostos
-                console.log("Número de gostos: " + nGostos)
+
+    Pubs.contaPubGostos(req.body.pubID)
+    .then(gostos => {
+        console.log(gostos[0])
+        var nGostos = gostos[0].gostos
+        console.log("Número de gostos: " + nGostos)
                 
-                Pubs.consultarUserPubGosto(req.body.pubID, username)
-                .then( dados => {
-                    console.log("Consultar User Pub Gosto Res: ", dados.length)
-                    if(dados.length == 0){
-                        console.log("User gostou da pub")
-                        Pubs.pubIncGostos(req.body.pubID, username)
-                        .then(pub => {
-                            console.log("GOSTO ADICIONADO COM SUCESSO", pub)
-                            res.jsonp(nGostos+1)
-                        })
-                        .catch(erro => {
-                            console.log('Errei no incrementar gosto\n' + erro)
-                            res.status(500).send('Erro na incrementação de gostos: ' + erro)
-                        })
-                    }
-                    else{
-                        console.log("User não gostou da pub")
-                        Pubs.pubDecGostos(req.body.pubID, username)
-                        .then(pub => {
-                            console.log("GOSTO RETIRADO COM SUCESSO", pub)
-                            res.jsonp(nGostos-1)
-                        })
-                        .catch(erro => {
-                            console.log('Errei no decrementar gosto\n' + erro)
-                            res.status(500).send('Erro na decrementação de gostos: ' + erro)
-                        })
-                    }
+        Pubs.consultarUserPubGosto(req.body.pubID, req.user._id)
+        .then( dados => {
+            console.log("Consultar User Pub Gosto Res: ", dados.length)
+            if(dados.length == 0){
+                console.log("User gostou da pub")
+                Pubs.pubIncGostos(req.body.pubID, req.user._id)
+                .then(pub => {
+                    console.log("GOSTO ADICIONADO COM SUCESSO", pub)
+                    res.jsonp(nGostos+1)
                 })
-                .catch( erroGostos => {
-                    console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
-                    res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+                .catch(erro => {
+                    console.log('Errei no incrementar gosto\n' + erro)
+                    res.status(500).send('Erro na incrementação de gostos: ' + erro)
                 })
-            })
-            .catch(erroContaGostos => {
-                console.log('Errei no contar gostos\n' + erroContaGostos)
-                res.status(500).send('Erro no contar gostos: ' + erroContaGostos)
-            })
-        }
-        else{
-            console.log('Utilizador inexistente\n' + erro)
-            res.status(500).send('Utilizador inexistente: ' + erro)
-        }
+            }
+            else{
+                console.log("User não gostou da pub")
+                Pubs.pubDecGostos(req.body.pubID, req.user._id)
+                .then(pub => {
+                    console.log("GOSTO RETIRADO COM SUCESSO", pub)
+                    res.jsonp(nGostos-1)
+                })
+                .catch(erro => {
+                    console.log('Errei no decrementar gosto\n' + erro)
+                    res.status(500).send('Erro na decrementação de gostos: ' + erro)
+                })
+            }
+        })
+        .catch( erroGostos => {
+            console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
+            res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+        })
     })
-    .catch(erroUsername =>{
-        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
-        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+    .catch(erroContaGostos => {
+        console.log('Errei no contar gostos\n' + erroContaGostos)
+        res.status(500).send('Erro no contar gostos: ' + erroContaGostos)
     })
 })
 
 router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
     console.log("PASSEI PELO /api/comentGostos")
     console.dir(req.body)
-    User.consultarUsername("ricardo15")
-    .then(username =>{
-        if(username != null){
-            username = username._id
-            Pubs.contaComentGostos(req.body.comentID)
-            .then(gostos => {
-                console.log(gostos[0])
-                var nGostos = gostos[0].gostos
-                console.log("Número de gostos: " + nGostos)
+    Pubs.contaComentGostos(req.body.comentID)
+    .then(gostos => {
+        console.log(gostos[0])
+        var nGostos = gostos[0].gostos
+        console.log("Número de gostos: " + nGostos)
 
-                Pubs.consultarUserComentGosto(req.body.comentID, username)
-                .then( dados => {
-                    console.log("Consultar User Coment Gosto Res: ", dados.length)
-                    if(dados.length == 0){
-                        console.log("User gostou do comentário")
-                        Pubs.comentIncGostos(req.body.comentID, username)
-                        .then(pub => {
-                            console.log("GOSTO ADICIONADO COM SUCESSO", pub)
-                            res.jsonp(nGostos+1)
-                        })
-                        .catch(erro => {
-                            console.log('Errei no incrementar gosto\n' + erro)
-                            res.status(500).send('Erro na incrementação de gostos: ' + erro)
-                        })
-                    }
-                    else{
-                        console.log("User não gostou do comentário")
-                        Pubs.comentDecGostos(req.body.comentID, username)
-                        .then(pub => {
-                            console.log("GOSTO RETIRADO COM SUCESSO", pub)
-                            res.jsonp(nGostos-1)
-                        })
-                        .catch(erro => {
-                            console.log('Errei no decrementar gosto\n' + erro)
-                            res.status(500).send('Erro na decrementação de gostos: ' + erro)
-                        })
-                    }
+        Pubs.consultarUserComentGosto(req.body.comentID, req.user._id)
+        .then( dados => {
+            console.log("Consultar User Coment Gosto Res: ", dados.length)
+            if(dados.length == 0){
+                console.log("User gostou do comentário")
+                Pubs.comentIncGostos(req.body.comentID, req.user._id)
+                .then(pub => {
+                    console.log("GOSTO ADICIONADO COM SUCESSO", pub)
+                    res.jsonp(nGostos+1)
                 })
-                .catch( erroGostos => {
-                    console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
-                    res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+                .catch(erro => {
+                    console.log('Errei no incrementar gosto\n' + erro)
+                    res.status(500).send('Erro na incrementação de gostos: ' + erro)
                 })
-            })
-            .catch(erroContaGostos => {
-                console.log('Errei no contar gostos\n' + erroContaGostos)
-                res.status(500).send('Erro no contar gostos: ' + erroContaGostos)
-            })
-        }
-        else{
-            console.log('Utilizador inexistente\n' + erro)
-            res.status(500).send('Utilizador inexistente: ' + erro)
-        }
+            }
+            else{
+                console.log("User não gostou do comentário")
+                Pubs.comentDecGostos(req.body.comentID, req.user._id)
+                .then(pub => {
+                    console.log("GOSTO RETIRADO COM SUCESSO", pub)
+                    res.jsonp(nGostos-1)
+                })
+                .catch(erro => {
+                    console.log('Errei no decrementar gosto\n' + erro)
+                    res.status(500).send('Erro na decrementação de gostos: ' + erro)
+                })
+            }
+        })
+        .catch( erroGostos => {
+            console.log("ERRO AO CONSULTAR USER GOSTO: ", erroGostos)
+            res.status(500).send("ERRO AO CONSULTAR USER GOSTO: " + erroGostos)
+        })
     })
-    .catch(erroUsername =>{
-        console.log("ERRO AO CONSULTAR O USERNAME: ", erroUsername)
-        res.status(500).send("ERRO AO CONSULTAR O USERNAME: " + erroUsername)
+    .catch(erroContaGostos => {
+        console.log('Errei no contar gostos\n' + erroContaGostos)
+        res.status(500).send('Erro no contar gostos: ' + erroContaGostos)
     })
 })
 
@@ -253,5 +212,4 @@ router.delete('/:pid', passport.authenticate('jwt', {session : false}), (req,res
 /////////////////////////////////////////////////////////
 ///////////////////FUNCOES///////////////////////////////
 /////////////////////////////////////////////////////////
-
 module.exports = router;

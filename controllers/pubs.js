@@ -3,7 +3,7 @@ var mongoose = require('mongoose')
 
 var pop_config = {
 	path: 'utilizador',
-	select:'nome username'
+	select:'nome username fotoPerfil.idAtual'
 }
 
 var pop_config2 = {

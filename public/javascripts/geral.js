@@ -45,7 +45,7 @@ $(()=>{
 
         item = item + 1
  
-        var input = $("<input class='w3-input w3-border w3-light-grey' id='item" + item + "' style='width:40%; margin-top:2px;' type='text' placeholder='Item da Lista'>");
+        var input = $("<input class='w3-input w3-border w3-round-large w3-light-grey' id='item" + item + "' style='width:40%; margin-top:2px;' type='text' placeholder='Item da Lista'>");
         $("#listaItens").append(input)
       
 	})
@@ -55,7 +55,7 @@ $(()=>{
 
 		fileInputs = fileInputs + 1
  
-		var input = $("<input type='file' class='w3-input w3-border w3-light-grey' name='file" + fileInputs + "' multiple/>");
+		var input = $("<input type='file' class='w3-input w3-border w3-round-large w3-light-grey' name='file" + fileInputs + "' multiple/>");
 		$("#listaFiles").append(input);
 	})
 
@@ -105,8 +105,6 @@ $(()=>{
 		});		
 		formData.append('fileTitle', $('#filesTitulo').val());
 		//alert('Cheguei ao 1')
-
-		formData.append('username', $('#username').val());
 
 		if(tipo == "opiniao")
 			formData.append('opiniao', $('#opiniao').val());
