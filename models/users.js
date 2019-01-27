@@ -21,6 +21,7 @@ var UserSchema = new Schema({
     username: {type: String, required : true, unique: true},
     password: {type: String, required : true},
     pubs : [{type: ObjectId, required : true, ref : 'Pub'}],
+    salt : {type:String, required : false},
     fotoPerfil: {type: FotoPerfilSchema, required: true}
 })
 
@@ -34,7 +35,7 @@ UserSchema.pre('save', async function (next) {
 UserSchema.methods.isValidPassword = async function(password) {
     var user = this
     var compare = await bcrypt.compare(password, user.password)
-
+    console.log("Password enviada : " + password)
     return compare
 }
 
