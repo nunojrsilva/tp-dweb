@@ -29,8 +29,6 @@ $(()=>{
 		console.log("HERE")
 		var formData = new FormData();
 
-        formData.append('uid', $('#id').attr('name'));        
-        
         var aux=1;
 		$.each($("input[type=file]"), (i, obj) => {
 			
@@ -42,7 +40,7 @@ $(()=>{
 		});		
 		
 		$.ajax({
-			url:'/api/users/novaFotoPerfil',
+			url:'/novaFotoPerfil',
 			type:"POST",
 			contentType: "application/json",
 			data:formData,
@@ -61,4 +59,9 @@ $(()=>{
 			processData: false
 		});
 	});
+
+	$('#alterarFotoPerfil').click(e=>{
+		e.preventDefault()
+		location.href="http://localhost:3000/atualizarFotoPerfil"
+	})
 });
