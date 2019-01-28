@@ -1,4 +1,7 @@
 $(()=>{
+
+    $("listaPublicacoes").load('http://localhost:3000/pubs?username='+$("listaPublicacoes").attr('id'))
+
     $("input.pubLike:button").click(function() {
 
         var pubID = $(this).closest('publicacao').attr('id')
