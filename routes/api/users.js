@@ -185,6 +185,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false, failureRedi
                                         console.log(JSON.stringify(pubs))
                                         User.contarPubs(user._id)
                                         .then(nPubsTotal =>{
+                                            
                                             user.pubs = pubs
                                             user.npubs = nPubsTotal.pubs.length
                                             user.npubsInvisiveis = nPubsTotal.pubs.length - pubs.length
