@@ -62,9 +62,10 @@ router.post("/login", (req,res) => {
   var password = req.body.password
   axios.post("http://localhost:3000/api/users/login", {username, password})
     .then(dados => {
+      req.session.token = dados.data.token
       console.log("Token: "+ JSON.stringify(dados.data.token))
       // Guardar o token
-      req.session.token = dados.data.token
+      console.log(req.session.token)
       res.redirect("/")
     })
     .catch(e => {
@@ -152,7 +153,7 @@ router.post('/Seguir',passport.authenticate('jwt', {session : false, failureRedi
     })
     .then(info =>{
   
-      res.render('checkImg', {target: info.data})
+      res.send({target: info.data})
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO SEGUIR: " + error)
@@ -166,8 +167,8 @@ router.post('/Seguir',passport.authenticate('jwt', {session : false, failureRedi
 })
 
 router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
-  if(req.query.userAIgnorar){
-    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userAIgnorar)
+  if(req.body.userAIgnorar){
+    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userAIgnorar)
     
     axios({
       method: 'post', 
@@ -181,7 +182,7 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRe
     })
     .then(info =>{
   
-      res.render('plusImg', {target: info.data})
+      res.send({target: info.data})
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO IGNORAR: " + error)
@@ -189,7 +190,7 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRe
     })
   }
   else{
-    console("ESTAVA VAZIO")
+    console.log("ESTAVA VAZIO")
     res.end()
   }
 })

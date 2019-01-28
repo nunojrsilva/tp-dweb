@@ -19,7 +19,7 @@ block content
                             p(style="margin-top: -3%;margin-left: 15%;")= perfil._id 
                             div(id="seguir7ignorar")
                                 if(perfil.otherUser == true)
-                                    if(perfil.segue == false)
+                                    if(perfil.segue == true)
                                         a(id="ignorar" style="visibility: visible;")
                                             img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
                                         a(id="seguir" style="visibility: hidden;")
