@@ -1,8 +1,8 @@
-extends layout
+extends layoutBase
 
-block content
-    .w3-container
-        h1 Página de Login
+block content1
+    .w3-container(style = "background-image:url('/images/default.jpeg');")
+        h1 Login
     .w3-container(align="center")
         .w3-card-4.w3-dark-grey(style= "width:20%")
             .w3-container
@@ -18,5 +18,6 @@ block content
             if msg
                 .w3-panel.w3-red
                     p=msg
-        form(action="/auth/facebook" method = "GET")
-            input.w3-button.w3-blue(type = "submit" value = "Login/Registo com Facebook")
+        .w3-container
+            form(action="/auth/facebook" method = "GET")
+                input.w3-button.w3-blue(type = "submit" value = "Login/Registo com Facebook")
