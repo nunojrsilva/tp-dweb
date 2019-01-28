@@ -110,13 +110,13 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false, failureRedi
     var userID = null
     var proprioPerfil = null
    
-    if(req.body.idUser != req.user._id){
-        userID = req.body.idUser
-        proprioPerfil = false
+    if((req.body.idUser == req.user._id) || (req.body.idUser == undefined)){
+        userID = req.user._id
+        proprioPerfil = true   
     }
     else{
-        userID = req.user._id
-        proprioPerfil = true    
+        userID = req.body.idUser
+        proprioPerfil = false
     }
     console.log("ESTE É O USER " + userID)
     User.getIdAtual(userID)
