@@ -61,7 +61,7 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?data=' + req.query.data)
 		.then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { loggedIn : true, pubs: publicacoes }))
+			.then(publicacoes => res.render('pubHashtag', { loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
