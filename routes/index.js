@@ -15,7 +15,7 @@ var jwt = require('jsonwebtoken')
 
 
 
-router.get('/', (req,res) => {
+router.get('/', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
   res.render("userHomepage")
 })
 
@@ -36,8 +36,13 @@ router.get('/login', (req,res) => {
 
 })
 
+router.get("/publicas", (req,res) => {
+  res.render('homepage')
+  //res.send(req.flash('error'))
+})
 
-router.get('/logout', (req,res) => {
+
+router.get('/logout', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
   console.log('Na cb do GET /logout ...')
   req.session.token = null
   res.redirect('/')
@@ -48,25 +53,6 @@ router.get('/registo', (req,res) => {
   console.log('Na cb do GET /login ...')
   res.render('registo')
 
-})
-
-router.get('/users',  (req,res) => {
-  
-  console.log("Token é : " + req.session.token )
-  
-  axios({
-    method: 'get', //you can set what request you want to be
-    url: 'http://localhost:3000/api/users',
-    headers: {
-      Authorization: 'Bearer ' + req.session.token
-    }
-  })
-  .then(dados => res.jsonp(dados.data))
-  .catch(e => {
-          console.log("erro no get de /users : " + e)
-          res.send();
-
-  })
 })
 
 
@@ -106,7 +92,7 @@ router.post("/registo", (req,res) => {
     })
 })
 
-router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
   console.log("Entrou no get de /atualizarFotoPerfil " + req.user._id)
   
   axios({
@@ -126,7 +112,7 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
 
 })
 
-router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.get('/FotosPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
   console.log("Entrou no get de /FotosPerfil " + req.user._id)
   
   axios({
@@ -147,7 +133,7 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
   })
 })
 
-router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.post('/Seguir',passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
   console.log("HERE")
   console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userParaSeguir)
   console.log("bodyYYYYYYYYYYYY " + JSON.stringify(req.body))
@@ -179,9 +165,9 @@ router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, re
   }
 })
 
-router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, res)=>{
-  if(req.body.userAIgnorar){
-    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userAIgnorar)
+router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
+  if(req.query.userAIgnorar){
+    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userAIgnorar)
     
     axios({
       method: 'post', 
@@ -264,7 +250,7 @@ router.get('/auth/facebook/callback', (req,res) => {
 })
 
 
-router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) => {
   var form = new formidable.IncomingForm()
   console.log("CHEGUEI AO /novaFotoPerfil")
   form.parse(req, (erro, fields, files)=>{
@@ -301,7 +287,7 @@ router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), 
   })
 })
 
-router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+router.get('/Perfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) => {
   console.log("ENTREI NO /PERFIL " + req.user._id + req.query.idUser)
 
   if(req.query.idUser != undefined ){
@@ -361,8 +347,8 @@ router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, re
     }
     })
   .then(dados =>{
-
-    res.render('seguidores', {users: dados.data})
+    console.log("CHEGEUI AOS DADOS")
+    res.render('renderPerfis', {users: dados.data})
   })
   .catch(error =>{
     console.log("ERRO AXIOS POST: " + error)

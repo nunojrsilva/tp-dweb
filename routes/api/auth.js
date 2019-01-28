@@ -6,7 +6,6 @@ var User = require('../../controllers/users')
 
 var express = require('express');
 var router = express.Router();
-var passport = require('passport')
 var axios = require('axios')
 
 // Módulo criado para suportar autenticação via facebook

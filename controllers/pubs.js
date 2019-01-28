@@ -42,6 +42,15 @@ module.exports.listarPorUserPrivacidade = (uid, priv) => {
 			.exec()
 }
 
+module.exports.listarPorPrivacidade = (priv) => {
+	return Pub
+			.find({privacidade: priv})
+			.populate(pop_config)
+			.populate(pop_config2)
+			.sort({data:-1})
+			.exec()
+}
+
 module.exports.listarPubsCompleta = (uid, aSeguir) => {
 	var id = mongoose.Types.ObjectId(uid)
 	console.log("ISTO É O ARRAY DE ASEGUIR: " + aSeguir)

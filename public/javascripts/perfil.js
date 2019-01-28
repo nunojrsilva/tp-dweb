@@ -44,7 +44,7 @@ $(()=>{
     
             $('#aSeguir').css('visibility', 'visible')
             $('#seguidores').css('visibility', 'hidden')
-            $('#pubs').css('visibility', 'hidden')
+            $('#listaPublicacoes').css('visibility', 'hidden')
 
             console.log(dados)
             console.log(dados.data)
@@ -68,7 +68,7 @@ $(()=>{
 
         $('#aSeguir').css('visibility', 'hidden')
         $('#seguidores').css('visibility', 'visible')
-        $('#pubs').css('visibility', 'hidden')
+        $('#listaPublicacoes').css('visibility', 'hidden')
 
         /*axios.get(url, {uid: id})
         .then(_ =>{
@@ -91,7 +91,7 @@ $(()=>{
 
         $('#aSeguir').css('visibility', 'hidden')
         $('#seguidores').css('visibility', 'hidden')
-        $('#pubs').css('visibility', 'visible')
+        $('#listaPublicacoes').css('visibility', 'visible')
 
         /*axios.get(url, {uid: id})
         .then(_ =>{

@@ -17,13 +17,13 @@ var User = require('../../controllers/users')
 var Pubs = require('../../controllers/pubs')
 
 
-// router.get('/', passport.authenticate('jwt', {session : false}), (req,res) => {
+// router.get('/', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
 //     User.listar()
 //         .then(dados => res.jsonp(dados))
 //         .catch(erro => res.status(500).send('Erro na listagem de utilizadores' + erro))
 // })
 
-router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.get('/FotosPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
     console.log("Entrou no get de /users/FotosPerfil " + req.user._id)
 
     User.obterFotosPerfil(req.user._id)
@@ -53,7 +53,7 @@ router.get('/FotoPerfil', (req, res)=>{
    
 })
 
-router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
     console.log("Entrou no get de /users/FotosPerfil " + req.user._id + "ID DA FOTO " + req.query.fotoId)
 
     User.atualizarFotoPerfil(req.user._id, req.query.fotoId)
@@ -65,7 +65,7 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
    
 })
 
-router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.post('/Seguir', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
 
     User.inserirSeguidor(req.body.userParaSeguir, req.user._id)
     .then(_ =>{
@@ -85,7 +85,7 @@ router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, re
     })
 })
 
-router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
     
     User.removerSeguidor(req.body.userAIgnorar, req.user._id)
     .then(_=>{
@@ -105,8 +105,8 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, r
 })
 
 
-router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
-    console.log("Entrou no get de /Perfil " + req.user._id + " " + req.body.idUser)
+router.get('/Perfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
+    console.log("Entrou no get de /Perfil " + req.user._id)
     var userID = null
     var proprioPerfil = null
    
@@ -202,7 +202,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
     
 })
 
-router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+router.get('/aSeguir',passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
     User.getASeguir(req.body.idUser)
     .then(aSeguirArray =>{
         console.log(JSON.stringify(aSeguirArray))
@@ -214,7 +214,7 @@ router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, re
     })
 })
 
-router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) => {
+router.get('/:uid', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
     User.consultar(req.params.uid)
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro na consulta do Utilizador ' + erro + req.params.uid))
@@ -267,7 +267,7 @@ router.post('/', function(req, res, next) {
     })(req, res, next);
 })
 
-router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res) => {
+router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) => {
     console.log("CHEGUEI AO /novaFotoPerfil " + req.user._id + JSON.stringify(req.body.foto))
     console.log(JSON.stringify(req.body.foto))
     User.inserirFotoPerfil(req.user._id, req.body.foto)

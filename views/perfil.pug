@@ -1,56 +1,182 @@
 extends layout
 
 block content
-	#inicioPagina
+    #inicioPagina
+        .w3-card-4(id="id" name= perfil._id style="width:100%")
+            header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
+                h3 Perfil de 
+                    =perfil.nome
+            table 
+                tr
+                    td(valign="top" style="width: 30%;")
+                        .w3-card-4(style='margin-left:15px; margin-right:15px; margin-top:25px;')
+                            img(style="max-width: 90%; margin-top: 5%; margin-left: 5%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
+                            if(perfil.otherUser == false)    
+                                input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
+                            h3(style="margin-top: 5%; margin-left: 10%;")= perfil.nome
+                            p(style="margin-top: -5%;margin-left: 15%;") Username: 
+                                =perfil.username
+                            p(style="margin-top: -5%;margin-left: 15%;")= perfil._id 
+                            div(id="seguir7ignorar")
+                                if(perfil.otherUser == true)
+                                    if(perfil.segue == false)
+                                        a(id="ignorar" style="visibility: visible;")
+                                            img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+                                        a(id="seguir" style="visibility: hidden;")
+                                            img(id="seguirImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
+                                    else
+                                        a(id="ignorar" style="visibility: hidden;")
+                                            img(id="ignorarImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+                                        a(id="seguir" style="visibility: visible;")
+                                            img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
+                            -var naSeguir = 'A Seguir (' + perfil.naSeguir + ')'    
+                            -var nseguidores = 'Seguidores (' + perfil.nseguidores + ')'    
+                            button.w3-button(id="aSeguirBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
+                            button.w3-button(id="seguidoresBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
+                            button.w3-button(id="pubsBTN" style='visibility: hidden; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
 
-		.w3-container(id="id" name= perfil._id style="height: 100%;")
-			.w3-card-4(style="width:100%")
-				header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
-					h3 Perfil de 
-						=perfil.nome
-				.w3-card-4(style="width: 25%; float: left")
-					img(style="max-width: 90%; margin-top: 5%; margin-left: 5%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
-					if(perfil.otherUser == false)	
-						input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
-					h3(style="margin-top: 5%; margin-left: 10%;")= perfil.nome
-					p(style="margin-top: -5%;margin-left: 15%;") Username: 
-						=perfil.username
-					p(style="margin-top: -5%;margin-left: 15%;")= perfil._id 
-					div(id="seguir7ignorar")
-						if(perfil.otherUser == true)
-							if(perfil.segue == false)
-								a(id="ignorar" style="visibility: visible;")
-									img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
-								a(id="seguir" style="visibility: hidden;")
-									img(id="seguirImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
-							else
-								a(id="ignorar" style="visibility: hidden;")
-									img(id="ignorarImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
-								a(id="seguir" style="visibility: visible;")
-									img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
-					-var naSeguir = 'A Seguir (' + perfil.naSeguir + ')'	
-					-var nseguidores = 'Seguidores (' + perfil.nseguidores + ')'	
-					button.w3-button(id="aSeguirBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
-					button.w3-button(id="seguidoresBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
-					button.w3-button(id="pubsBTN" style='visibility: hidden; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
-					
-					h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
-						=perfil.npubs
-					if(perfil.otherUser == true)
-						p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
-							=perfil.npubsInvisiveis
-				.w3-container(id="pubs" style="visibility: visible;width:75%; float:right; margin-top:15px;")
-					listaPublicacoes(id=perfil.username)
-				.w3-container(id="aSeguir" style="visibility: hidden;width:75%; float:right; margin-top:15px;")
-				.w3-container(id="seguidores" style="visibility: hidden;width:75%; float:right; margin-top:15px;")
-	br
-	br
-	a(href="/pubs") Voltar ao Feed
-	br
-	br
-	div(style="bottom: 0px; float: bottom")
-		footer.w3-container.w3-round-large(style="background-color: rgb(59,100,170); color: white;text-align: center;position: absolute; bottom: 0px")
-			address Powered by Desenvolvimento de Aplicações Web
-	
-	script(src="/javascripts/perfil.js")
-	script(src="/javascripts/axios.min.js")
+                            h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
+                                =perfil.npubs
+                            if(perfil.otherUser == true)
+                                p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
+                                    =perfil.npubsInvisiveis
+                    td
+                        .w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
+                            #listaPublicacoes
+                                each p in perfil.pubs
+                                    publicacao.w3-container(id=p._id)
+                                        .w3-card-4.w3-round-large
+                                            header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
+                                                div(style="flex: 50%;padding: 4px;vertical-align:middle; float:left")
+                                                    a(href="http://localhost:3000/Perfil?idUser=" + p.utilizador._id)
+                                                        img.w3-round-xxlarge(style="max-width: 45px; max-height: 45px;margin-right: 15px; margin-left:-12px;" src="http://localhost:3000/api/files/foto?userId=" + p.utilizador._id + "&fotoId=" + p.utilizador.fotoPerfil.idAtual)
+                                                div(style="float:right; margin-top:18px; font-size:12px")= p.data
+                                                h7(style="margin-top:18px;")
+                                                    p
+                                                        a(href="http://localhost:3000/Perfil?idUser=" + p.utilizador._id)
+                                                            b= p.utilizador.nome
+                                                        | &nbsp; partilhou uma publicação
+                                            .w3-container
+                                                if p.tituloPub
+                                                    h2=p.tituloPub
+                                                if p.local
+                                                    h4="Local: " + p.local
+                                                each e in p.elems
+                                                            
+                                                    if e.tipo == "lista"
+                                                        .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                                            .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                                                .w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(150,150,150); color: white;')
+                                                                    h7 Lista
+                                                                .w3-container.w3-white.w3-round-large.w3-border(style='margin-top:15px; margin-bottom:15px; word-wrap: break-word')
+                                                                    h5(style="text-align: center; margin-top:5px;")
+                                                                        b= e.lista.titulo
+                                                                    ul(style="margin-left:-15px; margin-top:-5px;")
+                                                                        each item in e.lista.itens
+                                                                            li= item
+                                                    if e.tipo == "ficheiros"
+                                                        .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                                            .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                                                .w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(150,150,150); color: white;')
+                                                                    h7 Ficheiros
+                                                                p= e.ficheiros.titulo
+                                                                ul
+                                                                    each item in e.ficheiros.ficheiros
+                                                                        li
+                                                                            if (item.isImage == true)
+                                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                                                    img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
+                                                                            else
+                                                                                a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)= item.nome
+                                                    if e.tipo =="opiniao"
+                                                        .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                                            .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                                                .w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(150,150,150); color: white;')
+                                                                    h7 Opinião
+                                                                .w3-container.w3-white.w3-round-large.w3-border(style='margin-top:15px; margin-bottom:15px; word-wrap: break-word')
+                                                                    p(style="margin-left:0px; margin-right:0px; margin-top:4px; margin-bottom:4px;")= e.opiniao.opiniao
+                                                    
+                                                    if e.tipo =="narracao"
+                                                        .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                                            .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                                                .w3-container.w3-border.w3-round-large(style='text-align:center; background-color: rgb(150,150,150); color: white;')
+                                                                    h7 Narração
+                                                                .w3-container.w3-white.w3-round-large.w3-border(style='margin-top:15px; margin-bottom:15px; word-wrap: break-word')
+                                                                    if e.narracao.titulo
+                                                                        h5(style="text-align: center; margin-top:5px;")
+                                                                            b= e.narracao.titulo
+                                                                    cite= "\""+e.narracao.texto+"\""
+                                                                    if e.narracao.autor
+                                                                        p(style="margin-left:10px;")
+                                                                            cite= "- " +  e.narracao.autor
+
+                                                    if e.tipo =="evento"
+                                                        .w3-container.w3-border.w3-round-large(style="width:100%; float: left; margin-top:10px; margin-bottom:15px; background-color:rgb(245,245,245);")
+                                                            .w3-container(style="margin-left:-15px; margin-right:-15px;")
+                                                                .w3-container.w3-border.w3-round-large.w3-border(style='text-align:center; background-color: rgb(150,150,150); color: white;')
+                                                                    h7 Evento
+                                                                .w3-container.w3-white.w3-round-large.w3-border(style='margin-top:15px; margin-bottom:15px; word-wrap: break-word')
+                                                                    h5(style="text-align: center; margin-top:5px;")
+                                                                        b= e.evento.titulo
+                                                                    p
+                                                                        b Data de início: 
+                                                                        | #{e.evento.data}
+                                                                    if e.evento.duracao
+                                                                        p
+                                                                            b Duração do evento: 
+                                                                            | #{e.evento.duracao}
+                                                                    p 
+                                                                        b Atividade: 
+                                                                        | #{e.evento.atividade}
+                                                                    label
+                                                                        b Descrição
+                                                                    .w3-container.w3-round-large.w3-border
+                                                                        p(style="margin-left:0px; margin-right:0px; margin-top:4px; margin-bottom:4px;")= e.evento.descricao
+
+                                                input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gosto" value='Gosto (' + p.gostos.length + ')' name=p.gostos.length style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-top:0px;')
+                                                
+                                                br
+                                                br
+                                                .w3-card-4.w3-round-large(style='margin-top:5px;')
+                                                    header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
+                                                        h7
+                                                            b Comentários
+                                                    .w3-container
+                                                        form.formComentarios.w3-container.w3-bottombar.w3-border-grey(id=p._id+"novoComent" style='margin-bottom:15px;')
+                                                            table(style='width:100%; margin-top:15px; margin-bottom:15px;')
+                                                                tr
+                                                                    td(style='width:80%')
+                                                                        input#comentario.w3-input.w3-border.w3-light-grey.w3-round-xxlarge(type='text' placeholder='Escreve um comentário' required)
+                                                                    td
+                                                                        input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:20px;')
+                                                        table.comentarios(id=p._id+'comentarios' style='width: 100%; line-height: 18px; word-wrap:break-word; table-layout: fixed;')
+                                                            
+                                                            if p.comentarios.length
+                                                                each c in p.comentarios
+                                                                    tr.comentarioDiv(id=c._id)
+                                                                        td(valign='top' width='50px')
+                                                                            a(href="http://localhost:3000/Perfil?idUser=" + c.utilizador._id)
+                                                                                img.w3-round-xxlarge(style="max-width: 45px; max-height: 45px;margin-right: 20px;" src="http://localhost:3000/api/files/fotoPerfil?uid="+c.utilizador._id+"&&username="+c.utilizador.username)
+                                                                        td
+                                                                            .w3-border.w3-round-xxlarge.w3-light-grey(style='margin-top:5px; margin-bottom:5px; word-wrap: break-word')
+                                                                                p(style='margin-left:15px; margin-right:15px; margin-top:7px; margin-bottom:7px;')
+                                                                                    a(href="http://localhost:3000/Perfil?idUser=" + c.utilizador._id)
+                                                                                        b(style='color: rgb(59,100,170);')= c.utilizador.nome
+                                                                                    | &nbsp;&nbsp;&nbsp; #{c.texto}
+                                                                            input.commentLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=c._id+"_Gosto" value='Gosto (' + c.gostos.length + ')' name=c.gostos.length style='line-height: 14px; margin-bottom:10px;background-color: rgb(59,100,170); color: white; margin-left:15px;')
+                                                            else 
+                                                                .w3-container(id=p._id+"NoComments" style='margin-top:20px;')
+                                                                    b(style='color:dark-grey;') Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
+                                                        br
+                                                br
+                                                br
+            br
+            br
+            a(href="/pubs") Voltar ao Feed
+            br
+            br
+            footer.w3-container.w3-round-large(style="background-color: rgb(59,100,170); color: white;text-align: center;")
+                address Powered by Desenvolvimento de Aplicações Web
+    
+    script(src="/javascripts/perfil.js")
+    script(src="/javascripts/axios.min.js")
