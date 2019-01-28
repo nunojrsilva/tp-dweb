@@ -45,14 +45,14 @@ passport.use('registo', new localStrategy({
         //ESTA MERDA ESTA MAL (res its not defined)
         UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
             .then(dados2 =>{
-                return res.jsonp(dados2)
+                return done(null, dados2)
             })
             .catch(e =>
                 { 
                 console.log("Erro ao atualizar foto" + e)
-                return res.jsonp(user)
+                return done(null, user)
             })
-        return done(null, user)
+       
     }   
 
     catch (error) {

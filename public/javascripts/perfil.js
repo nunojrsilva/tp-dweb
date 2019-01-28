@@ -34,26 +34,19 @@ $(()=>{
         e.preventDefault()
         var id = $('#id').attr('name')
         console.log(id)
-        var userParaSeguir = id
+        var url = 'http://localhost:3000/Seguir'
 
-        var url = 'http://localhost:3000/Seguir?userParaSeguir=' + id
-        $.ajax({
-            url: url,
-            type: 'Post',
-            contentType: "application/json",
-            data: userParaSeguir,
-            success: data =>{
-                $('#seguir7ignorar').empty()
-                $('#seguir7ignorar').append(data)                
-            },
-            error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
-                console.log('Erro no post: ' + JSON.stringify(e))
-            },
-			cache: false,
-			contentType: false,
-            processData: false
-        });
+        axios.post(url, {userParaSeguir: id})
+        .then(_ =>{
+            $('#seguir').css('visibility', 'hidden')
+            $('#seguirImg').css('visibility', 'hidden')
+            $('#ignorar').css('visibility', 'visible')
+            $('#ignorarImg').css('visibility', 'visible')
+        })
+        .catch(erro =>{
+            alert('Erro no post: ' + JSON.stringify(erro))
+            console.log('Erro no post: ' + JSON.stringify(erro))
+        })
     })
 
     $('#ignorar').click(e=>{
@@ -61,27 +54,19 @@ $(()=>{
 
         var id = $('#id').attr('name')
         console.log(id)
+        var url = 'http://localhost:3000/Ignorar'
 
-        var url = 'http://localhost:3000/Ignorar?userAIgnorar=' + id
-
-        var userAIgnorar = id
-        $.ajax({
-            url: url,
-            type: 'Post',
-            contentType: "application/json",
-            data: userAIgnorar,
-            success: data =>{
-                $('#seguir7ignorar').empty()
-                $('#seguir7ignorar').append(data)                
-            },
-            error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
-                console.log('Erro no post: ' + JSON.stringify(e))
-            },
-			cache: false,
-			contentType: false,
-            processData: false
-        });
+        axios.post(url, {userAIgnorar: id})
+        .then(_ =>{
+            $('#seguir').css('visibility', 'visible')
+            $('#seguirImg').css('visibility', 'visible')
+            $('#ignorar').css('visibility', 'hidden') 
+            $('#ignorarImg').css('visibility', 'hidden') 
+        })
+        .catch(erro =>{
+            alert('Erro no post: ' + JSON.stringify(erro))
+            console.log('Erro no post: ' + JSON.stringify(erro))
+        })
     })
     
     $('#fotosPerfil').click(e =>{
