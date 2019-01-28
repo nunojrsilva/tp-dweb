@@ -7,7 +7,7 @@ var ObjectId = Schema.Types.ObjectId
 var ficheiroSchema = new Schema({
     nomeGuardado: {type: String, required: true},
     nome: {type: String, required: true},
-    isImage: {type: Boolean, required: true}
+    isImage: {type: String, required: true}
 })
 
 var ficheirosSchema = new Schema({
@@ -17,7 +17,7 @@ var ficheirosSchema = new Schema({
 
 var eventoSchema = new Schema({  // REVER ESTE CASO *OU MAIS GERAL OU COM SUB EVENTOS*
     titulo: {type: String, required: true},
-    data: {type: Date, required: true},
+    data: {type: String, required: true},
     atividade: {type: String, required: true},
     duracao: {type: String, required: false},
     descricao: {type: String, required: false}
@@ -56,7 +56,7 @@ var comentarioSchema = new Schema ( {
 var PubSchema = new Schema({
     utilizador: {type: ObjectId, required: true, ref: 'User'},
     hashtags: [{type: String, required: true}],
-    data: {type: Date, required: true}, // Para preencher pelo servidor
+    data: {type: String, required: true}, // Para preencher pelo servidor
     local: {type: String, required: false},
     privacidade: {type: String, required: true},
     tituloPub: {type: String, required: false},

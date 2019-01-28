@@ -92,7 +92,7 @@ block content1
                                                             ul
                                                                 each item in e.ficheiros.ficheiros
                                                                     li
-                                                                        if (item.isImage == true)
+                                                                        if (item.isImage == "true")
                                                                             a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
                                                                                 img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
                                                                         else
@@ -141,40 +141,41 @@ block content1
                                                                     b Descrição
                                                                 .w3-container.w3-round-large.w3-border
                                                                     p(style="margin-left:0px; margin-right:0px; margin-top:4px; margin-bottom:4px;")= e.evento.descricao
-
+                                    
                                             input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gosto" value='Gosto (' + p.gostos.length + ')' name=p.gostos.length style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-top:0px;')
-                                            checkbox.w3-container(valign="right" style="float:right;")
-                                                table
-                                                    tr
-                                                        td
-                                                            br
-                                                            input.w3-btn.w3-small.w3-round-xxlarge(type='button' id="alterarPriv" value="Alterar Privacidade" style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-right:25px; margin-top:0px;')
-                                                        td
-                                                            label(id="privacidade"+p._id) Privacidade Atual:  
-                                                                =p.privacidade
+                                            if(perfil.otherUser == false)                                           
+                                                checkbox.w3-container(valign="right" style="float:right;")
+                                                    table
+                                                        tr
+                                                            td
                                                                 br
-                                                            if(p.privacidade != "publica")
-                                                                label(id="labelPublica"+p._id) Público
-                                                                    input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: ' unchecked)
-                                                                br
-                                                            else
-                                                                label(id="labelPublica"+p._id style="display: none") Público 
-                                                                    input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: none' unchecked)
-                                                                
-                                                            if(p.privacidade != "seguidores")
-                                                                label(id="labelSeguidores"+p._id) Seguidores
-                                                                    input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
-                                                                br
-                                                            else
-                                                                label(id="labelSeguidores"+p._id style="display: none") Seguidores 
-                                                                    input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
-                                                                
-                                                            if(p.privacidade != "privada")
-                                                                label(id="labelPrivada"+p._id) Apenas Eu
-                                                                    input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
-                                                            else
-                                                                label(id="labelPrivada"+p._id style="display: none") Apenas Eu
-                                                                    input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
+                                                                input.w3-btn.w3-small.w3-round-xxlarge(type='button' id="alterarPriv" value="Alterar Privacidade" style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-right:25px; margin-top:0px;')
+                                                            td
+                                                                label(id="privacidade"+p._id) Privacidade Atual:  
+                                                                    =p.privacidade
+                                                                    br
+                                                                if(p.privacidade != "publica")
+                                                                    label(id="labelPublica"+p._id) Público
+                                                                        input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: ' unchecked)
+                                                                    br
+                                                                else
+                                                                    label(id="labelPublica"+p._id style="display: none") Público 
+                                                                        input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: none' unchecked)
+                                                                    
+                                                                if(p.privacidade != "seguidores")
+                                                                    label(id="labelSeguidores"+p._id) Seguidores
+                                                                        input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
+                                                                    br
+                                                                else
+                                                                    label(id="labelSeguidores"+p._id style="display: none") Seguidores 
+                                                                        input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
+                                                                    
+                                                                if(p.privacidade != "privada")
+                                                                    label(id="labelPrivada"+p._id) Apenas Eu
+                                                                        input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
+                                                                else
+                                                                    label(id="labelPrivada"+p._id style="display: none") Apenas Eu
+                                                                        input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
                                             br
                                             br
                                             .w3-card-4.w3-round-large(style='margin-top:30px;')
