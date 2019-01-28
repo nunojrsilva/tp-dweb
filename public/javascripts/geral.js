@@ -104,13 +104,11 @@ $(()=>{
 
 	$("#fecharForm").click(e=>{
 		tipo = "opiniao"
+		$("#cancelarAdicaoFicheiros").click()
 		$('#formDiv').load('http://localhost:3000/pubs/eventoPub')
 		$('#formPubHidden').css('display', '');
 		$('#formPub').css('display', 'none');
 		$('#myForm').trigger("reset");
-		$('.moreFiles').remove();
-		$('#filesDiv').find('input:text').val('');
-		$('#filesDiv').find('input:file').val('');
 	})
 
 
@@ -190,8 +188,8 @@ $(()=>{
 			success: data =>{
 				console.log(data)
 				alert('Publicação efetuada com sucesso');
-				$('#listaPublicacoes').prepend(data)
-				$('#formPub').trigger("reset");
+				$('#listaPublicacoes').prepend(data);
+				$("#fecharForm").click();
 			},
 			error: e =>{
 				$('#myForm').trigger("reset");
