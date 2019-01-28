@@ -3,7 +3,7 @@ extends layout
 block content
     #inicioPagina
         .w3-card-4(id="id" name= perfil._id style="width:100%")
-            header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
+            header.w3-container(style='background-color: rgb(59,100,170); color: white;')
                 h3 Perfil de 
                     =perfil.nome
             table 
@@ -18,8 +18,8 @@ block content
                                 =perfil.username
                             p(style="margin-top: -3%;margin-left: 15%;")= perfil._id 
                             div(id="seguir7ignorar")
-                                if(perfil.otherUser == true)
-                                    if(perfil.segue == false)
+                                if perfil.otherUser
+                                    if perfil.segue
                                         a(id="ignorar" style="visibility: visible;")
                                             img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
                                         a(id="seguir" style="visibility: hidden;")
@@ -31,18 +31,19 @@ block content
                                             img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
                             -var naSeguir = 'A Seguir (' + perfil.naSeguir + ')'    
                             -var nseguidores = 'Seguidores (' + perfil.nseguidores + ')'    
-                            button.w3-button(id="aSeguirBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
-                            button.w3-button(id="seguidoresBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
-                            button.w3-button(id="pubsBTN" style='visibility: hidden; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
+                            button.w3-button(id="aSeguirBTN" style='background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
+                            button.w3-button(id="seguidoresBTN" style=' background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
+                            button.w3-button(id="pubsBTN" style='display:none ; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
 
                             h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
                                 =perfil.npubs
                             if(perfil.otherUser == true)
                                 p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
                                     =perfil.npubsInvisiveis
+                            br
                     td
-                        #aSeguir.w3-container(style='visibility: hidden; margin-left:15px; margin-right:15px; margin-top:25px;')
-                        #seguidores.w3-container(style='visibility: hidden; margin-left:15px; margin-right:15px; margin-top:25px;')
+                        #aSeguir.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
+                        #seguidores.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
                         #listaPublicacoes.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
                             each p in perfil.pubs
                                 publicacao.w3-container(id=p._id)
@@ -176,7 +177,7 @@ block content
             a(href="/pubs") Voltar ao Feed
             br
             br
-            footer.w3-container.w3-round-large(style="background-color: rgb(59,100,170); color: white;text-align: center;")
+            footer.w3-container(style="background-color: rgb(59,100,170); color: white;text-align: center;")
                 address Powered by Desenvolvimento de Aplicações Web
     
     script(src="/javascripts/perfil.js")
