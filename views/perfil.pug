@@ -19,11 +19,16 @@ block content
 					div(id="seguir7ignorar")
 						if(perfil.otherUser == true)
 							if(perfil.segue == false)
-								a(id="seguir")
-									img(id="seguir" style="cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 50%;" src="http://localhost:3000/api/files/plus")
+								a(id="ignorar" style="visibility: visible;")
+									img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+								a(id="seguir" style="visibility: hidden;")
+									img(id="seguirImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
 							else
-								a(id="ignorar")
-									img(id="ignorar" style="cursor:pointer;max-width: 50px; max-height: 50px; vertical-align: middle;" src="http://localhost:3000/api/files/check")
+								a(id="ignorar" style="visibility: hidden;")
+									img(id="ignorarImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+								a(id="seguir" style="visibility: visible;")
+									img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
+								
 					h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
 						=perfil.npubs
 					if(perfil.otherUser == true)

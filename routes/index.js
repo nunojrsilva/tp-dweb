@@ -149,16 +149,16 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
 
 router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
   console.log("HERE")
-  console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userParaSeguir)
-  console.log("queryYYYYYYYYYYYY " + JSON.stringify(req.query))
+  console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userParaSeguir)
+  console.log("bodyYYYYYYYYYYYY " + JSON.stringify(req.body))
 
-  if(req.query.userParaSeguir){
+  if(req.body.userParaSeguir){
     
     axios({
       method: 'post', 
       url: "http://localhost:3000/api/users/Seguir",
       data:{
-        userParaSeguir: req.query.userParaSeguir
+        userParaSeguir: req.body.userParaSeguir
       },
       headers: {
         Authorization: 'Bearer ' + req.session.token
@@ -170,7 +170,7 @@ router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, re
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO SEGUIR: " + error)
-      res.status(500).send("ERRO AO TENTAR SEGUIR O UTILIZADOR: " + req.query.userParaSeguir + error)
+      res.status(500).send("ERRO AO TENTAR SEGUIR O UTILIZADOR: " + req.body.userParaSeguir + error)
     })
   }
   else{
@@ -180,14 +180,14 @@ router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, re
 })
 
 router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, res)=>{
-  if(req.query.userAIgnorar){
-    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userAIgnorar)
+  if(req.body.userAIgnorar){
+    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userAIgnorar)
     
     axios({
       method: 'post', 
       url: "http://localhost:3000/api/users/Ignorar",
       data:{
-        userAIgnorar: req.query.userAIgnorar
+        userAIgnorar: req.body.userAIgnorar
       },
       headers: {
         Authorization: 'Bearer ' + req.session.token
@@ -199,7 +199,7 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, r
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO IGNORAR: " + error)
-      res.status(500).send("ERRO AO TENTAR IGNORAR O UTILIZADOR: " + req.query.userAIgnorar + error)
+      res.status(500).send("ERRO AO TENTAR IGNORAR O UTILIZADOR: " + req.body.userAIgnorar + error)
     })
   }
   else{
