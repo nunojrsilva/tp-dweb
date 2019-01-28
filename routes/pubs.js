@@ -331,7 +331,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false}), (req, res
 
 			var i = 1;
 			var tag
-			for (i = 1; i < Object.keys(fields).length - 3; i++){
+			for (i = 1; i <= Object.keys(fields).length - 3; i++){
 				tag = "item"+i
 				listaElem.lista.itens.push(fields[tag])
 			}
