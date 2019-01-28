@@ -48,8 +48,8 @@ $(()=>{
 
             console.log(dados)
             console.log(dados.data)
-            $('#aSeguir').empty()
-            $('#aSeguir').append(dados.data)
+
+            //POR OS DADOS NA PAGINA
         })
         .catch(erro =>{
             alert('Erro no get aSeguir: ' + erro)
@@ -62,29 +62,31 @@ $(()=>{
         var id = $('#id').attr('name')
         console.log(id)
         var url = 'http://localhost:3000/aSeguir'
-        $('#aSeguirBTN').css('visibility', 'visible')
-        $('#seguidoresBTN').css('visibility', 'hidden')
-        $('#pubsBTN').css('visibility', 'visible')
 
-        $('#aSeguir').css('visibility', 'hidden')
-        $('#seguidores').css('visibility', 'visible')
-        $('#listaPublicacoes').css('visibility', 'hidden')
-
-        /*axios.get(url, {uid: id})
-        .then(_ =>{
-
+        var url = 'http://localhost:3000/Seguidores?uid=' + id
+        axios.get(url)
+        .then(dados =>{
+            $('#aSeguirBTN').css('visibility', 'visible')
+            $('#seguidoresBTN').css('visibility', 'hidden')
+            $('#pubsBTN').css('visibility', 'visible')
+    
+            $('#aSeguir').css('visibility', 'hidden')
+            $('#seguidores').css('visibility', 'visible')
+            $('#listaPublicacoes').css('visibility', 'hidden')
+            
+            console.log(dados)
+            console.log(dados.data)
+            //POR DADOS NA PAGINA
         })
         .catch(erro =>{
             alert('Erro no post: ' + JSON.stringify(erro))
             console.log('Erro no post: ' + JSON.stringify(erro))
-        })*/
+        })
     })
 
     $('#pubsBTN').click(e=>{
         e.preventDefault()
-        var id = $('#id').attr('name')
-        console.log(id)
-        var url = 'http://localhost:3000/aSeguir'
+
         $('#aSeguirBTN').css('visibility', 'visible')
         $('#seguidoresBTN').css('visibility', 'visible')
         $('#pubsBTN').css('visibility', 'hidden')
@@ -92,15 +94,6 @@ $(()=>{
         $('#aSeguir').css('visibility', 'hidden')
         $('#seguidores').css('visibility', 'hidden')
         $('#listaPublicacoes').css('visibility', 'visible')
-
-        /*axios.get(url, {uid: id})
-        .then(_ =>{
-
-        })
-        .catch(erro =>{
-            alert('Erro no post: ' + JSON.stringify(erro))
-            console.log('Erro no post: ' + JSON.stringify(erro))
-        })*/
     })
 
     $('#seguir').click(e=>{

@@ -8,6 +8,11 @@ var pop_config = {
 	select: 'nome username fotoPerfil.idAtual'
 }
 
+var pop_config2 = {
+	path: 'seguidores',
+	select: 'nome username fotoPerfil.idAtual'
+}
+
 module.exports.listar = () => {
     return User
             .find()
@@ -50,9 +55,16 @@ module.exports.getASeguir = uid => {
             .exec()
 }
 
+module.exports.getSeguidores = uid => {
+    return User
+            .find({_id: uid}, {seguidores: 1})
+            .populate(pop_config2)
+            .exec()
+}
 module.exports.getASeguirESeguidores = uid => {
     return User
             .find({_id: uid}, {aSeguir: 1, seguidores: 1})
+            .populate(pop_config)
             .exec()
 }
 

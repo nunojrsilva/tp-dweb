@@ -1,2 +1,6 @@
-for user in users.aSeguir
-	img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+if (users.aSeguir)
+	for user in users.aSeguir
+		img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+else
+	for user in users.seguidores
+		img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)

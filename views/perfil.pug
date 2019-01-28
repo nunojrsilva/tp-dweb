@@ -14,9 +14,9 @@ block content
                             if(perfil.otherUser == false)    
                                 input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
                             h3(style="margin-top: 5%; margin-left: 10%;")= perfil.nome
-                            p(style="margin-top: -5%;margin-left: 15%;") Username: 
+                            p(style="margin-top: -3%;margin-left: 15%;") Username: 
                                 =perfil.username
-                            p(style="margin-top: -5%;margin-left: 15%;")= perfil._id 
+                            p(style="margin-top: -3%;margin-left: 15%;")= perfil._id 
                             div(id="seguir7ignorar")
                                 if(perfil.otherUser == true)
                                     if(perfil.segue == false)
