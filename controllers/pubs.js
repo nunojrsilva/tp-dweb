@@ -132,9 +132,24 @@ module.exports.listarTipo = tipo => {
 			.exec()
 }
 
-module.exports.listarPorData = data => {
+module.exports.listarPorData = (data, id, aSeguir) => {
 	return Pub
-			.find({data: {$gte: data}})
+			// .find({data: {$gte: data}})
+			.find({$or: [
+				{$and:[
+					{utilizador:{$in: aSeguir}},
+					{privacidade: 'seguidores'},
+					{data: {$gte: data}}
+				]},
+				{$and :[
+					{privacidade: 'publica'},
+					{data: {$gte: data}}
+				]},
+				{$and : [
+					{utilizador: id},
+					{data: {$gte: data}}
+				]}
+			]})
 			.populate(pop_config)
 			.populate(pop_config2)
 			.sort({data:-1})

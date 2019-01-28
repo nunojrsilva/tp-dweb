@@ -89,10 +89,11 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 router.get('/publicas', (req,res) => {
 	axiosGet(req, res, 'http://localhost:3000/api/pubs/publicas')
 		.then(resposta =>{
-			console.log("TENHO QUE FAZER RENDER A ISTO")
+			var str = req.flash('error')
+			console.log("Flash - " + str)
 			console.log(resposta)
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs', { msg : str, pubs: publicacoes}))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 })

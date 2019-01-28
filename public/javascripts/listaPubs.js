@@ -95,7 +95,7 @@ $(()=>{
 
         var HashtagProcurado = $('#hashtag').val()
         var Termo = HashtagProcurado.replace(/#/g, '')
-        alert(Termo)
+        //alert(Termo)
         var url = "http://localhost:3000/pubs?hashtag=" + Termo
 
         axios.get(url)
@@ -108,6 +108,27 @@ $(()=>{
             .catch(e => {
                 $('#hashtag').trigger("reset")
                 console.log("Erro na pesquisa por hashtags" + e)
+            })
+    });
+
+    $('#pubDataBTN').on('click', function(e){
+
+		e.preventDefault();        
+
+        var data = $('#pubData').val()
+       // alert(data)
+        var url = "http://localhost:3000/pubs?data=" + data
+
+        axios.get(url)
+            .then(dados => {
+                $('#pubData').trigger("reset")
+                $('#listaPublicacoes').empty()
+                console.log(dados.data)
+                $('#listaPublicacoes').append(dados.data)
+            })
+            .catch(e => {
+                $('#pubData').trigger("reset")
+                console.log("Data inválida!")
             })
     });
 
