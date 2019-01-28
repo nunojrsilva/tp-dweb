@@ -60,42 +60,6 @@ router.get('/users',  (req,res) => {
   })
 })
 
-
-router.post("/login", (req,res) => {
-  console.log("No login da pagina")
-  var username = req.body.username
-  var password = req.body.password
-  axios.post("http://localhost:3000/api/users/login", {username, password})
-    .then(dados => {
-      console.log("Token: "+ JSON.stringify(dados.data.token))
-      // Guardar o token
-      req.session.token = dados.data.token
-      res.redirect("/")
-    })
-    .catch(e => {
-      console.log("Erro no /login" + e)
-      res.status(500).send()
-    })
-})
-
-
-router.post("/registo", (req,res) => {
-  console.log("No registo da pagina")
-  var username = req.body.username
-  var password = req.body.password
-  var nome = req.body.nome
-
-  axios.post("http://localhost:3000/api/users", {nome, username, password}, { withCredentials: true })
-    .then(dados => {
-      console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
-      res.redirect("/login")
-    })
-    .catch(e => {
-      console.log("Erro no /registo " + JSON.stringify(e) )
-      res.jsonp(e)
-    })
-})
-
 router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
   console.log("Entrou no get de /atualizarFotoPerfil " + req.user._id)
   
@@ -137,6 +101,101 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false}), (req
   })
 })
 
+router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+  console.log("HERE")
+  console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userParaSeguir)
+  console.log("queryYYYYYYYYYYYY " + JSON.stringify(req.query))
+
+  if(req.query.userParaSeguir){
+    
+    axios({
+      method: 'post', 
+      url: "http://localhost:3000/api/users/Seguir",
+      data:{
+        userParaSeguir: req.query.userParaSeguir
+      },
+      headers: {
+        Authorization: 'Bearer ' + req.session.token
+      }
+    })
+    .then(info =>{
+  
+      res.render('checkImg', {target: info.data})
+    })
+    .catch(error =>{
+      console.log("ERRO AXIOS POST DO SEGUIR: " + error)
+      res.status(500).send("ERRO AO TENTAR SEGUIR O UTILIZADOR: " + req.query.userParaSeguir + error)
+    })
+  }
+  else{
+    console("ESTAVA VAZIO")
+    res.end()
+  }
+})
+
+router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, res)=>{
+  if(req.query.userAIgnorar){
+    console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userAIgnorar)
+    
+    axios({
+      method: 'post', 
+      url: "http://localhost:3000/api/users/Ignorar",
+      data:{
+        userAIgnorar: req.query.userAIgnorar
+      },
+      headers: {
+        Authorization: 'Bearer ' + req.session.token
+      }
+    })
+    .then(info =>{
+  
+      res.render('plusImg', {target: info.data})
+    })
+    .catch(error =>{
+      console.log("ERRO AXIOS POST DO IGNORAR: " + error)
+      res.status(500).send("ERRO AO TENTAR IGNORAR O UTILIZADOR: " + req.query.userAIgnorar + error)
+    })
+  }
+  else{
+    console("ESTAVA VAZIO")
+    res.end()
+  }
+})
+
+router.post("/login", (req,res) => {
+  console.log("No login da pagina")
+  var username = req.body.username
+  var password = req.body.password
+  axios.post("http://localhost:3000/api/users/login", {username, password})
+    .then(dados => {
+      console.log("Token: "+ JSON.stringify(dados.data.token))
+      // Guardar o token
+      req.session.token = dados.data.token
+      res.redirect("/")
+    })
+    .catch(e => {
+      console.log("Erro no /login" + e)
+      res.status(500).send()
+    })
+})
+
+
+router.post("/registo", (req,res) => {
+  console.log("No registo da pagina")
+  var username = req.body.username
+  var password = req.body.password
+  var nome = req.body.nome
+
+  axios.post("http://localhost:3000/api/users", {nome, username, password}, { withCredentials: true })
+    .then(dados => {
+      console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
+      res.redirect("/login")
+    })
+    .catch(e => {
+      console.log("Erro no /registo " + JSON.stringify(e) )
+      res.jsonp(e)
+    })
+})
 
   // Facebook
 
@@ -199,7 +258,7 @@ router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), 
 router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res) => {
   console.log("ENTREI NO /PERFIL " + req.user._id + req.query.idUser)
 
-  if(req.query.idUser){
+  if(req.query.idUser != req.user._id){
     console.log("AXIOS DO PERFIL DE OUTRO USER")
     axios({
       method: 'get', 
@@ -213,6 +272,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
       })
     .then(dados =>{
       console.log(dados.data)
+
       res.render('perfil', {perfil: dados.data})
     })
     .catch(error =>{

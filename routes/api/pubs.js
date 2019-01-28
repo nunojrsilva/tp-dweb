@@ -13,14 +13,14 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
 
     console.log(req.user)
 
-	if(req.query.username && req.query.publico){
+	if(req.query.username && req.query.privacidade){
         User.consultarUsername(req.query.username)
             .then(uid => {
-                Pubs.listarPorUserPublico(uid, req.query.publico)
+                Pubs.listarPorUserPrivacidade(uid, req.query.privacidade)
                     .then(dados => res.jsonp(dados))
-                    .catch(erro => res.status(500).send('Erro na consulta de publicações do autor: ' + req.query.username + ' -> Público: ' + req.query.publico))
+                    .catch(erro => res.status(500).send('Erro na consulta de publicações do autor: ' + req.query.username + ' -> Público: ' + req.query.privacidade))
             })  
-            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUserPublico ") + erro)
+            .catch(erro =>  console.log("Erro no consultarUsername da listarPorUserPrivacidade ") + erro)
 
     } else if(req.query.username){
         User.consultarUsername(req.query.username)
@@ -41,12 +41,19 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
 	} else{
         console.log("CHEGUEI AQUI")
         try{
-            Pubs.listar()
-            .then(dados =>{ 
-                console.log(JSON.stringify(dados))        
-                res.jsonp(dados)
+            User.getASeguir(req.user._id)
+            .then(aSeguirArray =>{
+                var aSeguirObj = aSeguirArray[0]
+                console.log(aSeguirObj)
+                Pubs.listarPubsCompleta(req.user._id, aSeguirObj.aSeguir)
+                .then(dados =>{ 
+                    console.log("E ISTO QUE QUERO VER")
+                    console.log(JSON.stringify(dados))        
+                    res.jsonp(dados)
+                })
+                .catch(erro => res.send(erro))
             })
-            .catch(erro => res.send(erro))
+            .catch()
         }
         catch(e){
             console.log(e)

@@ -23,16 +23,25 @@ $(()=>{
 		$('#AdicaoFicheiros').css('visibility', 'visible')
 	})
 
-	$("#sim").click(e =>{
+	$("#publica").click(e =>{
 
-		$('#nao').prop('checked', false)
-		$('#sim').prop('checked', true)
+		$('#publica').prop('checked', true)
+		$('#seguidores').prop('checked', false)
+		$('#privada').prop('checked', false)
 	})
 
-	$("#nao").click(e =>{
+	$("#seguidores").click(e =>{
 
-		$('#sim').prop('checked', false)
-		$('#nao').prop('checked', true)
+		$('#publica').prop('checked', false)
+		$('#seguidores').prop('checked', true)
+		$('#privada').prop('checked', false)
+	})
+
+	$("#privada").click(e =>{
+
+		$('#publica').prop('checked', false)
+		$('#seguidores').prop('checked', false)
+		$('#privada').prop('checked', true)
 	})
 	
     $("#more_files").click(e => {
@@ -57,10 +66,14 @@ $(()=>{
         formData.append('data', $('#data').val());
 		formData.append('fileTitle', $('#filesTitulo').val());
 		
-		if(document.getElementById('sim').checked)
-			formData.append('publico', true);
-		else
-			formData.append('publico', false);
+		if(document.getElementById('publica').checked)
+			formData.append('privacidade', "publica");
+		else{
+			if(document.getElementById('seguidores').checked)
+				formData.append('privacidade', "seguidores");
+			else
+				formData.append('privacidade', "privada");
+		}
 
         
         var aux=1;

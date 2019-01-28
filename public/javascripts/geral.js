@@ -30,16 +30,25 @@ $(()=>{
 		$('#AdicaoFicheiros').css('visibility', 'visible')
 	})
 
-	$("#checkboxSim").click(e =>{
+	$("#publica").click(e =>{
 
-		$('#checkboxNao').prop('checked', false)
-		$('#checkboxSim').prop('checked', true)
+		$('#publica').prop('checked', true)
+		$('#seguidores').prop('checked', false)
+		$('#privada').prop('checked', false)
 	})
 
-	$("#checkboxNao").click(e =>{
+	$("#seguidores").click(e =>{
 
-		$('#checkboxSim').prop('checked', false)
-		$('#checkboxNao').prop('checked', true)
+		$('#publica').prop('checked', false)
+		$('#seguidores').prop('checked', true)
+		$('#privada').prop('checked', false)
+	})
+
+	$("#privada").click(e =>{
+
+		$('#publica').prop('checked', false)
+		$('#seguidores').prop('checked', false)
+		$('#privada').prop('checked', true)
 	})
 
 	$("#formDiv").on("click", "#adicionarIten", () => {
@@ -136,10 +145,14 @@ $(()=>{
 
 		//alert('Cheguei ao 2')
 
-		if(document.getElementById('checkboxSim').checked)
-			formData.append('publico', true);
-		else
-			formData.append('publico', false);
+		if(document.getElementById('publica').checked)
+			formData.append('privacidade', "publica");
+		else{
+			if(document.getElementById('seguidores').checked)
+				formData.append('privacidade', "seguidores");
+			else
+				formData.append('privacidade', "privada");
+		}
 		//alert('Cheguei ao 3')
 
 		$.ajax({

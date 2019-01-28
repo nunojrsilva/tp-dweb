@@ -30,14 +30,37 @@ module.exports.consultar = pid => {
 			.exec()
 }
 
-module.exports.listarPorUserPublico = (uid, publico) => {
+
+
+
+module.exports.listarPorUserPrivacidade = (uid, priv) => {
 	return Pub
-			.find({utilizador: uid, publico: publico})
+			.find({utilizador: uid, privacidade: priv})
 			.populate(pop_config)
 			.populate(pop_config2)
 			.sort({data:-1})
 			.exec()
 }
+
+module.exports.listarPubsCompleta = (uid, aSeguir) => {
+	var id = mongoose.Types.ObjectId(uid)
+	console.log("ISTO É O ARRAY DE ASEGUIR: " + aSeguir)
+	return Pub
+			.find({$or: [
+						{$and:[
+							{utilizador:{$in: aSeguir}},
+							{privacidade: 'seguidores'}
+						]},
+						{privacidade: 'publica'},
+						{utilizador: id}
+					]})
+			.populate(pop_config)
+			.populate(pop_config2)
+			.sort({data:-1})
+			.exec()
+
+}
+
 
 module.exports.listarPorUser = (id) => {
 	return Pub

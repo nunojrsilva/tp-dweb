@@ -3,20 +3,32 @@ extends layout
 block content
 	#inicioPagina
 
-		.w3-container(id="id" name=perfil.fotoPerfil.idAtual style="height: 100%;")
+		.w3-container(id="id" name= perfil._id style="height: 100%;")
 			.w3-card-4(style="width:100%")
 				header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
 					h3 Perfil de 
 						=perfil.nome
 				.w3-card-4(style="width: 25%; float: left")
 					img(style="max-width: 90%; margin-top: 5%; margin-left: 5%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
-					input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
+					if(perfil.otherUser == false)	
+						input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
 					h3(style="margin-top: 5%; margin-left: 10%;")= perfil.nome
 					p(style="margin-top: -5%;margin-left: 15%;") Username: 
 						=perfil.username
+					p(style="margin-top: -5%;margin-left: 15%;")= perfil._id 
+					div(id="seguir7ignorar")
+						if(perfil.otherUser == true)
+							if(perfil.segue == false)
+								a(id="seguir")
+									img(id="seguir" style="cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 50%;" src="http://localhost:3000/api/files/plus")
+							else
+								a(id="ignorar")
+									img(id="ignorar" style="cursor:pointer;max-width: 50px; max-height: 50px; vertical-align: middle;" src="http://localhost:3000/api/files/check")
 					h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
 						=perfil.npubs
-				
+					if(perfil.otherUser == true)
+						p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
+							=perfil.npubsInvisiveis
 				.w3container(style="width:75%; float:right;")
 					br
 					.w3-card-4(style="position:absolute; width:65%;")
@@ -35,7 +47,7 @@ block content
 										h4="Publicado em " + p.data
 										if p.local
 											h4="Local: " + p.local
-										h5="Público: " + p.publico
+										h5="Privacidade: " + p.privacidade
 										each e in p.elems
 											h4="TIPO: "+ e.tipo
 											if e.tipo == "lista"

@@ -65,6 +65,46 @@ router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false
    
 })
 
+router.post('/Seguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+
+    User.inserirSeguidor(req.body.userParaSeguir, req.user._id)
+    .then(_ =>{
+            
+        User.inserirASeguir(req.user._id, req.body.userParaSeguir)
+        .then(_ =>{
+            res.json(req.body.userParaSeguir._id)
+        })
+        .catch(erroInserirASeguir =>{
+            console.log("ERRO AO ADICIONAR UTILIZADOR A LISTA DE A SEGUIR " + erroInserirASeguir)
+            res.status(500).send("ERRO AO ADICIONAR UTILIZADOR A LISTA DE A SEGUIR " + erroInserirASeguir)
+        })
+    })
+    .catch(erroSerSeguido =>{
+        console.log("ERRO AO ADICIONAR UTILIZADOR A LISTA DE SEGUIDORES " + erroSerSeguido)
+        res.status(500).send("ERRO AO ADICIONAR UTILIZADOR A LISTA DE SEGUIDORES " + erroSerSeguido)
+    })
+})
+
+router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, res)=>{
+    
+    User.removerSeguidor(req.body.userAIgnorar, req.user._id)
+    .then(_=>{
+        User.removerASeguir(req.user._id, req.body.userAIgnorar)
+        .then(_=>{
+            res.jsonp(req.body.userAIgnorar)
+        })
+        .catch(erroASeguir =>{
+            console.log("ERRO AO REMOVER USER DA LISTA DE USERS A SEGUIR " + erroASeguir)
+            res.status(500).send("ERRO AO REMOVER USER DA LISTA DE USERS A SEGUIR " + erroASeguir)
+        })
+    })
+    .catch(erroSeguidor =>{
+        console.log("ERRO AO REMOVER USER DA LISTA DE USERS SEGUIDORES " + erroSeguidor)
+        res.status(500).send("ERRO AO REMOVER USER DA LISTA DE USERS SEGUIDORES " + erroSeguidor)
+    })
+})
+
+
 router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
     console.log("Entrou no get de /Perfil " + req.user._id)
     var userID = null
@@ -91,6 +131,8 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
                     console.log(JSON.stringify(pubs))
                     user.pubs = pubs
                     user.npubs = pubs.length
+                    user.otherUser = false
+
                     res.jsonp(user)
                 })
                 .catch(erroProprio =>{
@@ -99,12 +141,39 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
                 })
             }
             else{
-                Pubs.listarPorUserPublico(user._id, true)
+                Pubs.listarPorUserPrivacidade(user._id, "publica")
                 .then(pubs =>{
-                    console.log(JSON.stringify(pubs))
-                    user.pubs = pubs
-                    user.npubs = pubs.length
-                    res.jsonp(user)
+                    User.contarPubs(user._id)
+                    .then(nPubsTotal =>{
+                        console.log("ISTO É O QUE VEM DO CONTAR" + JSON.stringify(nPubsTotal.pubs.length))
+                        user.pubs = pubs
+                        user.npubs = nPubsTotal.pubs.length
+                        user.npubsInvisiveis = nPubsTotal.pubs.length - pubs.length
+                        user.otherUser = true
+
+                        User.checkASeguir(req.user._id, user._id)
+                        .then(n =>{
+                            if(n >= 1){
+                                user.segue = true
+                                console.log(user.segue + " " + n)
+                            }
+                            else{
+                                user.segue = false
+                                console.log(user.segue + " " + n)
+                            }
+                            res.jsonp(user)
+                        })
+                        .catch(erroCount =>{
+                            console.log("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
+                            res.status(500).send("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
+                        })
+                    })
+                    .catch(erroTotal =>{
+                        console.log("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
+                        res.status(500).send("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
+                    })
+                    
+
                 })
                 .catch(erroPubs =>{
                     console.log(erroPubs)

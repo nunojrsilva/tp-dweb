@@ -21,6 +21,8 @@ var UserSchema = new Schema({
     username: {type: String, required : true, unique: true},
     password: {type: String, required : true},
     pubs : [{type: ObjectId, required : true, ref : 'Pub'}],
+    seguidores: [{type: ObjectId, required : true}],
+    aSeguir: [{type: ObjectId, required : true}],
     salt : {type:String, required : false},
     fotoPerfil: {type: FotoPerfilSchema, required: true}
 })

@@ -58,7 +58,7 @@ var PubSchema = new Schema({
     hashtags: [{type: String, required: true}],
     data: {type: Date, required: true}, // Para preencher pelo servidor
     local: {type: String, required: false},
-    publico: {type: Boolean, required: true},
+    privacidade: {type: String, required: true},
     tituloPub: {type: String, required: false},
     elems: [{type: elemSchema, required: true}],
     gostos: [{type : ObjectId, required : true}],
