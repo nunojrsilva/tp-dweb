@@ -12,7 +12,7 @@ block content1
                         table
                             tr
                                 td(style='width:20%')
-                                    input#hashtag.w3-input.w3-border(placeholder='ID da publicação')
+                                    input#hashtag.w3-input.w3-border(placeholder='Hashtag')
                                 td
                                     button#hashtagBTN.w3-button( style='background-color: rgb(59,100,170); color: white; margin-left:25px;') Procurar publicação 
     
@@ -116,8 +116,8 @@ block content1
                                                             b Descrição
                                                         .w3-container.w3-round-large.w3-border
                                                             p(style="margin-left:0px; margin-right:0px; margin-top:4px; margin-bottom:4px;")= e.evento.descricao
-
-                                    input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gosto" value='Gosto (' + p.gostos.length + ')' name=p.gostos.length style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-top:0px;')
+                                    if loggedIn
+                                        input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gosto" value='Gosto (' + p.gostos.length + ')' name=p.gostos.length style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-top:0px;')
                                     
                                     br
                                     br
@@ -126,13 +126,14 @@ block content1
                                             h7
                                                 b Comentários
                                         .w3-container
-                                            form.formComentarios.w3-container.w3-bottombar.w3-border-grey(id=p._id+"novoComent" style='margin-bottom:15px;')
-                                                table(style='width:100%; margin-top:15px; margin-bottom:15px;')
-                                                    tr
-                                                        td(style='width:80%')
-                                                            input#comentario.w3-input.w3-border.w3-light-grey.w3-round-xxlarge(type='text' placeholder='Escreve um comentário' required)
-                                                        td
-                                                            input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:20px;')
+                                            if loggedIn
+                                                form.formComentarios.w3-container.w3-bottombar.w3-border-grey(id=p._id+"novoComent" style='margin-bottom:15px;')
+                                                    table(style='width:100%; margin-top:15px; margin-bottom:15px;')
+                                                        tr
+                                                            td(style='width:80%')
+                                                                input#comentario.w3-input.w3-border.w3-light-grey.w3-round-xxlarge(type='text' placeholder='Escreve um comentário' required)
+                                                            td
+                                                                input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:20px;')
                                             table.comentarios(id=p._id+'comentarios' style='width: 100%; line-height: 18px; word-wrap:break-word; table-layout: fixed;')
                                                 
                                                 if p.comentarios.length
@@ -147,7 +148,8 @@ block content1
                                                                         a(href="http://localhost:3000/Perfil?idUser=" + c.utilizador._id)
                                                                             b(style='color: rgb(59,100,170);')= c.utilizador.nome
                                                                         | &nbsp;&nbsp;&nbsp; #{c.texto}
-                                                                input.commentLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=c._id+"_Gosto" value='Gosto (' + c.gostos.length + ')' name=c.gostos.length style='line-height: 14px; margin-bottom:10px;background-color: rgb(59,100,170); color: white; margin-left:15px;')
+                                                                if loggedIn
+                                                                    input.commentLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=c._id+"_Gosto" value='Gosto (' + c.gostos.length + ')' name=c.gostos.length style='line-height: 14px; margin-bottom:10px;background-color: rgb(59,100,170); color: white; margin-left:15px;')
                                                 else 
                                                     .w3-container(id=p._id+"NoComments" style='margin-top:20px;')
                                                         b(style='color:dark-grey;') Não existem comentários para mostrar. Seja o primeiro a comentar esta publicação!
