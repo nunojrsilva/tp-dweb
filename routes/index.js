@@ -347,7 +347,30 @@ router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, re
     }
     })
   .then(dados =>{
-    console.log("CHEGEUI AOS DADOS")
+    res.render('renderPerfis', {users: dados.data})
+  })
+  .catch(error =>{
+    console.log("ERRO AXIOS POST: " + error)
+  })
+
+})
+
+router.get('/Seguidores', passport.authenticate('jwt', {session : false}), (req, res) => {
+  console.log("CHEGEUI AO /SEGUIDORES " + req.query.uid)
+
+  axios({
+    method: 'get', 
+    url: 'http://localhost:3000/api/users/Seguidores',
+    data:{
+      idUser: req.query.uid
+    },
+    headers: {
+      Authorization: 'Bearer ' + req.session.token
+    }
+    })
+  .then(dados =>{
+    console.log("DADOS DOS SEGUIDORES")
+    console.log(dados.data)
     res.render('renderPerfis', {users: dados.data})
   })
   .catch(error =>{

@@ -214,6 +214,19 @@ router.get('/aSeguir',passport.authenticate('jwt', {session : false, failureRedi
     })
 })
 
+
+router.get('/Seguidores',passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
+    User.getSeguidores(req.body.idUser)
+    .then(SeguidoresArray =>{
+        console.log(JSON.stringify(SeguidoresArray[0]))
+        res.jsonp(SeguidoresArray[0])
+    })
+    .catch(erro =>{
+        console.log("ERRO AO OBTER A LISTA DE SEGUIDORES " + erro)
+        res.status(500).send("ERRO AO OBTER A LISTA DE SEGUIDORES " + erro)
+    })
+})
+
 router.get('/:uid', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
     User.consultar(req.params.uid)
         .then(dados => res.jsonp(dados))
