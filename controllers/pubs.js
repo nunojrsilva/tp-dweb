@@ -70,9 +70,8 @@ module.exports.listarPubsCompleta = (uid, aSeguir) => {
 
 }
 
-module.exports.listarPubsPerfilSeguidores = (uid, aSeguir) => {
+module.exports.listarPubsPerfilSeguidores = uid => {
 	var id = mongoose.Types.ObjectId(uid)
-	console.log("ISTO É O ARRAY DE ASEGUIR: " + aSeguir)
 	return Pub
 			.find({$or: [
 						{$and:[
