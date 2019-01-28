@@ -94,9 +94,9 @@ $(()=>{
         var url = 'http://localhost:3000/aSeguir?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('display', 'none')
-            $('#seguidoresBTN').css('display', '')
-            $('#pubsBTN').css('display', '')
+            $('#aSeguirBTN').css('visibility', 'hidden')
+            $('#seguidoresBTN').css('visibility', 'visible')
+            $('#pubsBTN').css('visibility', 'visible')
     
             $('#aSeguir').css('display', '');
             $('#seguidores').css('display', 'none');
@@ -123,9 +123,9 @@ $(()=>{
         var url = 'http://localhost:3000/Seguidores?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('display', '')
-            $('#seguidoresBTN').css('display', 'none')
-            $('#pubsBTN').css('display', '')
+            $('#aSeguirBTN').css('visibility', 'visible')
+            $('#seguidoresBTN').css('visibility', 'hidden')
+            $('#pubsBTN').css('visibility', 'visible')
 
             $('#aSeguir').css('display', 'none');
             $('#seguidores').css('display', '');
@@ -146,9 +146,9 @@ $(()=>{
     $('#pubsBTN').click(e=>{
         e.preventDefault()
 
-        $('#aSeguirBTN').css('display', '')
-        $('#seguidoresBTN').css('display', '')
-        $('#pubsBTN').css('display', 'none')
+        $('#aSeguirBTN').css('visibility', 'visible')
+        $('#seguidoresBTN').css('visibility', 'visible')
+        $('#pubsBTN').css('visibility', 'hidden')
 
         $('#aSeguir').css('display', 'none');
         $('#seguidores').css('display', 'none');
