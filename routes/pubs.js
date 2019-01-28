@@ -84,6 +84,18 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 	}
 });
 
+
+router.get('/publicas', (req,res) => {
+	axiosGet(req, res, 'http://localhost:3000/api/pubs/publicas')
+		.then(resposta =>{
+			console.log("TENHO QUE FAZER RENDER A ISTO")
+			console.log(resposta)
+			removeNomeGuardado(resposta)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
+})
+
 router.get('/novalista', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
     console.log("Entrou no get de /pubs/lista")
     res.render("lista")

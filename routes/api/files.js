@@ -84,7 +84,7 @@ router.get('/plus', (req, res) =>{
 	res.sendFile(plusPathResolved)
 })
 
-router.get('/foto', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
+router.get('/foto', (req,res) => {
 
 	User.obterFotoPerfil(req.query.userId, req.query.fotoId)
 	.then(dados =>{

@@ -37,7 +37,8 @@ router.get('/login', (req,res) => {
 })
 
 router.get("/publicas", (req,res) => {
-  res.send(req.flash('error'))
+  res.render('homepage')
+  //res.send(req.flash('error'))
 })
 
 
