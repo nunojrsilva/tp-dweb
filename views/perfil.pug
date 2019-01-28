@@ -1,49 +1,56 @@
-extends layout
+extends layoutBase
 
-block content
+block content1
+    .w3-bar(style="display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;width:100%;border-bottom: 1px solid #cacaca;position: fixed;")
+                a.w3-bar-item.w3-button(href="/") Feed de Publicações
+                a.w3-bar-item.w3-button(href="/logout") Logout
+
     #inicioPagina
-        .w3-card-4(id="id" name= perfil._id style="width:100%")
+        .w3-card-4.w3-round-large(id="id" name= perfil._id style="width:100%; margin-top:50px")
             header.w3-container(style='background-color: rgb(59,100,170); color: white;')
                 h3 Perfil de 
                     =perfil.nome
             table 
                 tr
-                    td(valign="top" style="width: 30%;")
-                        .w3-card-4(id="AAAAAAAA" style='max-width: 80%; margin-left:15px; margin-right:15px; margin-top:25px;')
-                            img(style="max-width: 90%; margin-top: 5%; margin-left: 5%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
+                    td(valign="top" width="30%")
+                        .w3-card-4(id="AAAAAAAA" style='width: 90%; margin-left:15px; margin-right:15px; margin-top:25px;')
+                            br
+                            img.w3-round-large.w3-border(style="display: block; margin: 0 auto; max-width: 90%; max-height: 90%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
                             if(perfil.otherUser == false)    
-                                input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
-                            h3(style="margin-top: 5%; margin-left: 10%;")= perfil.nome
-                            p(style="margin-top: -3%;margin-left: 15%;") Username: 
-                                =perfil.username
-                            p(style="margin-top: -3%;margin-left: 15%;")= perfil._id 
-                            div(id="seguir7ignorar")
+                                input.w3-btn.w3-container.w3-round-large(type="button" id='fotosPerfil' value='Ver Fotos Perfil' style='display: block; margin: 0 auto; background-color: rgb(59,100,170); color: white; margin-top:10px;')
+                            .w3-light-grey.w3-border.w3-round-large(style="margin-top:15px; margin-left:15px; margin-right:15px;")
+                                h3(style="text-align: center;")= perfil.nome
+                                p(style="text-align: center;") 
+                                    b Username: 
+                                    | #{perfil.username}
+                                p(style="text-align: center;") 
+                                    b ID: 
+                                    | #{perfil._id} 
+                            div(id="seguir7ignorar" style='margin-top:15px; margin-bottom:10px;')
                                 if(perfil.otherUser == true)
                                     if(perfil.segue == true)
                                         a(id="ignorar" style="visibility: visible;")
-                                            img(id="ignorarImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+                                            img(id="ignorarImg" style="visibility: visible; cursor:pointer;width: 55px; height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/check")
                                         a(id="seguir" style="visibility: hidden;")
-                                            img(id="seguirImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
+                                            img(id="seguirImg" style="visibility: hidden; cursor:pointer;width: 40px; height: 40px; margin-left: 25%;" src="http://localhost:3000/api/files/plus")
                                     else
                                         a(id="ignorar" style="visibility: hidden;")
-                                            img(id="ignorarImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
+                                            img(id="ignorarImg" style="visibility: hidden; cursor:pointer;width: 40px; height: 35px; margin-left: 20%;" src="http://localhost:3000/api/files/check")
                                         a(id="seguir" style="visibility: visible;")
-                                            img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
-                            -var naSeguir = 'A Seguir (' + perfil.naSeguir + ')'    
-                            -var nseguidores = 'Seguidores (' + perfil.nseguidores + ')'    
-                            button.w3-button(id="aSeguirBTN" style='background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
-                            button.w3-button(id="seguidoresBTN" style=' background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
-                            button.w3-button(id="pubsBTN" style='display:none ; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
-
+                                            img(id="seguirImg" style="visibility: visible; cursor:pointer;width: 30px; height: 30px; margin-left: 25%;" src="http://localhost:3000/api/files/plus")
+                            input.w3-btn.w3-round-large(type="button" id="aSeguirBTN" value='A Seguir (' + perfil.naSeguir + ')' name=perfil.naSeguir style='float:left; padding: 8px 29px; background-color: rgb(59,100,170); color: white; margin-left:7%;margin-top:10px; margin-bottom:10px;')
+                            input.w3-btn.w3-round-large(type="button" id="seguidoresBTN" value='Seguidores (' + perfil.nseguidores + ')' name=perfil.nseguidores style='float:right; padding: 8px 20px; background-color: rgb(59,100,170); color: white; margin-right:7%;margin-top:10px; margin-bottom:10px;')
+                            input.w3-btn.w3-round-large(type="button" id="pubsBTN" value="Ver Publicações" style='display: block; margin: 0 auto; padding: 8px 15px; visibility:hidden ; background-color: rgb(59,100,170); color: white; margin-top:25px;') 
+                            
                             h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
                                 =perfil.npubs
                             if(perfil.otherUser == true)
                                 p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
                                     =perfil.npubsInvisiveis
                             br
-                    td(valign="top" style="width: 70%;")
-                        #aSeguir.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
-                        #seguidores.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
+                    td(valign="top" width="70%")
+                        #aSeguir.w3-container(style='display:none ; margin-left:15px; margin-right:15px; margin-top:25px;')
+                        #seguidores.w3-container(style='display:none ; margin-left:15px; margin-right:15px; margin-top:25px;')
                         #listaPublicacoes.w3-container(style='margin-left:15px; margin-right:15px; margin-top:25px;')
                             each p in perfil.pubs
                                 publicacao.w3-container(id=p._id)
