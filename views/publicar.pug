@@ -26,14 +26,17 @@ block content1
                             br
                             br
                             .w3-container
-                                b Pretende fazer a sua publicação pública?
+                                b Quem pretende que veja a sua publicação?
                                 br
-                                lable Sim
-                                    input(id="checkboxSim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+                                lable Público
+                                    input(id="publica" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
                                 br
-                                label Não
-                                    input(id="checkboxNao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
-
+                                label Seguidores
+                                    input(id="seguidores" type='checkbox' name='agreement' style='margin-left: 20px' unchecked)
+                                br
+                                label Apenas Eu
+                                    input(id="privada" type='checkbox' name='agreement' style='margin-left: 20px' checked)
+                               
                         td(style='width:45%' valign='top')
                             .w3-container(style='display: table; margin: 0 auto;')
                                 input#AdicaoFicheiros.w3-border.w3-btn.w3-tiny.w3-round-large(type='button' value='Adicionar ficheiros' style='background-color: rgb(220,220,220); font-size:12px; margin-top:5px;  margin-right:-10px;')

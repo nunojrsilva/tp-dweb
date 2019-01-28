@@ -12,8 +12,8 @@ var randomstring = require('randomstring')
 
 
 router.get('/', function(req, res) {
-	if(req.query.username && req.query.publico){
-		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username + '&publico=' + req.query.publico)
+	if(req.query.username && req.query.privacidade){
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username + '&privacidade=' + req.query.privacidade)
         .then(resposta =>{
 			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
@@ -59,6 +59,7 @@ router.get('/', function(req, res) {
 	} else{
 		axiosGet(req, res, 'http://localhost:3000/api/pubs')
 		.then(resposta =>{
+			console.log("TENHO QUE FAZER RENDER A ISTO")
 			console.log(resposta)
 			removeNomeGuardado(resposta)
 			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
@@ -133,7 +134,7 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false}), (req, r
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
 			publicacao.hashtags = ["War", "Terror"]
-			publicacao.publico = fields.publico
+			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
 
@@ -179,7 +180,7 @@ router.post('/evento', passport.authenticate('jwt', {session : false}), (req, re
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
 			publicacao.hashtags = ["Evento"]
-			publicacao.publico = fields.publico
+			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
 
@@ -229,7 +230,7 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false}), (req,
 			publicacao.utilizador = req.user._id
 			publicacao.hashtags = ["ficheiros"]
 			publicacao.data = new Date()
-			publicacao.publico = fields.publico
+			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
 
@@ -266,7 +267,7 @@ router.post("/narracao", passport.authenticate('jwt', {session : false}), (req, 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
-			publicacao.publico = fields.publico
+			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = ["narracao"]
 			publicacao.gostos = []
 
@@ -317,7 +318,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false}), (req, res
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date()
-			publicacao.publico = fields.publico
+			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = ["lista"]
 			publicacao.elems = []
 			publicacao.gostos = []

@@ -25,6 +25,25 @@ module.exports.consultarUsername = un => {
             .exec()
 }
 
+module.exports.contarPubs = pid => {
+    return User
+            .findOne({_id: pid})
+			.exec()
+}
+
+module.exports.checkASeguir = (uid, tocheck) => {
+    return User
+            .find({_id: uid, aSeguir: tocheck})
+            .count()
+            .exec()
+}
+
+module.exports.getASeguir = uid => {
+    return User
+            .find({_id: uid}, {aSeguir: 1})
+            .exec()
+}
+
 module.exports.consultarPerfil = (_id, fotoID) => {
     var uid = mongoose.Types.ObjectId(_id)
     var idAtual = mongoose.Types.ObjectId(fotoID)
@@ -87,6 +106,50 @@ module.exports.atualizarFotoPerfil = (uid, fotoId) => {
             .findOneAndUpdate(
                 {_id: id},
                 {$set: {"fotoPerfil.idAtual": fotoID}},
+                {new: true})
+            .exec()
+}
+
+module.exports.inserirASeguir = (uidSeguidor, uidASeguir) => {
+	var idSeguidor = mongoose.Types.ObjectId(uidSeguidor)
+	var idASeguir = mongoose.Types.ObjectId(uidASeguir)
+    return User
+            .findOneAndUpdate(
+                {_id: idSeguidor},
+                {$push: {"aSeguir": idASeguir}},
+                {new: true})
+            .exec()
+}
+
+module.exports.inserirSeguidor = (uidASeguir, uidSeguidor) => {
+	var idASeguir = mongoose.Types.ObjectId(uidASeguir)
+	var idSeguidor = mongoose.Types.ObjectId(uidSeguidor)
+    return User
+            .findOneAndUpdate(
+                {_id: idASeguir},
+                {$push: {"seguidores": idSeguidor}},
+                {new: true})
+            .exec()
+}
+
+module.exports.removerASeguir = (uidSeguidor, uidAIgnorar) => {
+	var idSeguidor = mongoose.Types.ObjectId(uidSeguidor)
+	var idAIgnorar = mongoose.Types.ObjectId(uidAIgnorar)
+    return User
+            .findOneAndUpdate(
+                {_id: idSeguidor},
+                {$pull: {"aSeguir": idAIgnorar}},
+                {new: true})
+            .exec()
+}
+
+module.exports.removerSeguidor = (uidAIgnorar, uidSeguidor) => {
+	var idSeguidor = mongoose.Types.ObjectId(uidSeguidor)
+	var idAIgnorar = mongoose.Types.ObjectId(uidAIgnorar)
+    return User
+            .findOneAndUpdate(
+                {_id: idAIgnorar},
+                {$pull: {"seguidores": idSeguidor}},
                 {new: true})
             .exec()
 }

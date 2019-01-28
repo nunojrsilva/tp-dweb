@@ -56,13 +56,16 @@ block content
 							input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Ficheiros' style='margin-right:25px;')
 					
 				lable 
-					b Pretende fazer a sua publicação pública?
+					b Quem pretende que veja a sua publicação?
 					br
-					lable Sim
-						input(id="sim" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+					lable Público
+						input(id="publica" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
 					br
-					label Não
-						input(id="nao" type='checkbox' name='agreement' style='margin-left: 20px' checked)
+					label Seguidores
+						input(id="seguidores" type='checkbox' name='agreement' style='margin-left: 20px' unchecked)
+					br
+					label Apenas Eu
+						input(id="privada" type='checkbox' name='agreement' style='margin-left: 20px' checked)
 
 				br
 				br

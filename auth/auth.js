@@ -34,12 +34,15 @@ passport.use('registo', new localStrategy({
         fotoDefault.nomeGuardado = fotoDefault.nome
     
         fotoPerfil.fotos.push(fotoDefault)
-    
 
-        var user = await UserModel.create({nome, username, password, fotoPerfil})
+        seguidores = []
+        aSeguir = []
+
+        var user = await UserModel.create({nome, username, password, fotoPerfil, seguidores, aSeguir})
 
         fs.mkdirSync(__dirname + '/../uploaded/'+ user.username +'/')
 
+        //ESTA MERDA ESTA MAL (res its not defined)
         UserController.atualizarFotoPerfil(user._id, user.fotoPerfil.fotos[0]._id)
             .then(dados2 =>{
                 return res.jsonp(dados2)

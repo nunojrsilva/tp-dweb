@@ -3,7 +3,7 @@ extends layout
 block content
     h1 Publicação
     h2= "Data : " + p.data
-    h2= "Visibilidade: " + p.publico
+    h2= "Privacidade: " + p.privacidade
     each elem in p.elems
         h3= elem.hashtags
         h2= "Titulo: " + elem.lista.titulo

@@ -26,6 +26,60 @@ $(()=>{
 			processData: false
         });
     });
+
+    $('#seguir').click(e=>{
+        e.preventDefault()
+        var id = $('#id').attr('name')
+        console.log(id)
+        var userParaSeguir = id
+
+        var url = 'http://localhost:3000/Seguir?userParaSeguir=' + id
+        $.ajax({
+            url: url,
+            type: 'Post',
+            contentType: "application/json",
+            data: userParaSeguir,
+            success: data =>{
+                $('#seguir7ignorar').empty()
+                $('#seguir7ignorar').append(data)                
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+            processData: false
+        });
+    })
+
+    $('#ignorar').click(e=>{
+        e.preventDefault()
+
+        var id = $('#id').attr('name')
+        console.log(id)
+
+        var url = 'http://localhost:3000/Ignorar?userAIgnorar=' + id
+
+        var userAIgnorar = id
+        $.ajax({
+            url: url,
+            type: 'Post',
+            contentType: "application/json",
+            data: userAIgnorar,
+            success: data =>{
+                $('#seguir7ignorar').empty()
+                $('#seguir7ignorar').append(data)                
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+            processData: false
+        });
+    })
     
     $('#fotosPerfil').click(e =>{
         e.preventDefault()

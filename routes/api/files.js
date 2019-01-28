@@ -69,6 +69,19 @@ router.get('/fotoPerfil', (req,res) => {
 	.catch(erro => res.status(500).send('ERRO NA CONSULTA DA FOTO DE PERFIL 2' + erro))
     
 })
+router.get('/check', (req, res) =>{
+	var checkPath = __dirname + "/../../uploaded/seguido.png"
+	var checkPathResolved = path.resolve(checkPath)
+
+	res.sendFile(checkPathResolved)
+})
+
+router.get('/plus', (req, res) =>{
+	var plusPath = __dirname + "/../../uploaded/seguir.png"
+	var plusPathResolved = path.resolve(plusPath)
+
+	res.sendFile(plusPathResolved)
+})
 
 router.get('/foto', (req,res) => {
 
