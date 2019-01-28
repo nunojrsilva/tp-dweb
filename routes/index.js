@@ -134,16 +134,16 @@ router.get('/FotosPerfil', passport.authenticate('jwt', {session : false, failur
 
 router.post('/Seguir',passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res)=>{
   console.log("HERE")
-  console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.query.userParaSeguir)
-  console.log("queryYYYYYYYYYYYY " + JSON.stringify(req.query))
+  console.log("CHEGUEI AO SEGUIR!!" + req.user._id + "para seguir " + req.body.userParaSeguir)
+  console.log("bodyYYYYYYYYYYYY " + JSON.stringify(req.body))
 
-  if(req.query.userParaSeguir){
+  if(req.body.userParaSeguir){
     
     axios({
       method: 'post', 
       url: "http://localhost:3000/api/users/Seguir",
       data:{
-        userParaSeguir: req.query.userParaSeguir
+        userParaSeguir: req.body.userParaSeguir
       },
       headers: {
         Authorization: 'Bearer ' + req.session.token
@@ -155,7 +155,7 @@ router.post('/Seguir',passport.authenticate('jwt', {session : false, failureRedi
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO SEGUIR: " + error)
-      res.status(500).send("ERRO AO TENTAR SEGUIR O UTILIZADOR: " + req.query.userParaSeguir + error)
+      res.status(500).send("ERRO AO TENTAR SEGUIR O UTILIZADOR: " + req.body.userParaSeguir + error)
     })
   }
   else{
@@ -172,7 +172,7 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRe
       method: 'post', 
       url: "http://localhost:3000/api/users/Ignorar",
       data:{
-        userAIgnorar: req.query.userAIgnorar
+        userAIgnorar: req.body.userAIgnorar
       },
       headers: {
         Authorization: 'Bearer ' + req.session.token
@@ -184,7 +184,7 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false, failureRe
     })
     .catch(error =>{
       console.log("ERRO AXIOS POST DO IGNORAR: " + error)
-      res.status(500).send("ERRO AO TENTAR IGNORAR O UTILIZADOR: " + req.query.userAIgnorar + error)
+      res.status(500).send("ERRO AO TENTAR IGNORAR O UTILIZADOR: " + req.body.userAIgnorar + error)
     })
   }
   else{
