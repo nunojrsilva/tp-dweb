@@ -65,34 +65,54 @@ $(()=>{
 
 		fileInputs = fileInputs + 1
  
-		var input = $("<input type='file' class='w3-input w3-border w3-round-large w3-light-grey moreFiles' name='file" + fileInputs + "' multiple/>");
+		var input = $("<input type='file' class='w3-input w3-border w3-round-large w3-white moreFiles' name='file" + fileInputs + "' multiple/>");
 		$("#listaFiles").append(input);
 	})
 
 	$("#opiniaobtn").click(e=>{
 		tipo = "opiniao"
 		$('#formDiv').load('http://localhost:3000/pubs/opiniaoPub')
+		$('#formPub').css('display', '');
+		$('#formPubHidden').css('display', 'none');
 	})
 
 	$("#narracaobtn").click(e=>{
 		tipo = "narracao"
 		$('#formDiv').load('http://localhost:3000/pubs/narracaoPub')
+		$('#formPubHidden').css('display', 'none');
+		$('#formPub').css('display', '');
 	})
 
 	$("#listabtn").click(e=>{
 		tipo = "lista"
 		$('#formDiv').load('http://localhost:3000/pubs/listaPub')
+		$('#formPubHidden').css('display', 'none');
+		$('#formPub').css('display', '');
 	})
 
 	$("#eventobtn").click(e=>{
 		tipo = "evento"
 		$('#formDiv').load('http://localhost:3000/pubs/eventoPub')
+		$('#formPubHidden').css('display', 'none');
+		$('#formPub').css('display', '');
 	})
 
 	$("#livrebtn").click(e=>{
 		tipo = "livre"
 		//$('#formDiv').load('http://localhost:3000/pubs/livrePub')
 	})
+
+	$("#fecharForm").click(e=>{
+		tipo = "opiniao"
+		$('#formDiv').load('http://localhost:3000/pubs/eventoPub')
+		$('#formPubHidden').css('display', '');
+		$('#formPub').css('display', 'none');
+		$('#myForm').trigger("reset");
+		$('.moreFiles').remove();
+		$('#filesDiv').find('input:text').val('');
+		$('#filesDiv').find('input:file').val('');
+	})
+
 
 	$('#formPub').submit(function(e){
 		e.preventDefault();
@@ -112,7 +132,14 @@ $(()=>{
 		//alert('Cheguei ao 1')
 
 		if(tipo == "opiniao")
-			formData.append('opiniao', $('#opiniao').val());
+			if($('#opiniao').val())
+				formData.append('opiniao', $('#opiniao').val());
+			else if($('#fileBase').val()) {
+				tipo = "ficheiros"
+			} else {
+				alert("Insira uma opinião ou no mínimo um ficheiro")
+				return;
+			}
 
 
 		if(tipo == "narracao"){
@@ -161,11 +188,12 @@ $(()=>{
 			contentType: "application/json",
 			data:formData,
 			success: data =>{
+				console.log(data)
 				alert('Publicação efetuada com sucesso');
+				$('#listaPublicacoes').prepend(data)
 				$('#formPub').trigger("reset");
 			},
 			error: e =>{
-				alert('Erro no post: ' + JSON.stringify(e))
 				$('#myForm').trigger("reset");
 				console.log('Erro no post: ' + JSON.stringify(e))
 			},

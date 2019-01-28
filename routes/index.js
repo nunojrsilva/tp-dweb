@@ -23,7 +23,16 @@ router.get('/', (req,res) => {
 
 router.get('/login', (req,res) => {
   console.log('Na cb do GET /login ...')
-  res.render('login')
+  var str = req.flash('info')
+  console.log(str)
+  if (str.length > 0){
+    console.log("Tem mensagens!")
+    res.render('login' , {msg : str})
+  }
+  else{
+    console.log("Vazio")
+    res.render('login')
+  }
 
 })
 
@@ -58,6 +67,43 @@ router.get('/users',  (req,res) => {
           res.send();
 
   })
+})
+
+
+router.post("/login", (req,res) => {
+  console.log("No login da pagina")
+  var username = req.body.username
+  var password = req.body.password
+  axios.post("http://localhost:3000/api/users/login", {username, password})
+    .then(dados => {
+      console.log("Token: "+ JSON.stringify(dados.data.token))
+      // Guardar o token
+      req.session.token = dados.data.token
+      res.redirect("/")
+    })
+    .catch(e => {
+      console.log("Erro no /login" + e)
+      req.flash('info', 'Erro no login, por favor tente novamente!')
+      res.redirect('/login')
+    })
+})
+
+
+router.post("/registo", (req,res) => {
+  console.log("No registo da pagina")
+  var username = req.body.username
+  var password = req.body.password
+  var nome = req.body.nome
+
+  axios.post("http://localhost:3000/api/users", {nome, username, password}, { withCredentials: true })
+    .then(dados => {
+      console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
+      res.redirect("/login")
+    })
+    .catch(e => {
+      console.log("Erro no /registo " + JSON.stringify(e) )
+      res.jsonp(e)
+    })
 })
 
 router.get('/atualizarFotoPerfil', passport.authenticate('jwt', {session : false}), (req, res)=>{

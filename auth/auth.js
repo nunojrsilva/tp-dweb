@@ -124,14 +124,14 @@ passport.use('facebook', new FacebookStrategy({
 
         var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
         
-        var password = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
+        var password = hash('sha1').update(username + nome + salt).digest('hex')
 
         
         var fotoPerfil = {}
         fotoPerfil.idAtual = null
         fotoPerfil.fotos = []
 
-        var fotoHashed = hash('sha1').update(username + nome + salt).digest('hex')
+        var fotoHashed = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
 
         // Tem de ser feito aqui porque o download vai guardar nessa pasta
 
@@ -170,8 +170,11 @@ passport.use('facebook', new FacebookStrategy({
             console.log("password correta")
             return done(null, user, {message: "Login com sucesso"})
         }
-        else return done(null, false, {message: "Erro no login"})
-      }
+        else {
+            console.log("password invalida")
+            return done(null, false, {message: "Erro no login"})
+        }
+    }
   }
 ));
 

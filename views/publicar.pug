@@ -3,17 +3,19 @@ extends layoutBase
 block content1
     
     .w3-container
-        .w3-card-4
-            header.w3-container(style='height:50px; background-color: rgb(59,100,170); color: white;')
+        .w3-card-4.w3-round-large
+            header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
                 h5(style='flex: 50%; float: left; margin-top:8px;') Nova Publicação
-                .w3-container(style='flex: 50%; float: right; margin-top:-2px;')
+                .w3-container(style='flex: 50%; float: right; margin-top:-2px; margin-right:-10px;')
                     input#opiniaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Opinião' style='font-size:12px; margin-right:10px;')
-                    input#narracaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Narração' style='font-size:12px; margin-right:10px;')
+                    input#narracaobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Citação' style='font-size:12px; margin-right:10px;')
                     input#listabtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Lista' style='font-size:12px; margin-right:10px;')
                     input#eventobtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Evento' style='font-size:12px; margin-right:10px;')
                     input#livrebtn.w3-btn.w3-border.w3-light-grey.w3-round-large(type='button' value='Livre' style='font-size:12px;')
-                                
-            form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post")
+            .w3-container#formPubHidden(style='text-align: center;')
+                p 
+                    b Partilhe os seus momentos e experiências com o mundo   
+            form#formPub.w3-container(name="uploadFiles" enctype="multipart/form-data" method="post" style="display: none;")
                 table(style='width:100%')
                     tr
                         td(style='width:55%' valign='top')
@@ -51,13 +53,14 @@ block content1
                                         label
                                             b Ficheiros
                                         #listaFiles
-                                            input.w3-input.w3-border.w3-white.w3-round-large(type='file' name='files0' multiple)
+                                            input#fileBase.w3-input.w3-border.w3-white.w3-round-large(type='file' name='files0' multiple)
                                         input.w3-btn.w3-border.w3-round-large(id='more_files' type='button' value='Mais ficheiros' style='margin-top:5px; background-color: rgb(59,100,170); color:white; margin-bottom:5px; font-size:10px;')
                                         br
                 br
                 
                 input.w3-btn.w3-round-large(type='submit' value='Publicar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
                 input.w3-btn.w3-round-large(type='reset' value='Limpar' style='background-color: rgb(59,100,170); color: white; margin-left:25px;')
+                input#fecharForm.w3-btn.w3-round-large(type='button' value='Fechar' style='float:right; background-color: rgb(59,100,170); color: white; margin-right:25px;')
 
             br
                 

@@ -70,17 +70,27 @@ router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) 
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)
     Pubs.inserir(req.body.pub)
-        .then(dados => {
-            User.inserirPub(req.user._id, dados._id)
-                .then(user => {
-                    console.log("PUBLICAÇÃO SUBMETIDA COM SUCESSO", user)
-                    res.jsonp(dados)
-                })
+    .then(dados => {
+        User.inserirPub(req.user._id, dados._id)
+        .then(user => {
+            Pubs.consultar(dados._id)
+            .then(pub => {
+                res.jsonp(pub)
+            })
+            .catch(erro3 => {
+                console.log('Errei no consultar publicação do create\n' + erro3)
+                res.status(500).send('Errei no consultar publicação do create: ' + erro3)
+            })
         })
-        .catch(erro => {
-            console.log('Errei no inserir publicação\n' + erro)
-            res.status(500).send('2 na inserção de publicações: ' + erro)
+        .catch(erro2 => {
+            console.log('Errei no consultar utilizador do create publicação\n' + erro2)
+            res.status(500).send('Errei no consultar utilizador do create publicação: ' + erro2)
         })
+    })
+    .catch(erro => {
+        console.log('Errei no inserir publicação\n' + erro)
+        res.status(500).send('Errei na inserção de publicações: ' + erro)
+    })
 })
 
 /////////////////////////////////////////////////////////
