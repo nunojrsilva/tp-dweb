@@ -4,7 +4,13 @@ if (users.aSeguir)
 			h4(style='text-align: center; margin-top:5px;') A seguir
 		.w3-container
 			for user in users.aSeguir
-				img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+				a(href="http://localhost:3000/Perfil?idUser=" + user._id)
+					.w3-card-4(style="max-width: 300px; max-height: 400px")
+						img(style="max-width: 90%; max-height: 85%; margin-top: 10px;margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+						br
+						h2= user.nome
+						p= user.username
+						p= user._id
 		br
 else
 	.w3-card-4
@@ -12,5 +18,11 @@ else
 			h4(style='text-align: center; margin-top:5px;') Seguidores
 		.w3-container
 			for user in users.seguidores
-				img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+				a(href="http://localhost:3000/Perfil?idUser=" + user._id)
+					.w3-card-4(style="max-width: 300px; max-height: 400px")
+						img(style="max-width: 90%; max-height: 85%; margin-top: 10px;margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+						br
+						h2= user.nome
+						p= user.username
+						p= user._id
 		br
