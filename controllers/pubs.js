@@ -61,6 +61,27 @@ module.exports.listarPubsCompleta = (uid, aSeguir) => {
 
 }
 
+module.exports.listarPubsPerfilSeguidores = (uid, aSeguir) => {
+	var id = mongoose.Types.ObjectId(uid)
+	console.log("ISTO É O ARRAY DE ASEGUIR: " + aSeguir)
+	return Pub
+			.find({$or: [
+						{$and:[
+							{utilizador: id},
+							{privacidade: 'seguidores'}
+						]},
+						{$and: [
+							{utilizador: id},
+							{privacidade: 'publica'}
+						]},
+					]})
+			.populate(pop_config)
+			.populate(pop_config2)
+			.sort({data:-1})
+			.exec()
+
+}
+
 
 module.exports.listarPorUser = (id) => {
 	return Pub

@@ -106,10 +106,11 @@ router.post('/Ignorar', passport.authenticate('jwt', {session : false}), (req, r
 
 
 router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res)=>{
-    console.log("Entrou no get de /Perfil " + req.user._id)
+    console.log("Entrou no get de /Perfil " + req.user._id + " " + req.body.idUser)
     var userID = null
     var proprioPerfil = null
-    if(req.body.idUser){
+   
+    if(req.body.idUser != req.user._id){
         userID = req.body.idUser
         proprioPerfil = false
     }
@@ -120,72 +121,97 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
     console.log("ESTE É O USER " + userID)
     User.getIdAtual(userID)
     .then(foto =>{
-        console.log("ESTE É O ID DA FOTO DE PERFIL ATUAL " + JSON.stringify(foto))
         User.consultarPerfil(userID, foto[0].fotoPerfil.idAtual)
         .then(userArray => {
-            var user = userArray[0]
-            console.log(JSON.stringify(user))
-            if(proprioPerfil){
-                Pubs.listarPorUser(user._id)
-                .then(pubs =>{
-                    console.log(JSON.stringify(pubs))
-                    user.pubs = pubs
-                    user.npubs = pubs.length
-                    user.otherUser = false
+            User.getASeguirESeguidores(userID)
+            .then(array =>{
+                var aSeguir = array[0].aSeguir
+                var seguidores = array[0].seguidores
+                var user = userArray[0]
+                user.aSeguir = aSeguir
+                user.seguidores = seguidores
+                user.naSeguir = aSeguir.length
+                user.nseguidores = seguidores.length
 
-                    res.jsonp(user)
-                })
-                .catch(erroProprio =>{
-                    console.log(erroProprio)
-                    res.status(500).send("ERRO AO TENTAR CARREGAR AS PRÓPRIAS PUBS " + erroProprio)
-                })
-            }
-            else{
-                Pubs.listarPorUserPrivacidade(user._id, "publica")
-                .then(pubs =>{
-                    User.contarPubs(user._id)
-                    .then(nPubsTotal =>{
-                        console.log("ISTO É O QUE VEM DO CONTAR" + JSON.stringify(nPubsTotal.pubs.length))
+                if(proprioPerfil){
+                    Pubs.listarPorUser(user._id)
+                    .then(pubs =>{
                         user.pubs = pubs
-                        user.npubs = nPubsTotal.pubs.length
-                        user.npubsInvisiveis = nPubsTotal.pubs.length - pubs.length
-                        user.otherUser = true
-
-                        User.checkASeguir(req.user._id, user._id)
-                        .then(n =>{
-                            if(n >= 1){
-                                user.segue = true
-                                console.log(user.segue + " " + n)
-                            }
-                            else{
-                                user.segue = false
-                                console.log(user.segue + " " + n)
-                            }
-                            res.jsonp(user)
-                        })
-                        .catch(erroCount =>{
-                            console.log("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
-                            res.status(500).send("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
-                        })
+                        user.npubs = pubs.length
+                        user.otherUser = false
+    
+                        res.jsonp(user)
                     })
-                    .catch(erroTotal =>{
-                        console.log("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
-                        res.status(500).send("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
+                    .catch(erroProprio =>{
+                        console.log(erroProprio)
+                        res.status(500).send("ERRO AO TENTAR CARREGAR AS PRÓPRIAS PUBS " + erroProprio)
                     })
-                    
+                }
+                else{
+                    Pubs.listarPorUserPrivacidade(user._id, "publica")
+                    .then(pubs =>{
+                        console.log("PUBS DO /API/PERFIL")
+                        console.log(JSON.stringify(pubs))
+                        User.contarPubs(user._id)
+                        .then(nPubsTotal =>{
+                            user.pubs = pubs
+                            user.npubs = nPubsTotal.pubs.length
+                            user.npubsInvisiveis = nPubsTotal.pubs.length - pubs.length
+                            user.otherUser = true
+    
+                            User.checkASeguir(req.user._id, user._id)
+                            .then(n =>{
+                                if(n >= 1){
+                                    user.segue = true
+                                    console.log(user.segue + " " + n)
+                                }
+                                else{
+                                    user.segue = false
+                                    console.log(user.segue + " " + n)
+                                }
+                                res.jsonp(user)
+                            })
+                            .catch(erroCount =>{
+                                console.log("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
+                                res.status(500).send("ERRO A VERIFICAR SE JA SEGUE O UTILIZADOR " + erroCount)
+                            })
+                        })
+                        .catch(erroTotal =>{
+                            console.log("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
+                            res.status(500).send("ERRO AO CONTAR O TOTAL DE PUBS DE UM USER " + erroTotal)
+                        })
+                        
+    
+                    })
+                    .catch(erroPubs =>{
+                        console.log(erroPubs)
+                        res.status(500).send("ERRO AO TENTAR CARREGAR AS PUBS DOUTRO USER" + erroPubs)
+                    })
+    
+                }
+            })
+            .catch(errorASeguir =>{
+                    console.log("ERRO AO CONSULTAR A LISTA DE UTILIZADORES A SEGUIR " + errorASeguir)
+                    res.status(500).send("ERRO AO CONSULTAR A LISTA DE UTILIZADORES A SEGUIR " + errorASeguir)
+            })
 
-                })
-                .catch(erroPubs =>{
-                    console.log(erroPubs)
-                    res.status(500).send("ERRO AO TENTAR CARREGAR AS PUBS DOUTRO USER" + erroPubs)
-                })
-
-            }
         })
         .catch(erroFoto => res.status(500).send('ERRO AO TENTAR OBTER PERFIL DO USER COM ID ' + userID + erroFoto))
 
     })
     
+})
+
+router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, res)=>{
+    User.getASeguir(req.body.idUser)
+    .then(aSeguirArray =>{
+        console.log(JSON.stringify(aSeguirArray))
+        res.jsonp(aSeguirArray[0])
+    })
+    .catch(erro =>{
+        console.log("ERRO AO OBTER A LISTA DE UTILIZADORES A SEGUIR " + erro)
+        res.status(500).send("ERRO AO OBTER A LISTA DE UTILIZADORES A SEGUIR " + erro)
+    })
 })
 
 router.get('/:uid', passport.authenticate('jwt', {session : false}), (req,res) => {

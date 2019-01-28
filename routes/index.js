@@ -304,7 +304,7 @@ router.post('/novaFotoPerfil', passport.authenticate('jwt', {session : false}), 
 router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res) => {
   console.log("ENTREI NO /PERFIL " + req.user._id + req.query.idUser)
 
-  if(req.query.idUser != req.user._id){
+  if(req.query.idUser != undefined ){
     console.log("AXIOS DO PERFIL DE OUTRO USER")
     axios({
       method: 'get', 
@@ -317,6 +317,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
       }
       })
     .then(dados =>{
+      console.log("INFO PARA O PERFIL")
       console.log(dados.data)
 
       res.render('perfil', {perfil: dados.data})
@@ -335,6 +336,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
       }
       })
     .then(dados =>{
+      console.log("INFO PARA O PERFIL")
       console.log(dados.data)
       res.render('perfil', {perfil: dados.data})
     })
@@ -345,7 +347,28 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false}), (req, res
 
 })
 
+router.get('/aSeguir', passport.authenticate('jwt', {session : false}), (req, res) => {
+  console.log("CHEGEUI AO /ASEGUIR " + req.query.uid)
 
+  axios({
+    method: 'get', 
+    url: 'http://localhost:3000/api/users/aSeguir',
+    data:{
+      idUser: req.query.uid
+    },
+    headers: {
+      Authorization: 'Bearer ' + req.session.token
+    }
+    })
+  .then(dados =>{
+
+    res.render('seguidores', {users: dados.data})
+  })
+  .catch(error =>{
+    console.log("ERRO AXIOS POST: " + error)
+  })
+
+})
 ////////////////////////////////////////////////////////////
 //////////////////////FUNÇÕES///////////////////////////////
 ////////////////////////////////////////////////////////////

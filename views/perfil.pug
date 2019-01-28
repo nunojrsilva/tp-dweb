@@ -28,14 +28,21 @@ block content
 									img(id="ignorarImg" style="visibility: hidden; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 15%;" src="http://localhost:3000/api/files/check")
 								a(id="seguir" style="visibility: visible;")
 									img(id="seguirImg" style="visibility: visible; cursor:pointer;max-width: 50px; max-height: 50px; margin-left: 20%;" src="http://localhost:3000/api/files/plus")
-								
+					-var naSeguir = 'A Seguir (' + perfil.naSeguir + ')'	
+					-var nseguidores = 'Seguidores (' + perfil.nseguidores + ')'	
+					button.w3-button(id="aSeguirBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= naSeguir
+					button.w3-button(id="seguidoresBTN" style='visibility: visible;background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;')= nseguidores
+					button.w3-button(id="pubsBTN" style='visibility: hidden; background-color: rgb(59,100,170); color: white; margin-left:25px;margin-top:10px;') Ver Publicações
+					
 					h3(style="margin-top: 5%; margin-left: 10%;") Publicações Feitas: 
 						=perfil.npubs
 					if(perfil.otherUser == true)
 						p(style="margin-left:15%; margin-top: -2%") Publicações Invisiveis: 
 							=perfil.npubsInvisiveis
-				.w3-container(style="width:75%; float:right; margin-top:15px;")
+				.w3-container(id="pubs" style="visibility: visible;width:75%; float:right; margin-top:15px;")
 					listaPublicacoes(id=perfil.username)
+				.w3-container(id="aSeguir" style="visibility: hidden;width:75%; float:right; margin-top:15px;")
+				.w3-container(id="seguidores" style="visibility: hidden;width:75%; float:right; margin-top:15px;")
 	br
 	br
 	a(href="/pubs") Voltar ao Feed

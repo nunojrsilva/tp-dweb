@@ -3,6 +3,11 @@ var mongoose = require ('mongoose')
 
 //Lista de Utilizadores
 
+var pop_config = {
+	path: 'aSeguir',
+	select: 'nome username fotoPerfil.idAtual'
+}
+
 module.exports.listar = () => {
     return User
             .find()
@@ -41,8 +46,16 @@ module.exports.checkASeguir = (uid, tocheck) => {
 module.exports.getASeguir = uid => {
     return User
             .find({_id: uid}, {aSeguir: 1})
+            .populate(pop_config)
             .exec()
 }
+
+module.exports.getASeguirESeguidores = uid => {
+    return User
+            .find({_id: uid}, {aSeguir: 1, seguidores: 1})
+            .exec()
+}
+
 
 module.exports.consultarPerfil = (_id, fotoID) => {
     var uid = mongoose.Types.ObjectId(_id)
