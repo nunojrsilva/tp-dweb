@@ -62,11 +62,19 @@ router.post("/login", (req,res) => {
   var password = req.body.password
   axios.post("http://localhost:3000/api/users/login", {username, password})
     .then(dados => {
-      req.session.token = dados.data.token
       console.log("Token: "+ JSON.stringify(dados.data.token))
+
+      teste(req, dados.data.token)
+      .then(copia =>{
+        if(copia === dados.data.token)
+          console.log("NICEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE2222222222222222222222222")
+        else
+          console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2222222222222222222222222")
+        res.redirect("/")
+      })
+      .catch(erro => console.log("ERRO " + erro))
       // Guardar o token
       console.log(req.session.token)
-      res.redirect("/")
     })
     .catch(e => {
       console.log("Erro no /login" + e)
@@ -75,6 +83,21 @@ router.post("/login", (req,res) => {
     })
 })
 
+async function teste(req, token){
+  return new Promise((copia, erro) =>{
+    req.session.token = token
+    req.session.save()
+    if(req.session.token == token){
+      console.log("NIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICE")
+      copia(req.session.token)
+    }
+    else{
+      console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+      erro(req.session.token)
+    }
+
+  })
+}
 
 router.post("/registo", (req,res) => {
   console.log("No registo da pagina")
@@ -239,14 +262,17 @@ router.get('/auth/facebook/callback', (req,res) => {
 
   axios.get('http://localhost:3000/api/auth/facebook/callback?code=' + req.query.code)
     .then(dados => {
-      console.log("Token: "+ JSON.stringify(dados.data.token))
-      req.session.token = dados.data.token
-      //req.flash('cenas')
-      res.redirect('/')
-    })
-    .catch(e => {
-      console.log("Erro na autenticacao com fb : " + e)
-      res.redirect('/login')
+      teste(req, dados.data.token)
+      .then(copia =>{
+        if(copia === dados.data.token)
+          console.log("NICEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE2222222222222222222222222")
+        else
+          console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO2222222222222222222222222")
+        res.redirect("/")
+      })
+      .catch(erro => console.log("ERRO " + erro))
+      // Guardar o token
+      console.log(req.session.token)
     })
 })
 

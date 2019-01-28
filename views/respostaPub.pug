@@ -37,7 +37,7 @@ publicacao.w3-container(id=pub._id)
                             ul
                                 each item in e.ficheiros.ficheiros
                                     li
-                                        if (item.isImage == true)
+                                        if (item.isImage == "true")
                                             a(href='/api/files?username=' + pub.utilizador.username + '&idPub=' + pub._id + '&idFich=' + item._id + '&data=' + pub.data)
                                                 img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + pub.utilizador.username + '&idPub=' + pub._id + '&idFich=' + item._id + '&data=' + pub.data)
                                         else
