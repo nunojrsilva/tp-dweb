@@ -1,6 +1,16 @@
 if (users.aSeguir)
-	for user in users.aSeguir
-		img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+	.w3-card-4
+		header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
+			h4(style='text-align: center; margin-top:5px;') A seguir
+		.w3-container
+			for user in users.aSeguir
+				img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+		br
 else
-	for user in users.seguidores
-		img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+	.w3-card-4
+		header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
+			h4(style='text-align: center; margin-top:5px;') Seguidores
+		.w3-container
+			for user in users.seguidores
+				img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+		br

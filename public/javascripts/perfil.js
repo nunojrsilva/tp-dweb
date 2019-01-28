@@ -38,18 +38,19 @@ $(()=>{
         var url = 'http://localhost:3000/aSeguir?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('visibility', 'hidden')
-            $('#seguidoresBTN').css('visibility', 'visible')
-            $('#pubsBTN').css('visibility', 'visible')
+            $('#aSeguirBTN').css('display', 'none')
+            $('#seguidoresBTN').css('display', '')
+            $('#pubsBTN').css('display', '')
     
-            $('#aSeguir').css('visibility', 'visible')
-            $('#seguidores').css('visibility', 'hidden')
-            $('#listaPublicacoes').css('visibility', 'hidden')
+            $('#aSeguir').css('display', '');
+            $('#seguidores').css('display', 'none');
+            $('#listaPublicacoes').css('display', 'none');
 
             console.log(dados)
             console.log(dados.data)
 
-            //POR OS DADOS NA PAGINA
+            $('#aSeguir').empty()
+            $('#aSeguir').append(dados.data)
         })
         .catch(erro =>{
             alert('Erro no get aSeguir: ' + erro)
@@ -66,17 +67,19 @@ $(()=>{
         var url = 'http://localhost:3000/Seguidores?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('visibility', 'visible')
-            $('#seguidoresBTN').css('visibility', 'hidden')
-            $('#pubsBTN').css('visibility', 'visible')
-    
-            $('#aSeguir').css('visibility', 'hidden')
-            $('#seguidores').css('visibility', 'visible')
-            $('#listaPublicacoes').css('visibility', 'hidden')
+            $('#aSeguirBTN').css('display', '')
+            $('#seguidoresBTN').css('display', 'none')
+            $('#pubsBTN').css('display', '')
+
+            $('#aSeguir').css('display', 'none');
+            $('#seguidores').css('display', '');
+            $('#listaPublicacoes').css('display', 'none');
             
             console.log(dados)
             console.log(dados.data)
-            //POR DADOS NA PAGINA
+            
+            $('#seguidores').empty()
+            $('#seguidores').append(dados.data)
         })
         .catch(erro =>{
             alert('Erro no post: ' + JSON.stringify(erro))
@@ -87,13 +90,13 @@ $(()=>{
     $('#pubsBTN').click(e=>{
         e.preventDefault()
 
-        $('#aSeguirBTN').css('visibility', 'visible')
-        $('#seguidoresBTN').css('visibility', 'visible')
-        $('#pubsBTN').css('visibility', 'hidden')
+        $('#aSeguirBTN').css('display', '')
+        $('#seguidoresBTN').css('display', '')
+        $('#pubsBTN').css('display', 'none')
 
-        $('#aSeguir').css('visibility', 'hidden')
-        $('#seguidores').css('visibility', 'hidden')
-        $('#listaPublicacoes').css('visibility', 'visible')
+        $('#aSeguir').css('display', 'none');
+        $('#seguidores').css('display', 'none');
+        $('#listaPublicacoes').css('display', '');
     })
 
     $('#seguir').click(e=>{
