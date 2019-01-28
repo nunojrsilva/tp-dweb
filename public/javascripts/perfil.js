@@ -4,7 +4,6 @@ $(()=>{
 
     $("input.pubLike:button").click(function() {
 
-        var pubID = $(this).closest('publicacao').attr('id')
 
         alert("ID da publicação: " + pubID);
 
@@ -30,6 +29,63 @@ $(()=>{
         });
     });
 
+    $('#alterarPriv').click(function(e){
+
+        var novaPriv = null;
+        var pubId = $(this).closest('publicacao').attr('id')
+        
+        if((document.getElementById('publicacb'+pubId) && document.getElementById('publicacb'+pubId).checked))
+            novaPriv = "publica"
+
+        else{
+            if(document.getElementById('seguidorescb'+pubId) && document.getElementById('seguidorescb'+pubId).checked)
+                novaPriv = "seguidores"
+
+            else{
+                novaPriv = "privada"
+                console.log("PASSEI AQUI")
+            }
+        }
+        
+        var url = "http://localhost:3000/pubs/alterarPrivacidade"
+        var data = {idPub: pubId,priv: novaPriv}
+        console.log(data)
+        axios.post(url, data)
+        .then(tocheck =>{
+            console.log(tocheck.data)
+            $('#privacidade'+pubId).replaceWith("Privacidade Atual:  " + tocheck.data + "<br>")
+
+        })
+        .catch(erro =>{
+            console.log("ERRO AO ALTERAR A PRIVACIDADE DE UMA PUBLICAÇÃO : " + data.idPub + erro)
+        })
+
+    })
+
+    $("input.publicacb").click(function(e) {
+        var pubID = $(this).closest('publicacao').attr('id')
+
+        $('#publicacb'+pubID).prop('checked', true)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.seguidorescb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', true)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.privadacb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', true)
+	})
+
     $('#aSeguirBTN').click(e=>{
         e.preventDefault()
         var id = $('#id').attr('name')
@@ -38,9 +94,9 @@ $(()=>{
         var url = 'http://localhost:3000/aSeguir?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('display', 'none')
-            $('#seguidoresBTN').css('display', '')
-            $('#pubsBTN').css('display', '')
+            $('#aSeguirBTN').css('visibility', 'hidden')
+            $('#seguidoresBTN').css('visibility', 'visible')
+            $('#pubsBTN').css('visibility', 'visible')
     
             $('#aSeguir').css('display', '');
             $('#seguidores').css('display', 'none');
@@ -67,9 +123,9 @@ $(()=>{
         var url = 'http://localhost:3000/Seguidores?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('display', '')
-            $('#seguidoresBTN').css('display', 'none')
-            $('#pubsBTN').css('display', '')
+            $('#aSeguirBTN').css('visibility', 'visible')
+            $('#seguidoresBTN').css('visibility', 'hidden')
+            $('#pubsBTN').css('visibility', 'visible')
 
             $('#aSeguir').css('display', 'none');
             $('#seguidores').css('display', '');
@@ -90,9 +146,9 @@ $(()=>{
     $('#pubsBTN').click(e=>{
         e.preventDefault()
 
-        $('#aSeguirBTN').css('display', '')
-        $('#seguidoresBTN').css('display', '')
-        $('#pubsBTN').css('display', 'none')
+        $('#aSeguirBTN').css('visibility', 'visible')
+        $('#seguidoresBTN').css('visibility', 'visible')
+        $('#pubsBTN').css('visibility', 'hidden')
 
         $('#aSeguir').css('display', 'none');
         $('#seguidores').css('display', 'none');

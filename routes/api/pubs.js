@@ -94,6 +94,18 @@ router.get('/publicas', (req,res) => {
 ///////////////////POSTS/////////////////////////////////
 /////////////////////////////////////////////////////////
 
+router.post('/alterarPrivacidade', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
+
+    Pubs.alteraPrivacidade(req.body.idPub, req.body.priv)
+    .then(dados =>{
+        res.jsonp(dados)
+    })
+    .catch(erro =>{
+        console.log("ERRO AO ALTERAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + erro)
+        res.send("ERRO AO ALTERAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + erro)
+    })
+})
+
 router.post('/pub', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)

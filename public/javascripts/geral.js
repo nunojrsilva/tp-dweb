@@ -97,11 +97,6 @@ $(()=>{
 		$('#formPub').css('display', '');
 	})
 
-	$("#livrebtn").click(e=>{
-		tipo = "livre"
-		//$('#formDiv').load('http://localhost:3000/pubs/livrePub')
-	})
-
 	$("#fecharForm").click(e=>{
 		tipo = "opiniao"
 		$("#cancelarAdicaoFicheiros").click()

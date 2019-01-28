@@ -139,7 +139,7 @@ router.get('/Perfil', passport.authenticate('jwt', {session : false, failureRedi
                         user.pubs = pubs
                         user.npubs = pubs.length
                         user.otherUser = false
-    
+                        console.dir(user)
                         res.jsonp(user)
                     })
                     .catch(erroProprio =>{
