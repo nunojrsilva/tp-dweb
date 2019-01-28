@@ -88,4 +88,30 @@ $(()=>{
 			processData: false
         });
     });
+
+    $('#hashtagBTN').on('click', function(e){
+
+		e.preventDefault();        
+
+        var HashtagProcurado = $('#hashtag').val()
+        var Termo = HashtagProcurado.replace(/#/g, '')
+        alert(Termo)
+        var url = "http://localhost:3000/pubs?hashtag=" + Termo
+
+        axios.get(url)
+            .then(dados => {
+                $('#hashtag').trigger("reset")
+                $('#listaPublicacoes').empty()
+                console.log(dados.data)
+                $('#listaPublicacoes').append(dados.data)
+            })
+            .catch(e => {
+                $('#hashtag').trigger("reset")
+                console.log("Erro na pesquisa por hashtags" + e)
+            })
+    });
+
+
+
+
 });

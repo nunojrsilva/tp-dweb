@@ -16,7 +16,7 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username + '&privacidade=' + req.query.privacidade)
         .then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs', { loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
@@ -27,7 +27,7 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username)
         .then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs', { loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
@@ -38,7 +38,7 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?privacidade=' + req.query.privacidade)
 		.then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs',{ loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
@@ -46,21 +46,22 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
     } else if(req.query.hashtag){
+		console.log("Hashtag = " + req.query.hashtag)
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?hashtag=' + req.query.hashtag)
 		.then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
-			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+			.then(publicacoes => res.render('pubHashtag', { loggedIn : true, pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao obter pubs com hashtags"}))
 		})
 		.catch(erro => {
-			console.log('Erro ao carregar da BD.')
+			console.log('Erro ao carregar da BD.' + erro)
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
 	} else if(req.query.data){
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?data=' + req.query.data)
 		.then(resposta =>{
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs', { loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		.catch(erro => {
@@ -73,7 +74,7 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 			console.log("TENHO QUE FAZER RENDER A ISTO")
 			console.log(resposta)
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.then(publicacoes => res.render('listaPubs', { loggedIn : true, pubs: publicacoes }))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 		// .catch(erro => {

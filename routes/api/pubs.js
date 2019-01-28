@@ -37,9 +37,13 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
             })  
             .catch(erro =>  console.log("Erro no consultarUsername da listarPorUser"))
 	} else if(req.query.hashtag){
-		Pubs.listarPorHashtag(req.query.hashtag)
-			.then(dados => res.jsonp(dados))
-			.catch(erro => res.status(500).send('Erro na consulta de publicações com a hashtag: ' + req.query.hashtag))
+        User.getASeguir(req.user._id)
+            .then( aSeguir => {
+                Pubs.listarPorHashtag(req.query.hashtag, req.user._id, aSeguir[0])
+                .then(dados => res.jsonp(dados))
+                .catch(e => res.status(500).send("Erro no listarPorHAshtags"))
+            })
+            .catch(erro => res.status(500).send('Erro ao obter os seguidores'))
 	}else if(req.query.data){
 		Pubs.listarPorData(req.query.data)
 			.then(dados => res.jsonp(dados))

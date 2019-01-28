@@ -101,9 +101,23 @@ module.exports.listarPorUser = (id) => {
 			.exec()
 }
 
-module.exports.listarPorHashtag = hashtag => {
+module.exports.listarPorHashtag = (hashtag, id, aSeguir)  => {
 	return Pub
-			.find({"elems.hashtags":{ $all: [hashtag] }})
+			.find({$or: [
+				{$and:[
+					{utilizador:{$in: aSeguir}},
+					{privacidade: 'seguidores'},
+					{hashtags : {$all : [hashtag]}}
+				]},
+				{$and :[
+					{privacidade: 'publica'},
+					{hashtags : {$all : [hashtag]}}
+				]},
+				{$and : [
+					{utilizador: id},
+					{hashtags : {$all : [hashtag]}}
+				]}
+			]})
 			.populate(pop_config)
 			.populate(pop_config2)
 			.sort({data:-1})
