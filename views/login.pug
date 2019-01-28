@@ -1,23 +1,23 @@
 extends layoutBase
 
 block content1
-    .w3-container(style = "background-image:url('/images/default.jpeg');")
-        h1 Login
-    .w3-container(align="center")
-        .w3-card-4.w3-dark-grey(style= "width:20%")
+    .w3-container(style = "min-height: 100%; background-image:url('/images/default.jpeg');height: 100%; background-position: center; background-repeat: no-repeat; background-size: cover;")
+        .w3-container(align="center")
+            .w3-card-4.w3-dark-grey(style= "width:20%;")
+                .w3-container
+                    form(action="/login" method = "POST")
+                        label(for="username")
+                            b Username
+                        input.w3-input(name="username" type="text" placeholder = "Username" required)
+                        label(for="password")
+                            b Password
+                        input.w3-input(name="password" type="password" placeholder = "Password" required)
+                        .w3-container
+                            input.w3-button.w3-black(type = "submit" value = "login")
+                .w3-container
+                    if msg
+                        .w3-panel.w3-red
+                            p=msg
             .w3-container
-                form(action="/login" method = "POST")
-                    label(for="username")
-                        b Username
-                    input.w3-input(name="username" type="text" placeholder = "Username" required)
-                    label(for="password")
-                        b Password
-                    input.w3-input(name="password" type="password" placeholder = "Password" required)
-                    .w3-container
-                        input.w3-button.w3-black(type = "submit" value = "login")
-            if msg
-                .w3-panel.w3-red
-                    p=msg
-        .w3-container
-            form(action="/auth/facebook" method = "GET")
-                input.w3-button.w3-blue(type = "submit" value = "Login/Registo com Facebook")
+                form(action="/auth/facebook" method = "GET")
+                    input.w3-button.w3-blue(type = "submit" value = "Login/Registo com Facebook")
