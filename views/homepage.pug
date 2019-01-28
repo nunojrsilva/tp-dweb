@@ -1,10 +1,21 @@
-extends layout
+extends layoutBase
 
-block content
-    .w3-card-4
-        header.w3-container(style='background-color: rgb(59,100,170); color: white;')
-            h1 Bem vindo ao myFacebook
-        .w3-container
-            a(href="/pubs") Publicações Públicas
-        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center;")
+block content1
+    .w3-card-4.w3-border-0(style='height:100vh;')
+        .w3-bar(style="width:100%; display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;border-bottom: 0px solid #cacaca;position: fixed;")
+            a.w3-bar-item.w3-button(href="/") Home
+            a.w3-bar-item.w3-button(href="/login") Login
+            a.w3-bar-item.w3-button(href="/pubs/publicar") Nova Publicação
+
+        .w3-container.w3-border-0(style='margin-top:30px;')
+            table(width='100%' style='margin-top:10px;')
+                tr
+                    td(width='20%')
+                    td(width='60%')
+                        #publicacoes
+                    td(width='20%')
+            
+        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center; position: fixed; bottom: 0; width: 100%;")
             address Powered by Desenvolvimento de Aplicações Web
+
+    script(src='/javascripts/homepagePublica.js')

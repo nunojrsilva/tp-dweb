@@ -34,6 +34,17 @@ router.get('/', function(req, res) {
 			console.log('Erro ao carregar da BD.')
 			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
 		})
+    } else if(req.query.privacidade){
+		axiosGet(req, res, 'http://localhost:3000/api/pubs?privacidade=' + req.query.privacidade)
+		.then(resposta =>{
+			removeNomeGuardado(resposta)
+			.then(publicacoes => res.render('listaPubs', { pubs: publicacoes }))
+			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
+		})
+		.catch(erro => {
+			console.log('Erro ao carregar da BD.')
+			res.render('error', {e: erro, message: "Erro ao carregar da BD"})
+		})
     } else if(req.query.hashtag){
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?hashtag=' + req.query.hashtag)
 		.then(resposta =>{
