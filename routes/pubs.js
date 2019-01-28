@@ -184,7 +184,7 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRe
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date().toString();
-			publicacao.hashtags = ["War", "Terror"]
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -230,7 +230,8 @@ router.post('/evento', passport.authenticate('jwt', {session : false, failureRed
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date().toString();
-			publicacao.hashtags = ["Evento"]
+			publicacao.hashtags = separa(fields.hashtags)
+			publicacao.local = fields.local
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -279,8 +280,8 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false, failure
 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.hashtags = ["ficheiros"]
 			publicacao.data = new Date().toString();
+			publicacao.hashtags = separaHashtag(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -319,7 +320,7 @@ router.post("/narracao", passport.authenticate('jwt', {session : false, failureR
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date().toString();
 			publicacao.privacidade = fields.privacidade
-			publicacao.hashtags = ["narracao"]
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.gostos = []
 
 
@@ -370,7 +371,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false, failureRedi
 			publicacao.utilizador = req.user._id
 			publicacao.data = new Date().toString();
 			publicacao.privacidade = fields.privacidade
-			publicacao.hashtags = ["lista"]
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.elems = []
 			publicacao.gostos = []
 
@@ -536,6 +537,17 @@ async function parseFicheiros(username, fileTitle, files, data_DADA){
     })
 }
 
+
+function separa (ListaHash) {
+	Lista = ListaHash.split("#")
+	console.log(Lista)
+	for(i=0; i < Lista.length; i++) {
+		if (Lista[i].length == 0 || Lista[i] == ' ')
+			Lista.splice(i,1)
+		Lista[i].trim()
+	}
+	return Lista
+}
 
 
 function axiosPut (req, res, url, data){

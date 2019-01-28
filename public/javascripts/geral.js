@@ -161,7 +161,11 @@ $(()=>{
 			formData.append('duracao', $('#duracao').val());
 			formData.append('descricao', $('#descricao').val());
 			formData.append('data', $('#data').val());
+			formData.append('local', $('#local').val());
 		}
+
+		formData.append('hashtags', $('#hashtags').val());
+
 
 		//alert('Cheguei ao 2')
 

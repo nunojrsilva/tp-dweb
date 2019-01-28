@@ -22,6 +22,16 @@ table(style='padding:0; margin:0; width:100%; margin-top:10px; margin-bottom:5px
 		td(style='width:3%')
 		td(style='width:40%')
 			input.w3-input.w3-border.w3-round-large(id='data' type='text' name='data' placeholder='Data de início' required)
+	tr(align="left")
+		th(style='width:55%') &nbsp; Local
+		th(style='width:3%')
+		th(style='width:40%') &nbsp; Hashtags
+	tr
+		td(style='width:55%')
+			input.w3-input.w3-border.w3-round-large(id='local' type='text' name='local' placeholder='Local do Evento' required)
+		td(style='width:3%')
+		td(style='width:40%')
+			input.w3-input.w3-border.w3-round-large(id='hashtags' type='text' placeholder='Hashtags' name='hashtags')
 label
 	b &nbsp; Descrição
 textarea.w3-input.w3-border.w3-round-large(id='descricao' type='text' name='descricao' rows='4' cols='80' required)
