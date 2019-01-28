@@ -3,12 +3,14 @@ var router = express.Router();
 var passport = require('passport')
 var axios = require('axios')
 
+var flash = require('connect-flash');
+
 
 var Pubs = require('../../controllers/pubs')
 var User = require('../../controllers/users')
 
 
-router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
+router.get('/', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) => {
     console.log("Entrou no get de /pubs")
 
     console.log(req.user)
@@ -66,7 +68,7 @@ router.get('/', passport.authenticate('jwt', {session : false}), (req, res) => {
 ///////////////////POSTS/////////////////////////////////
 /////////////////////////////////////////////////////////
 
-router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post('/pub', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     console.log("PASSEI PELO /PUB")
     console.dir(req.body)
     Pubs.inserir(req.body.pub)
@@ -97,7 +99,7 @@ router.post('/pub', passport.authenticate('jwt', {session : false}), (req, res) 
 /////////////////////////PUTS////////////////////////////
 /////////////////////////////////////////////////////////
 
-router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/comentario', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     console.log("PASSEI PELO /api/comentario")
     console.dir(req.body)
     console.dir("REQ USER: " + JSON.stringify(req.user))
@@ -119,7 +121,7 @@ router.put('/comentario', passport.authenticate('jwt', {session : false}), (req,
         })
 })
 
-router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/pubGostos', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     console.log("PASSEI PELO /api/pubGostos")
     console.dir(req.body)
 
@@ -168,7 +170,7 @@ router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, 
     })
 })
 
-router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/comentGostos', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     console.log("PASSEI PELO /api/comentGostos")
     console.dir(req.body)
     Pubs.contaComentGostos(req.body.comentID)
@@ -220,7 +222,7 @@ router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (re
 ///////////////////DELETES///////////////////////////////
 /////////////////////////////////////////////////////////
 
-router.delete('/:pid', passport.authenticate('jwt', {session : false}), (req,res) => {
+router.delete('/:pid', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
     Pubs.remover(req.params.pid)
         .then(dados => res.jsonp(dados))
         .catch(erro => res.status(500).send('Erro ao apagar publicação ' + req.params.pid))

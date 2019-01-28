@@ -11,7 +11,7 @@ var passport = require('passport')
 var randomstring = require('randomstring')
 
 
-router.get('/', function(req, res) {
+router.get('/', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) => {
 	if(req.query.username && req.query.privacidade){
 		axiosGet(req, res, 'http://localhost:3000/api/pubs?username=' + req.query.username + '&privacidade=' + req.query.privacidade)
         .then(resposta =>{
@@ -73,48 +73,48 @@ router.get('/', function(req, res) {
 	}
 });
 
-router.get('/novalista', (req,res) => {
+router.get('/novalista', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
     console.log("Entrou no get de /pubs/lista")
     res.render("lista")
 })
 
 
-router.get('/novaPubFich', function(req, res) {
+router.get('/novaPubFich', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),function(req, res) {
 	res.render('ficheirosReg')
 });
 
-router.get('/novoEvento', (req, res) => {
+router.get('/novoEvento', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req, res) => {
 	res.render('evento')
 });
 
-router.get("/narracao", (req,res) => {
+router.get("/narracao", passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
 	res.render("narracao")
 })
-router.get('/opiniao', function(req, res) {
+router.get('/opiniao', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),function(req, res) {
 	res.render('opiniao')
 });
 
-router.get('/opiniaoPub', (req,res) => {
+router.get('/opiniaoPub', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
     res.render("opiniaoPub")
 })
 
-router.get('/narracaoPub', (req,res) => {
+router.get('/narracaoPub', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
     res.render("narracaoPub")
 })
 
-router.get('/ficheirosPub', (req,res) => {
+router.get('/ficheirosPub', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
     res.render("ficheirosPub")
 })
 
-router.get('/listaPub', (req,res) => {
+router.get('/listaPub',  passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
     res.render("listaPub")
 })
 
-router.get('/eventoPub', (req,res) => {
+router.get('/eventoPub',  passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req,res) => {
     res.render("eventoPub")
 })
 
-router.get('/publicar', function(req, res) {
+router.get('/publicar',   passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), function(req, res) {
 	res.render('publicar')
 });
 
@@ -122,7 +122,7 @@ router.get('/publicar', function(req, res) {
 //////////////////////POSTS/////////////////////////////
 ////////////////////////////////////////////////////////
 
-router.post('/opiniao', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	
 	var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -165,7 +165,7 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false}), (req, r
     })
 });
 
-router.post('/evento', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post('/evento', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     
     var form = new formidable.IncomingForm()
 
@@ -218,7 +218,7 @@ router.post('/evento', passport.authenticate('jwt', {session : false}), (req, re
 	})
 });
 
-router.post('/ficheiros', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post('/ficheiros', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -255,7 +255,7 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false}), (req,
 		
 });
 
-router.post("/narracao", passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post("/narracao", passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     var form = new formidable.IncomingForm()
     console.log("Post de /narracao")
     form.parse(req, (erro, fields, files)=>{
@@ -306,7 +306,7 @@ router.post("/narracao", passport.authenticate('jwt', {session : false}), (req, 
     })
 })
 
-router.post("/lista", passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.post("/lista", passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
     var form = new formidable.IncomingForm()
     console.log("Post de /lista")
     form.parse(req, (erro, fields, files)=>{
@@ -359,7 +359,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false}), (req, res
     })
 })
 
-router.put('/comentario', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/comentario', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	console.log('Entrei no put de comentários')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -381,7 +381,7 @@ router.put('/comentario', passport.authenticate('jwt', {session : false}), (req,
 	})
 });
 
-router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/pubGostos', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	console.log('Entrei no put de gostos')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
@@ -403,7 +403,7 @@ router.put('/pubGostos', passport.authenticate('jwt', {session : false}), (req, 
 	})
 });
 
-router.put('/comentGostos', passport.authenticate('jwt', {session : false}), (req, res) =>{
+router.put('/comentGostos', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	console.log('Entrei no put de gostos')
     var form = new formidable.IncomingForm()
     form.parse(req, (erro, fields, files)=>{
