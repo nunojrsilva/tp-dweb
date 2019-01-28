@@ -149,13 +149,24 @@ module.exports.inserirComentario = (pub_id, comentario) => {
 			.populate(pop_config2)			
 }
 
+module.exports.alteraPrivacidade = (pub_id, priv) => {
+
+	return Pub
+			.findOneAndUpdate(
+				{_id : pub_id}, 
+				{privacidade: priv},
+				{new : true})
+			.exec()
+}
+
 module.exports.contaPubGostos = (pub_id) => {
 	var pID = mongoose.Types.ObjectId(pub_id)
     console.log("Pub : " + pID)
 	return Pub
 		.aggregate([
 			{ $match: {_id: pID}},
-			{ $project: {gostos: {$size: '$gostos'}}}])	
+			{ $project: {gostos: {$size: '$gostos'}}}])
+		.exec()
 }
 
 module.exports.contaComentGostos = (coment_id) => {
@@ -166,7 +177,8 @@ module.exports.contaComentGostos = (coment_id) => {
 			{ $match: {"comentarios._id": cID}},
 			{ $unwind: '$comentarios'},
 			{ $match: {"comentarios._id": cID}},
-			{ $project: {gostos: {$size: '$comentarios.gostos'}}}])	
+			{ $project: {gostos: {$size: '$comentarios.gostos'}}}])
+			.exec()
 }
 
 module.exports.consultarUserPubGosto = (pub_id, user_id) => {

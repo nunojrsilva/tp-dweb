@@ -145,6 +145,32 @@ router.get('/publicar',   passport.authenticate('jwt', {session : false, failure
 //////////////////////POSTS/////////////////////////////
 ////////////////////////////////////////////////////////
 
+router.post('/alterarPrivacidade', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
+	if(req.body.idPub != undefined && req.body.priv != undefined){
+		console.log("CHEGUEI AQUI")
+		axios({
+			method: 'post', 
+			
+			url: 'http://localhost:3000/api/pubs/alterarPrivacidade',
+			data:{
+				idPub: req.body.idPub,
+				priv: req.body.priv
+			},
+			headers: {
+				Authorization: 'Bearer ' + req.session.token
+			}
+		  })
+		.then(dados =>{
+			console.log("respostaPub: \n" + JSON.stringify(dados.data))
+			res.jsonp(dados.data.privacidade)
+		})
+		.catch(error =>{
+			console.log("ERRO AO TENTAR MUDAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + error)
+			res.status(500).send("ERRO AO TENTAR MUDAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + error)
+		})
+	}
+})
+
 router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	
 	var form = new formidable.IncomingForm()

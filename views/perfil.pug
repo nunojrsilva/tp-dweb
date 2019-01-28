@@ -9,7 +9,7 @@ block content
             table 
                 tr
                     td(valign="top" style="width: 30%;")
-                        .w3-card-4(id="AAAAAAAA" style='max-width: 80%; margin-left:15px; margin-right:15px; margin-top:25px;')
+                        .w3-card-4(style='max-width: 80%; margin-left:15px; margin-right:15px; margin-top:25px;')
                             img(style="max-width: 90%; margin-top: 5%; margin-left: 5%;" src="http://localhost:3000/api/files/foto?userId=" + perfil._id + "&fotoId=" + perfil.fotoPerfil.idAtual)
                             if(perfil.otherUser == false)    
                                 input.w3-container.w3-round-large(id='fotosPerfil' value='Ver Fotos Perfil' style='background-color: rgb(59,100,170); color: white;max-width: 70%; margin-left:15%; margin-top:2%')
@@ -136,10 +136,41 @@ block content
                                                                     p(style="margin-left:0px; margin-right:0px; margin-top:4px; margin-bottom:4px;")= e.evento.descricao
 
                                             input.pubLike.w3-btn.w3-small.w3-round-xxlarge(type='button' id=p._id+"_Gosto" value='Gosto (' + p.gostos.length + ')' name=p.gostos.length style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-top:0px;')
-                                            
+                                            checkbox.w3-container(valign="right" style="float:right;")
+                                                table
+                                                    tr
+                                                        td
+                                                            br
+                                                            input.w3-btn.w3-small.w3-round-xxlarge(type='button' id="alterarPriv" value="Alterar Privacidade" style='background-color: rgb(59,100,170); color: white; margin-left:10px; margin-right:25px; margin-top:0px;')
+                                                        td
+                                                            label(id="privacidade"+p._id) Privacidade Atual:  
+                                                                =p.privacidade
+                                                                br
+                                                            if(p.privacidade != "publica")
+                                                                label(id="labelPublica"+p._id) Público
+                                                                    input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: ' unchecked)
+                                                                br
+                                                            else
+                                                                label(id="labelPublica"+p._id style="display: none") Público 
+                                                                    input.publicacb(id="publicacb"+p._id type='checkbox' name='agreement' style='margin-left: 22px;display: none' unchecked)
+                                                                
+                                                            if(p.privacidade != "seguidores")
+                                                                label(id="labelSeguidores"+p._id) Seguidores
+                                                                    input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
+                                                                br
+                                                            else
+                                                                label(id="labelSeguidores"+p._id style="display: none") Seguidores 
+                                                                    input.seguidorescb(id="seguidorescb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
+                                                                
+                                                            if(p.privacidade != "privada")
+                                                                label(id="labelPrivada"+p._id) Apenas Eu
+                                                                    input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: ' unchecked)
+                                                            else
+                                                                label(id="labelPrivada"+p._id style="display: none") Apenas Eu
+                                                                    input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
                                             br
                                             br
-                                            .w3-card-4.w3-round-large(style='margin-top:5px;')
+                                            .w3-card-4.w3-round-large(style='margin-top:30px;')
                                                 header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
                                                     h7
                                                         b Comentários
