@@ -91,8 +91,8 @@ $(()=>{
         });
     });
 
-    $('#alterarPriv').click(function(e){
-
+    $('input.alteraPrivacidade').click(function(e){
+        console.log("AQUI")
         var novaPriv = null;
         var pubId = $(this).closest('publicacao').attr('id')
         
