@@ -182,7 +182,7 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRe
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			var data = new Date()
-			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + "H" + data.getHours() + "M" + data.getMinutes();
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
@@ -229,7 +229,7 @@ router.post('/evento', passport.authenticate('jwt', {session : false, failureRed
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			var data = new Date()
-			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + "H" + data.getHours() + "M" + data.getMinutes();
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.local = fields.local
 			publicacao.privacidade = fields.privacidade
@@ -281,7 +281,7 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false, failure
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			var data = new Date()
-			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + "H" + data.getHours() + "M" + data.getMinutes();
 			publicacao.hashtags = separaHashtag(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
@@ -320,7 +320,7 @@ router.post("/narracao", passport.authenticate('jwt', {session : false, failureR
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			var data = new Date()
-			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + "H" + data.getHours() + "M" + data.getMinutes();
 			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.gostos = []
@@ -372,7 +372,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false, failureRedi
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
 			var data = new Date()
-			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate() + "H" + data.getHours() + "M" + data.getMinutes();
 			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.elems = []
@@ -491,11 +491,13 @@ async function parseFicheiros(username, fileTitle, files, data_DADA){
 		var ficheirosArray = []
 		var ficheiro = {}
 		var salt = null
+		var data = null
 
         for(var fich in files){
 			var nome = files[fich].name
 			var parts = nome.split('.')
 			var extention = "." + parts[parts.length - 1]
+			
 			
 			var pasta = path.resolve(__dirname + '/../uploaded/' + username+'/' + data_DADA)
 			
