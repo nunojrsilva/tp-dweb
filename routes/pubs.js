@@ -91,7 +91,7 @@ router.get('/publicas', (req,res) => {
 		.then(resposta =>{
 			console.log(resposta)
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', {pubs: publicacoes}))
+			.then(publicacoes => res.render('listaPubsPublicas', {pubs: publicacoes}))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 })
