@@ -1,78 +1,78 @@
 extends layout
 
 block content
-	#inicioPagina
+    #inicioPagina
 
-		.w3-container
-			.w3-card-4
-				header.w3-container.w3-blue
-					h3 Criar Novo Evento
-				form.w3-container(id='EventoForm' name="EventoForm" enctype="multipart/form-data" method="post")
-					.w3-container(style=" width: 50%; float: left;")
-						b Username
-						input.w3-input.w3-border.w3-light-grey(id='username' type='text' name='username' required style="width:200px")
-						br
-						table
-							tr 
-								th Título
-								th Atividade
-								th Duração
-								th Data de Realização
-							tr
-								td
-									input.w3-input.w3-border.w3-light-grey(id='titulo' type='text' name='titulo' required)
-								td
-									input.w3-input.w3-border.w3-light-grey(id='atividade' type='text' name='atividade' required)
-								td
-									input.w3-input.w3-border.w3-light-grey(id='duracao' type='text' name='duracao')
-								td
-									input.w3-input.w3-border.w3-light-grey(id='data' type='text' name='data' required)
-						label
-							b Descrição
-						textarea.w3-input.w3-border.w3-light-grey(id='descricao' type='text' name='descricao' rows='10' cols='80' required)
-						
-						input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
-						input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
-						input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Ficheiros ao Evento' style='margin-left:25px; margin-top:10px')
-					
-					.w3-container(id="filesDiv" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
-						.w3-card-4(style='width: 80%')
-							header.w3-container.w3-blue
-								h3 Adicionar Ficheiros
-							table
-								tr
-									td
-										label
-											b Titulo
-										input.w3-input.w3-border.w3-light-grey(id='filesTitulo' type='text' name='fTitulo')
-										br
-										label
-											b Ficheiros
-										#listaFiles
-											input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
-										br
-										input.w3-btn.w3-border(id='more_files' type='button' value='Mais ficheiros' style='font-size:8px;')
-										br
-							input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Ficheiros' style='margin-right:25px;')
-					
-				lable 
-					b Quem pretende que veja a sua publicação?
-					br
-					lable Público
-						input(id="publica" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
-					br
-					label Seguidores
-						input(id="seguidores" type='checkbox' name='agreement' style='margin-left: 20px' unchecked)
-					br
-					label Apenas Eu
-						input(id="privada" type='checkbox' name='agreement' style='margin-left: 20px' checked)
+        .w3-container
+            .w3-card-4
+                header.w3-container.w3-blue
+                    h3 Criar Novo Evento
+                form.w3-container(id='EventoForm' name="EventoForm" enctype="multipart/form-data" method="post")
+                    .w3-container(style=" width: 50%; float: left;")
+                        b Username
+                        input.w3-input.w3-border.w3-light-grey(id='username' type='text' name='username' required style="width:200px")
+                        br
+                        table
+                            tr 
+                                th Título
+                                th Atividade
+                                th Duração
+                                th Data de Realização
+                            tr
+                                td
+                                    input.w3-input.w3-border.w3-light-grey(id='titulo' type='text' name='titulo' required)
+                                td
+                                    input.w3-input.w3-border.w3-light-grey(id='atividade' type='text' name='atividade' required)
+                                td
+                                    input.w3-input.w3-border.w3-light-grey(id='duracao' type='text' name='duracao')
+                                td
+                                    input.w3-input.w3-border.w3-light-grey(id='data' type='text' name='data' required)
+                        label
+                            b Descrição
+                        textarea.w3-input.w3-border.w3-light-grey(id='descricao' type='text' name='descricao' rows='10' cols='80' required)
+                        
+                        input.w3-btn.w3-blue(type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
+                        input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
+                        input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Ficheiros ao Evento' style='margin-left:25px; margin-top:10px')
+                    
+                    .w3-container(id="filesDiv" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
+                        .w3-card-4(style='width: 80%')
+                            header.w3-container.w3-blue
+                                h3 Adicionar Ficheiros
+                            table
+                                tr
+                                    td
+                                        label
+                                            b Titulo
+                                        input.w3-input.w3-border.w3-light-grey(id='filesTitulo' type='text' name='fTitulo')
+                                        br
+                                        label
+                                            b Ficheiros
+                                        #listaFiles
+                                            input.w3-input.w3-border.w3-light-grey(type='file' name='files0' multiple)
+                                        br
+                                        input.w3-btn.w3-border(id='more_files' type='button' value='Mais ficheiros' style='font-size:8px;')
+                                        br
+                            input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Ficheiros' style='margin-right:25px;')
+                    
+                lable 
+                    b Quem pretende que veja a sua publicação?
+                    br
+                    lable Público
+                        input(id="publica" type='checkbox' name='agreement' style='margin-left: 22px'  unchecked)
+                    br
+                    label Seguidores
+                        input(id="seguidores" type='checkbox' name='agreement' style='margin-left: 20px' unchecked)
+                    br
+                    label Apenas Eu
+                        input(id="privada" type='checkbox' name='agreement' style='margin-left: 20px' checked)
 
-				br
-				br
-				a(href="/pubs") Voltar ao Feed
-				br
-				br
-				footer.w3-container.w3-blue(style="text-align: center;")
-					address Powered by Desenvolvimento de Aplicações Web
-		
-	script(src="/javascripts/evento.js")
+                br
+                br
+                a(href="/pubs") Voltar ao Feed
+                br
+                br
+                footer.w3-container.w3-blue(style="text-align: center;")
+                    address Powered by Desenvolvimento de Aplicações Web
+        
+    script(src="/javascripts/evento.js")

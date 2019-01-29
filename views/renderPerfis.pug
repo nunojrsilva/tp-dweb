@@ -1,28 +1,38 @@
 if (users.aSeguir)
-	.w3-card-4
-		header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
-			h4(style='text-align: center; margin-top:5px;') A seguir
-		.w3-container
-			for user in users.aSeguir
-				a(href="http://localhost:3000/Perfil?idUser=" + user._id)
-					.w3-card-4(style="max-width: 300px; max-height: 400px")
-						img(style="max-width: 90%; max-height: 85%; margin-top: 10px;margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
-						br
-						h2= user.nome
-						p= user.username
-						p= user._id
-		br
+    .w3-card-4(width="100%")
+        header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
+            h4(style='text-align: center; margin-top:5px;') A seguir
+        .w3-container(width="100%")
+            for user in users.aSeguir
+                a(style="text-decoration:none;" href="http://localhost:3000/Perfil?idUser=" + user._id)
+                    br
+                    .w3-card-4.w3-round-large.w3-border(style="text-align:center; width: 270px; height: 250px")
+                        img.w3-round-large.w3-border(style="max-width: 100px; max-height: 100px; margin-top:10px; margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+                        .w3-light-grey.w3-border.w3-round-large(style="margin-top:10px; margin-left:10px; margin-right:10px; margin-bottom:10px;")
+                            h5= user.nome
+                            p(style="margin-top:-5px")
+                                b Username: 
+                                | #{user.username}
+                            p(style="margin-top:-5px")
+                                b ID: 
+                                | #{user._id}
+        br
 else
-	.w3-card-4
-		header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
-			h4(style='text-align: center; margin-top:5px;') Seguidores
-		.w3-container
-			for user in users.seguidores
-				a(href="http://localhost:3000/Perfil?idUser=" + user._id)
-					.w3-card-4(style="max-width: 300px; max-height: 400px")
-						img(style="max-width: 90%; max-height: 85%; margin-top: 10px;margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
-						br
-						h2= user.nome
-						p= user.username
-						p= user._id
-		br
+    .w3-card-4(width="100%")
+        header.w3-container.w3-round-large(style='height:50px; background-color: rgb(59,100,170); color: white;')
+            h4(style='text-align: center; margin-top:5px;') Seguidores
+        .w3-container(width="100%")
+            for user in users.seguidores
+                a(style="text-decoration:none;" href="http://localhost:3000/Perfil?idUser=" + user._id)
+                    br
+                    .w3-card-4.w3-round-large.w3-border(style="text-align:center; width: 270px; height: 250px")
+                        img.w3-round-large.w3-border(style="max-width: 100px; max-height: 100px; margin-top:10px; margin-right: 5%;margin-left: 5%;" src="http://localhost:3000/api/files/fotoPerfil?uid=" + user._id + "&username=" + user.username)
+                        .w3-light-grey.w3-border.w3-round-large(style="margin-top:10px; margin-left:10px; margin-right:10px; margin-bottom:10px;")
+                            h5= user.nome
+                            p(style="margin-top:-5px")
+                                b Username: 
+                                | #{user.username}
+                            p(style="margin-top:-5px")
+                                b ID: 
+                                | #{user._id}
+        br

@@ -2,7 +2,7 @@ $(()=>{
 
     $("listaPublicacoes").load('http://localhost:3000/pubs?username='+$("listaPublicacoes").attr('id'))
 
-    $("input.pubLike:button").click(function() {
+    $('#listaPublicacoes').on("click", 'input.pubLike:button', function(e){
 
         var pubID = $(this).closest('publicacao').attr('id')
 
@@ -29,6 +29,68 @@ $(()=>{
 			processData: false
         });
     });
+    
+
+    $('#listaPublicacoes').on("click", 'input.commentLike:button', function(e){
+
+        var comentID = $(this).closest('.comentarioDiv').attr('id')
+        alert("ID do comentário: " +  comentID);
+
+        var formData = new FormData();
+        formData.append('comentID', comentID)
+        
+        $.ajax({
+            url: '/pubs/comentGostos',
+            type: 'PUT',
+            contentType: "application/json",
+            data: formData,
+            success: data =>{
+                console.dir(data.size)
+                $('#' + this.id).val('Gosto (' + (data.size) + ')')
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+            processData: false
+        });
+    });
+    
+    $('#listaPublicacoes').on('submit','.formComentarios', function(e){
+
+		e.preventDefault();        
+
+        var pubID = $(this).closest('publicacao').attr('id')
+        alert("ID da publicação: " + pubID);
+
+        var formData = new FormData();
+		formData.append('pubID', pubID)
+		formData.append('comentario', $('#'+pubID).find('#comentario').val())
+        
+        $.ajax({
+            url: '/pubs/comentario',
+            type: 'PUT',
+            contentType: "application/json",
+            data: formData,
+            success: data =>{
+                console.dir(data)
+                $('#' + this.id).trigger("reset");
+                $('#'+pubID+'comentarios').append(data)
+                $("#"+pubID+"NoComments").remove()
+                alert('Comentário enviado');
+            },
+            error: e =>{
+                alert('Erro no post: ' + JSON.stringify(e))
+                $('#' + this.id).trigger("reset");
+                console.log('Erro no post: ' + JSON.stringify(e))
+            },
+			cache: false,
+			contentType: false,
+			processData: false
+        });
+    });
 
     $('#aSeguirBTN').click(e=>{
         e.preventDefault()
@@ -38,10 +100,6 @@ $(()=>{
         var url = 'http://localhost:3000/aSeguir?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('visibility', 'hidden')
-            $('#seguidoresBTN').css('visibility', 'visible')
-            $('#pubsBTN').css('visibility', 'visible')
-    
             $('#aSeguir').css('display', '');
             $('#seguidores').css('display', 'none');
             $('#listaPublicacoes').css('display', 'none');
@@ -67,10 +125,6 @@ $(()=>{
         var url = 'http://localhost:3000/Seguidores?uid=' + id
         axios.get(url)
         .then(dados =>{
-            $('#aSeguirBTN').css('visibility', 'visible')
-            $('#seguidoresBTN').css('visibility', 'hidden')
-            $('#pubsBTN').css('visibility', 'visible')
-
             $('#aSeguir').css('display', 'none');
             $('#seguidores').css('display', '');
             $('#listaPublicacoes').css('display', 'none');
@@ -89,11 +143,6 @@ $(()=>{
 
     $('#pubsBTN').click(e=>{
         e.preventDefault()
-
-        $('#aSeguirBTN').css('visibility', 'visible')
-        $('#seguidoresBTN').css('visibility', 'visible')
-        $('#pubsBTN').css('visibility', 'hidden')
-
         $('#aSeguir').css('display', 'none');
         $('#seguidores').css('display', 'none');
         $('#listaPublicacoes').css('display', '');
@@ -104,9 +153,12 @@ $(()=>{
         var id = $('#id').attr('name')
         console.log(id)
         var url = 'http://localhost:3000/Seguir'
+        var nSeguidores = Number($("#seguidoresBTN").attr("name")) + 1
 
         axios.post(url, {userParaSeguir: id})
         .then(_ =>{
+            $("#seguidoresBTN").attr('name', nSeguidores)
+            $("#seguidoresBTN").attr('value', "Seguidores (" + nSeguidores+ ")")
             $('#seguir').css('visibility', 'hidden')
             $('#seguirImg').css('visibility', 'hidden')
             $('#ignorar').css('visibility', 'visible')
@@ -124,9 +176,12 @@ $(()=>{
         var id = $('#id').attr('name')
         console.log(id)
         var url = 'http://localhost:3000/Ignorar'
+        var nSeguidores = Number($("#seguidoresBTN").attr("name")) - 1
 
         axios.post(url, {userAIgnorar: id})
         .then(_ =>{
+            $("#seguidoresBTN").attr('name', nSeguidores)
+            $("#seguidoresBTN").attr('value', "Seguidores (" + nSeguidores+ ")")
             $('#seguir').css('visibility', 'visible')
             $('#seguirImg').css('visibility', 'visible')
             $('#ignorar').css('visibility', 'hidden') 
@@ -143,63 +198,60 @@ $(()=>{
         location.href = "http://localhost:3000/FotosPerfil";
     })
 
-    $('comentarios').on("click", 'input.commentLike:button', e => {
+    $('#alterarPriv').click(function(e){
 
-        comentID = e.target.id
-        alert("ID do comentário: " +  comentID);
-
-        var formData = new FormData();
-        formData.append('comentID', comentID)
+        var novaPriv = null;
+        var pubId = $(this).closest('publicacao').attr('id')
         
-        $.ajax({
-            url: '/pubs/comentGostos',
-            type: 'PUT',
-            contentType: "application/json",
-            data: formData,
-            success: data =>{
-                console.dir(data.size)
-                $('#' + comentID).val('Gosto (' + (data.size) + ')')
-            },
-            error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
-                console.log('Erro no post: ' + JSON.stringify(e))
-            },
-			cache: false,
-			contentType: false,
-            processData: false
-        });
-    });
-    
-    $("form").submit(function(e) {
-		e.preventDefault();        
+        if((document.getElementById('publicacb'+pubId) && document.getElementById('publicacb'+pubId).checked))
+            novaPriv = "publica"
 
+        else{
+            if(document.getElementById('seguidorescb'+pubId) && document.getElementById('seguidorescb'+pubId).checked)
+                novaPriv = "seguidores"
+
+            else{
+                novaPriv = "privada"
+                console.log("PASSEI AQUI")
+            }
+        }
+        
+        var url = "http://localhost:3000/pubs/alterarPrivacidade"
+        var data = {idPub: pubId,priv: novaPriv}
+        console.log(data)
+        axios.post(url, data)
+        .then(tocheck =>{
+            console.log(tocheck.data)
+            $('#privacidade'+pubId).replaceWith("Privacidade Atual:  " + tocheck.data + "<br>")
+
+        })
+        .catch(erro =>{
+            console.log("ERRO AO ALTERAR A PRIVACIDADE DE UMA PUBLICAÇÃO : " + data.idPub + erro)
+        })
+
+    })
+
+    $("input.publicacb").click(function(e) {
         var pubID = $(this).closest('publicacao').attr('id')
-        alert("ID da publicação: " + pubID);
 
-        var formData = new FormData();
-		formData.append('pubID', pubID)
-		formData.append('comentario', $('#'+pubID).find('#comentario').val())
-        
-        $.ajax({
-            url: '/pubs/comentario',
-            type: 'PUT',
-            contentType: "application/json",
-            data: formData,
-            success: data =>{
-                console.dir(data)
-                $('#' + this.id).trigger("reset");
-                $('comentarios').append(data)
-                $("#"+pubID+"NoComments").remove()
-                alert('Comentário enviado');
-            },
-            error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
-                $('#' + this.id).trigger("reset");
-                console.log('Erro no post: ' + JSON.stringify(e))
-            },
-			cache: false,
-			contentType: false,
-			processData: false
-        });
-    });
+        $('#publicacb'+pubID).prop('checked', true)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.seguidorescb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', true)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.privadacb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', true)
+	})
 });

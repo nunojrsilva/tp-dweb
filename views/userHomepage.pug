@@ -1,9 +1,9 @@
 extends layoutBase
 
 block content1
-    .w3-card-4
-        .w3-bar(style="display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;width:100%;border-bottom: 1px solid #cacaca;position: fixed;")
-            a.w3-bar-item.w3-button(href="/") Feed de Publicações
+    .w3-card-4.w3-border-0(style='min-height:100vh;')
+        .w3-bar(style="width:100%; display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;border-bottom: 0px solid #cacaca;position: fixed;")
+           a.w3-bar-item.w3-button(href="/") Feed de Publicações
             a.w3-bar-item.w3-button(href="/Perfil") Meu Perfil
             a.w3-bar-item.w3-button(href="/logout") Logout
 
@@ -20,7 +20,7 @@ block content1
                     td(width='20%')
 
             
-        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center;")
+        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center; position: fixed; bottom: 0; width: 100%;")
             address Powered by Desenvolvimento de Aplicações Web
 
     script(src='/javascripts/userHomepage.js')
