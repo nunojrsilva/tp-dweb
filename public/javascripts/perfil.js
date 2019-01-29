@@ -6,7 +6,7 @@ $(()=>{
 
         var pubID = $(this).closest('publicacao').attr('id')
 
-        alert("ID da publicação: " + pubID);
+        //alert("ID da publicação: " + pubID);
 
         var formData = new FormData();
         formData.append('pubID', pubID)
@@ -21,7 +21,7 @@ $(()=>{
                 $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -34,7 +34,7 @@ $(()=>{
     $('#listaPublicacoes').on("click", 'input.commentLike:button', function(e){
 
         var comentID = $(this).closest('.comentarioDiv').attr('id')
-        alert("ID do comentário: " +  comentID);
+        //alert("ID do comentário: " +  comentID);
 
         var formData = new FormData();
         formData.append('comentID', comentID)
@@ -49,7 +49,7 @@ $(()=>{
                 $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -63,7 +63,7 @@ $(()=>{
 		e.preventDefault();        
 
         var pubID = $(this).closest('publicacao').attr('id')
-        alert("ID da publicação: " + pubID);
+        //alert("ID da publicação: " + pubID);
 
         var formData = new FormData();
 		formData.append('pubID', pubID)
@@ -79,10 +79,10 @@ $(()=>{
                 $('#' + this.id).trigger("reset");
                 $('#'+pubID+'comentarios').append(data)
                 $("#"+pubID+"NoComments").remove()
-                alert('Comentário enviado');
+                //alert('Comentário enviado');
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 $('#' + this.id).trigger("reset");
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
@@ -168,7 +168,7 @@ $(()=>{
             $('#aSeguir').append(dados.data)
         })
         .catch(erro =>{
-            alert('Erro no get aSeguir: ' + erro)
+            //alert('Erro no get aSeguir: ' + erro)
             console.log('Erro no get aSeguir: ' + erro)
         })
     })
@@ -193,7 +193,7 @@ $(()=>{
             $('#seguidores').append(dados.data)
         })
         .catch(erro =>{
-            alert('Erro no post: ' + JSON.stringify(erro))
+            //alert('Erro no post: ' + JSON.stringify(erro))
             console.log('Erro no post: ' + JSON.stringify(erro))
         })
     })
@@ -222,7 +222,7 @@ $(()=>{
             $('#ignorarImg').css('visibility', 'visible')
         })
         .catch(erro =>{
-            alert('Erro no post: ' + JSON.stringify(erro))
+            //alert('Erro no post: ' + JSON.stringify(erro))
             console.log('Erro no post: ' + JSON.stringify(erro))
         })
     })
@@ -245,7 +245,7 @@ $(()=>{
             $('#ignorarImg').css('visibility', 'hidden') 
         })
         .catch(erro =>{
-            alert('Erro no post: ' + JSON.stringify(erro))
+            //alert('Erro no post: ' + JSON.stringify(erro))
             console.log('Erro no post: ' + JSON.stringify(erro))
         })
     })

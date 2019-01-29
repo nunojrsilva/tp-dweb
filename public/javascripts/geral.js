@@ -8,7 +8,7 @@ $(()=>{
 
 	$('input:file').bind('change', function() {
 		if (this.files[0].size > 200*1024*1024) {
-			alert("Tamanho do ficheiro excedeu o limite de 200MB");
+			//alert("Tamanho do ficheiro excedeu o limite de 200MB");
 			$('#myForm').trigger("reset");
 		}
 	})
@@ -109,7 +109,7 @@ $(()=>{
 
 	$('#formPub').submit(function(e){
 		e.preventDefault();
-		//alert('Entrei')
+		////alert('Entrei')
 					
 		var formData = new FormData();
 		var aux=1;
@@ -122,7 +122,7 @@ $(()=>{
 			})
 		});		
 		formData.append('fileTitle', $('#filesTitulo').val());
-		//alert('Cheguei ao 1')
+		////alert('Cheguei ao 1')
 
 		if(tipo == "opiniao")
 			if($('#opiniao').val())
@@ -130,7 +130,7 @@ $(()=>{
 			else if($('#fileBase').val()) {
 				tipo = "ficheiros"
 			} else {
-				alert("Insira uma opinião ou no mínimo um ficheiro")
+				//alert("Insira uma opinião ou no mínimo um ficheiro")
 				return;
 			}
 
@@ -166,7 +166,7 @@ $(()=>{
 		formData.append('hashtags', $('#hashtags').val());
 
 
-		//alert('Cheguei ao 2')
+		////alert('Cheguei ao 2')
 
 		if(document.getElementById('publica').checked)
 			formData.append('privacidade', "publica");
@@ -176,7 +176,7 @@ $(()=>{
 			else
 				formData.append('privacidade', "privada");
 		}
-		//alert('Cheguei ao 3')
+		////alert('Cheguei ao 3')
 
 		$.ajax({
 			url:'/pubs/'+tipo,
@@ -185,7 +185,7 @@ $(()=>{
 			data:formData,
 			success: data =>{
 				console.log(data)
-				alert('Publicação efetuada com sucesso');
+				//alert('Publicação efetuada com sucesso');
 				$('#listaPublicacoes').prepend(data);
 				$("#fecharForm").click();
 			},

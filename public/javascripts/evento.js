@@ -4,7 +4,7 @@ $(()=>{
 
 	$('input:file').bind('change', function() {
 		if (this.files[0].size > 200*1024*1024) {
-			alert("Tamanho do ficheiro excedeu o limite de 200MB");
+			//alert("Tamanho do ficheiro excedeu o limite de 200MB");
 			$('#myForm').trigger("reset");
 		}
 	})
@@ -93,12 +93,12 @@ $(()=>{
 			data:formData,
 			success: data =>{
 				$('#inicioPagina').html(data)
-				alert('Ficheiros enviados');
+				//alert('Ficheiros enviados');
 				console.log(JSON.stringify(data))
 				$('#myForm').trigger("reset");
 			},
 			error: e =>{
-				alert('Erro no post: ' + JSON.stringify(e))
+				//alert('Erro no post: ' + JSON.stringify(e))
 				$('#myForm').trigger("reset");
 				console.log('Erro no post: ' + JSON.stringify(e))
 			},

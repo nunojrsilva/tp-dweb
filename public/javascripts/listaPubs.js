@@ -3,8 +3,8 @@ $(()=>{
 
         var pubID = $(this).closest('publicacao').attr('id')
 
-        alert("ID da publicação: " + pubID);
-z
+        //alert("ID da publicação: " + pubID);
+
         var formData = new FormData();
         formData.append('pubID', pubID)
         
@@ -18,7 +18,7 @@ z
                 $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -31,7 +31,7 @@ z
     $('#listaPublicacoes').on("click", 'input.commentLike:button', function(e){
 
         var comentID = $(this).closest('.comentarioDiv').attr('id')
-        alert("ID do comentário: " +  comentID);
+        //alert("ID do comentário: " +  comentID);
 
         var formData = new FormData();
         formData.append('comentID', comentID)
@@ -46,7 +46,7 @@ z
                 $('#' + this.id).val('Gosto (' + (data.size) + ')')
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
 			cache: false,
@@ -60,7 +60,7 @@ z
 		e.preventDefault();        
 
         var pubID = $(this).closest('publicacao').attr('id')
-        alert("ID da publicação: " + pubID);
+        //alert("ID da publicação: " + pubID);
 
         var formData = new FormData();
 		formData.append('pubID', pubID)
@@ -76,10 +76,10 @@ z
                 $('#' + this.id).trigger("reset");
                 $('#'+pubID+'comentarios').append(data)
                 $("#"+pubID+"NoComments").remove()
-                alert('Comentário enviado');
+                //alert('Comentário enviado');
             },
             error: e =>{
-                alert('Erro no post: ' + JSON.stringify(e))
+                //alert('Erro no post: ' + JSON.stringify(e))
                 $('#' + this.id).trigger("reset");
                 console.log('Erro no post: ' + JSON.stringify(e))
             },
@@ -121,9 +121,9 @@ z
 
         var data = $('#pubData').val()
         var a = data.split("-")
-        //alert(a)
+        ////alert(a)
         if (a[0].length == 4 && a[1].length == 2 && a[2].length == 2) {
-        // alert(data)
+        // //alert(data)
             var url = "http://localhost:3000/pubs?data=" + data
 
             axios.get(url)
