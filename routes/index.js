@@ -86,17 +86,18 @@ router.post("/login", (req,res) => {
 async function teste(req, token){
   return new Promise((copia, erro) =>{
     req.session.token = token
-    req.session.save()
-    if(req.session.token == token){
-      console.log("NIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICE")
-      copia(req.session.token)
-    }
-    else{
-      console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
-      erro(req.session.token)
-    }
-
-  })
+    req.session.save(err =>{
+      console.log(err)
+      if(!err){
+        console.log("NIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIIICE")
+        copia(req.session.token)
+      }
+      else{
+        console.log("NOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO")
+        erro(req.session.token)
+      }
+    })})
+    
 }
 
 router.post("/registo", (req,res) => {

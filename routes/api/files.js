@@ -17,10 +17,9 @@ router.get('/', (req, res) => {
 		var ficheiro = fich[0].elems.ficheiros.ficheiros
 		var parts = ficheiro.nome.split('.')
 		var extention = "." + parts[parts.length - 1]
-		var data = new Date(req.query.data)
-		var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 
-		var filepath = __dirname + "/../../uploaded/" + req.query.username + "/" + dataCalendario + "/" + ficheiro.nomeGuardado + extention
+
+		var filepath = __dirname + "/../../uploaded/" + req.query.username + "/" + req.query.data + "/" + ficheiro.nomeGuardado + extention
 		var resolvedFilepath = path.resolve(filepath)
 
 		fs.stat(resolvedFilepath, (erro, _) =>{
