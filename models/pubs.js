@@ -57,7 +57,6 @@ var PubSchema = new Schema({
     utilizador: {type: ObjectId, required: true, ref: 'User'},
     hashtags: [{type: String, required: true}],
     data: {type: String, required: true}, // Para preencher pelo servidor
-    local: {type: String, required: false},
     privacidade: {type: String, required: true},
     tituloPub: {type: String, required: false},
     elems: [{type: elemSchema, required: true}],
