@@ -12,15 +12,15 @@ $(()=>{
 	$("#AdicaoFicheiros").click(e =>{
 		e.preventDefault()
 
-		$('#AdicaoFicheiros').css('visibility', 'hidden')
 		$('#filesDiv').css('visibility', 'visible')
 	})
 
 	$("#cancelarAdicaoFicheiros").click(e =>{
 		e.preventDefault()
 
+		$('#filesDiv').find('input:text').val('');
+		$('#filesDiv').find('input:file').val('');
 		$('#filesDiv').css('visibility', 'hidden')
-		$('#AdicaoFicheiros').css('visibility', 'visible')
 	})
 
 	$('#Enviar').click(function(e){

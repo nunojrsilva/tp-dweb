@@ -11,20 +11,17 @@ block content1
                     .w3-container
                         table
                             tr
-                                td(style='width:20%')
-                                    input#hashtag.w3-input.w3-border(placeholder='Hashtag')
+                                td(style='width:40%')
+                                    input#hashtag.w3-input.w3-border.w3-round-large(placeholder='Hashtag')
                                 td
-                                    button#hashtagBTN.w3-button( style='background-color: rgb(59,100,170); color: white; margin-left:25px;') Procurar publicação 
+                                    button#hashtagBTN.w3-btn.w3-round-large( style='background-color: rgb(59,100,170); color: white; margin-left:25px;') Procurar publicação 
     
                             tr
-                                td(style='width:20%')
-                                    input#pubData.w3-input.w3-border(placeholder='Data mínima: yyyy-mm-dd')
+                                td(style='width:40%')
+                                    input#pubData.w3-input.w3-border.w3-round-large(placeholder='Data mínima: yyyy-mm-dd')
                                 td
-                                    button#pubDataBTN.w3-button(style='background-color: rgb(59,100,170); color: white; margin-left:25px;') Procurar publicação
+                                    button#pubDataBTN.w3-btn.w3-round-large(style='background-color: rgb(59,100,170); color: white; margin-left:25px;') Procurar publicação
                 
-            .w3-container(id="aSeguir" style='visibility: hidden;margin-left:15px; margin-right:15px; margin-top:25px;')
-            .w3-container(id="seguidores" style='visibility: hidden;margin-left:15px; margin-right:15px; margin-top:25px;')
-            .w3-container(style='visibility: visible;margin-left:15px; margin-right:15px; margin-top:25px;')
                 #listaPublicacoes
                     each p in pubs
                         publicacao.w3-container(id=p._id)

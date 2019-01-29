@@ -1,24 +1,26 @@
-extends layout
+extends layoutBase
 
-block content
-	#inicioPagina
-
-		.w3-container(id="sender" name=sender)
-			.w3-card-4
-				header.w3-container.w3-blue
-					h3 Escolha uma das seguintes Fotos
-				.w3-container(style="float: left;")
-					div(id="listaImg" style="flex: 50%;padding: 4px;")
-						for file in fotos.fotoPerfil.fotos
-							a(href="http://localhost:3000/api/users/atualizarFotoPerfil?fotoId=" + file._id + "&sender=" + sender)
-								img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + userid + "&fotoId=" + file._id)
-	br
-	br
-	a(href="/pubs") Voltar ao Feed
-	br
-	br
-	footer.w3-container.w3-blue(style="text-align: center;")
-		address Powered by Desenvolvimento de Aplicações Web
-		
-	script(src="/javascripts/fotosPerfil.js")
-	script(src="/javascripts/axios.min.js")
+block content1
+    .w3-card-4.w3-border-0(style='min-height:100vh;')
+        .w3-bar(style="width:100%; display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;border-bottom: 0px solid #cacaca;position: fixed;")
+            a.w3-bar-item.w3-button(href="/") Feed de Publicações
+            a.w3-bar-item.w3-button(href="/Perfil") Meu Perfil
+            a.w3-bar-item.w3-button(href="/logout") Logout
+    
+        #inicioPagina(style="margin-top:50px")
+            .w3-container(id="sender" name=sender)
+                .w3-card-4.w3-round-large
+                    header.w3-container.w3-round-large(style="text-align:center; background-color: rgb(59,100,170); color: white;")
+                        h3 Escolha uma das seguintes Fotos
+                    .w3-container(style="float: left;")
+                        div(id="listaImg" style="flex: 50%;padding: 4px;")
+                            for file in fotos.fotoPerfil.fotos
+                                a(href="http://localhost:3000/api/users/atualizarFotoPerfil?fotoId=" + file._id + "&sender=" + sender)
+                                    img.w3-round-large(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + userid + "&fotoId=" + file._id)
+        br
+        br
+        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center; position: fixed; bottom: 0; width: 100%;")
+            address Powered by Desenvolvimento de Aplicações Web
+        
+    script(src="/javascripts/fotosPerfil.js")
+    script(src="/javascripts/axios.min.js")

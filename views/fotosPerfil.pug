@@ -1,45 +1,49 @@
-extends layout
+extends layoutBase
 
-block content
-	#inicioPagina
+block content1
+    .w3-card-4.w3-border-0(style='min-height:100vh;')
+        .w3-bar(style="width:100%; display:flex; background-color: rgb(59,100,170); color: white; top:0px; left:0px; height:38px;border-bottom: 0px solid #cacaca;position: fixed;")
+            a.w3-bar-item.w3-button(href="/") Feed de Publicações
+            a.w3-bar-item.w3-button(href="/Perfil") Meu Perfil
+            a.w3-bar-item.w3-button(href="/logout") Logout
 
-		.w3-container(id="sender" value= sender)
-			.w3-card-4
-				header.w3-container.w3-blue
-					h3 Fotos de Perfil 
-				.w3-container(style="float: left;")
-					input.w3-btn.w3-blue(id='alterarFotoPerfil' value='Alterar Foto de Perfil' style='margin-left:25px; margin-top:10px')
+        #inicioPagina(style="margin-top:50px")
+            .w3-container(id="sender" value= sender)
+                .w3-card-4.w3-round-large
+                    header.w3-container.w3-round-large(style="text-align:center; background-color: rgb(59,100,170); color: white;")
+                        h3 Fotos de Perfil 
+                    table(width="100%" style="margin-top:30px; margin-bottom:30px;")
+                        tr
+                            td(width="60%")
+                                .w3-container()
+                                    input.w3-btn.w3-round-large(type="button" id='alterarFotoPerfil' value='Alterar Foto de Perfil' style='background-color: rgb(59,100,170); color: white; margin-top:10px; margin-bottom:10px;')
+                                    input.w3-btn.w3-round-large(type="button" id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='background-color: rgb(59,100,170); color: white; margin-top:10px; margin-bottom:10px; margin-left:20px;')
 
-					div(id="listaImg" style="flex: 50%;padding: 4px;")
-						for file in fotos.fotoPerfil.fotos
-							a(href="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
-								img(style="max-width: 250px; max-height: 250px; margin-top: 25px;margin-right: 20px;vertical-align: middle;" src="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
-						
-					input.w3-btn.w3-blue(id='AdicaoFicheiros' value='Adicionar Foto de Perfil' style='margin-left:25px; margin-top:10px')
+                                    div(id="listaImg" style="flex: 50%;padding: 4px; margin-top:10px;")
+                                        for file in fotos.fotoPerfil.fotos
+                                            a(href="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
+                                                img.w3-round-large(style="width: 150px; max-height: 150px; margin-left:15px;" src="http://localhost:3000/api/files/foto?userId=" + fotos.uid + "&fotoId=" + file._id)
+                                        
+                            td(width="40%")
+                                form.w3-container(id="filesDiv" name="filesDiv" enctype="multipart/form-data" method="post" style='visibility: hidden; margin-top: 25px')
+                                    .w3-card-4.w3-round-large(style=' display: table; margin: 0 auto;')
+                                        header.w3-container.w3-round-large(style='margin-top:-50px; background-color: rgb(59,100,170); color: white;')
+                                            h7 Adicionar Ficheiros
+                                            input#cancelarAdicaoFicheiros.w3-button.w3-circle.w3-border(type='button' value='X' style='padding: 0px 5px; float:right; background-color: rgb(220,220,220); color:black; margin-left:25px; margin-right:-10px;')
+                                        .w3-container(style='background-color:rgb(245,245,245); margin-bottom:10px;')
+                                            label
+                                                b &nbsp; Titulo
+                                            input.w3-input.w3-border.w3-round-large(id='filesTitulo' type='text' name='fTitulo' style='margin-bottom:10px;')
+                                            label
+                                                b &nbsp; Ficheiros
+                                            #listaFiles
+                                                input#fileBase.w3-input.w3-border.w3-white.w3-round-large(type='file' name='files0' multiple)
 
-				form.w3-container(id="filesDiv" name="filesDiv" enctype="multipart/form-data" method="post" style='visibility: hidden; width: 50%; float: right; margin-top: 25px')
-						.w3-card-4(style='width: 80%')
-							header.w3-container.w3-blue
-								h3 Selecione uma nova Foto de Perfil
-							table
-								tr
-									td
-										label
-											b Ficheiros
-										#listaFiles
-											input.w3-input.w3-border.w3-light-grey(type='file' name='files0' accept="image/*")
-										br
-							input.w3-btn.w3-blue(id="Enviar" type='submit' value='Enviar' style='margin-left:25px; margin-top:10px')
-							input.w3-btn.w3-blue(type='reset' value='Limpar' style='margin-left:25px; margin-top:10px')
-							input.w3-btn.w3-blue(id='cancelarAdicaoFicheiros' value='Cancelar Adição de Foto' style='margin-left:25px; margin-top:10px')
-
-	br
-	br
-	a(href="/pubs") Voltar ao Feed
-	br
-	br
-	footer.w3-container.w3-blue(style="text-align: center;")
-		address Powered by Desenvolvimento de Aplicações Web
-		
-	script(src="/javascripts/fotosPerfil.js")
-	script(src="/javascripts/axios.min.js")
+                                            input.w3-btn.w3-round-large(id="Enviar" type='submit' value='Enviar' style='background-color: rgb(59,100,170); color: white; margin-left:25px; margin-top:15px')
+                                            input.w3-btn.w3-round-large(type='reset' value='Limpar' style='background-color: rgb(59,100,170); color: white; margin-left:25px; margin-top:15px')
+                    br
+        footer.w3-container(style="background-color: rgb(59,100,170); color: white; text-align: center; position: fixed; bottom: 0; width: 100%;")
+            address Powered by Desenvolvimento de Aplicações Web
+        
+    script(src="/javascripts/fotosPerfil.js")
+    script(src="/javascripts/axios.min.js")
