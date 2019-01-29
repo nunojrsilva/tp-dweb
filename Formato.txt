@@ -1,0 +1,71 @@
+Pub -> idUtilizador | [Hashtag] | Data | Local* | Privacidade | TituloPublicacao* | [Elems] | [Gostos] | [Comentarios]
+
+idUtilizador -> String
+
+Hashtag -> String
+
+Data -> String
+
+Local -> String
+
+Privacidade -> String
+
+TituloPublicacao -> String
+
+Elems -> Tipo | Opiniao* | Narracao* | Evento* | Lista* | Ficheiros*
+
+Comentarios -> idUtilizador | Texto | [Gostos]
+
+Texto -> String
+
+Tipo -> String
+
+Opiniao -> String
+
+Narracao -> Titulo* | Texto | Autor*
+
+Evento -> Titulo | Data | Atividade | Duracao* | Descricao*
+
+Gostos -> idUtilizador
+
+Lista -> Titulo | [Item]
+
+Item -> String
+
+Ficheiros ->  Titulo* | [Ficheiro]
+
+Ficheiro -> NomeGuardado | Nome | IsImage
+
+NomeGuardado -> String
+
+IsImage -> String
+
+
+Nome -> String
+
+
+---------------------------------------------------------------------------------------------------------------------
+
+Utilizador -> Nome | Username | Password | [Pub] | [Seguidor] | [ASeguir] | Salt* | FotoPerfil
+
+Nome -> String
+
+Username -> String (Único)
+
+Password -> String 
+
+Pub -> idPublicacao
+
+Seguidor -> idUtilizador
+
+ASeguir -> idUtilizador
+
+Salt -> String
+
+FotoPerfil -> idAtual* | [Foto]
+ 
+idAtual -> idFoto
+
+Foto -> NomeGuardado | Nome
+
+NomeGuardado -> String

@@ -143,7 +143,7 @@ passport.use('facebook', new FacebookStrategy({
             var foto = {}
             foto.nome = username + 'profileFB.jpeg'
             foto.nomeGuardado = fotoHashed
-            foto.isImage = true
+            foto.isImage = "true"
 
             fotoPerfil.fotos.push(foto)
 

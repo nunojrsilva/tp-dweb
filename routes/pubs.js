@@ -147,6 +147,32 @@ router.get('/publicar',   passport.authenticate('jwt', {session : false, failure
 //////////////////////POSTS/////////////////////////////
 ////////////////////////////////////////////////////////
 
+router.post('/alterarPrivacidade', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
+	if(req.body.idPub != undefined && req.body.priv != undefined){
+		console.log("CHEGUEI AQUI")
+		axios({
+			method: 'post', 
+			
+			url: 'http://localhost:3000/api/pubs/alterarPrivacidade',
+			data:{
+				idPub: req.body.idPub,
+				priv: req.body.priv
+			},
+			headers: {
+				Authorization: 'Bearer ' + req.session.token
+			}
+		  })
+		.then(dados =>{
+			console.log("respostaPub: \n" + JSON.stringify(dados.data))
+			res.jsonp(dados.data.privacidade)
+		})
+		.catch(error =>{
+			console.log("ERRO AO TENTAR MUDAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + error)
+			res.status(500).send("ERRO AO TENTAR MUDAR A PRIVACIDADE DE UMA PUBLICAÇÃO: " + error)
+		})
+	}
+})
+
 router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}), (req, res) =>{
 	
 	var form = new formidable.IncomingForm()
@@ -157,8 +183,8 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRe
 			console.log('files: \n' + JSON.stringify(files))       
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date()
-			publicacao.hashtags = ["War", "Terror"]
+			publicacao.data = new Date().toString();
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -203,8 +229,9 @@ router.post('/evento', passport.authenticate('jwt', {session : false, failureRed
 			
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date()
-			publicacao.hashtags = ["Evento"]
+			publicacao.data = new Date().toString();
+			publicacao.hashtags = separa(fields.hashtags)
+			publicacao.local = fields.local
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -253,8 +280,8 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false, failure
 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.hashtags = ["ficheiros"]
-			publicacao.data = new Date()
+			publicacao.data = new Date().toString();
+			publicacao.hashtags = separaHashtag(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
 			publicacao.gostos = []
@@ -291,9 +318,9 @@ router.post("/narracao", passport.authenticate('jwt', {session : false, failureR
 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date()
+			publicacao.data = new Date().toString();
 			publicacao.privacidade = fields.privacidade
-			publicacao.hashtags = ["narracao"]
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.gostos = []
 
 
@@ -342,9 +369,9 @@ router.post("/lista", passport.authenticate('jwt', {session : false, failureRedi
 	
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date()
+			publicacao.data = new Date().toString();
 			publicacao.privacidade = fields.privacidade
-			publicacao.hashtags = ["lista"]
+			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.elems = []
 			publicacao.gostos = []
 
@@ -455,17 +482,19 @@ router.put('/comentGostos', passport.authenticate('jwt', {session : false, failu
 //////////////////////FUNCOES///////////////////////////
 ////////////////////////////////////////////////////////
 
-async function parseFicheiros(username, fileTitle, files, data){
+async function parseFicheiros(username, fileTitle, files, data_DADA){
 
     return new Promise((elemento, erro) =>{
 		var ficheirosArray = []
 		var ficheiro = {}
 		var salt = null
+		var data = null
 
         for(var fich in files){
 			var nome = files[fich].name
 			var parts = nome.split('.')
 			var extention = "." + parts[parts.length - 1]
+			data = new Date(data_DADA)
 			
 			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			var pasta = path.resolve(__dirname + '/../uploaded/' + username+'/' + dataCalendario)
@@ -475,7 +504,7 @@ async function parseFicheiros(username, fileTitle, files, data){
 			ficheiro = {}
 			ficheiro.nomeGuardado = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
 			ficheiro.nome = nome
-			ficheiro.isImage = isImage(nome)
+			ficheiro.isImage = isImage(nome).toString()
 			
 			var fnovo =  pasta + '/' + ficheiro.nomeGuardado + extention
 			console.log("EXTENSÃO", extention)
@@ -508,6 +537,17 @@ async function parseFicheiros(username, fileTitle, files, data){
     })
 }
 
+
+function separa (ListaHash) {
+	Lista = ListaHash.split("#")
+	console.log(Lista)
+	for(i=0; i < Lista.length; i++) {
+		if (Lista[i].length == 0 || Lista[i] == ' ')
+			Lista.splice(i,1)
+		Lista[i].trim()
+	}
+	return Lista
+}
 
 
 function axiosPut (req, res, url, data){

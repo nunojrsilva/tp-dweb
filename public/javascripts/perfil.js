@@ -4,7 +4,6 @@ $(()=>{
 
     $('#listaPublicacoes').on("click", 'input.pubLike:button', function(e){
 
-        var pubID = $(this).closest('publicacao').attr('id')
 
         alert("ID da publicação: " + pubID);
 
@@ -91,6 +90,63 @@ $(()=>{
 			processData: false
         });
     });
+
+    $('#alterarPriv').click(function(e){
+
+        var novaPriv = null;
+        var pubId = $(this).closest('publicacao').attr('id')
+        
+        if((document.getElementById('publicacb'+pubId) && document.getElementById('publicacb'+pubId).checked))
+            novaPriv = "publica"
+
+        else{
+            if(document.getElementById('seguidorescb'+pubId) && document.getElementById('seguidorescb'+pubId).checked)
+                novaPriv = "seguidores"
+
+            else{
+                novaPriv = "privada"
+                console.log("PASSEI AQUI")
+            }
+        }
+        
+        var url = "http://localhost:3000/pubs/alterarPrivacidade"
+        var data = {idPub: pubId,priv: novaPriv}
+        console.log(data)
+        axios.post(url, data)
+        .then(tocheck =>{
+            console.log(tocheck.data)
+            $('#privacidade'+pubId).replaceWith("Privacidade Atual:  " + tocheck.data + "<br>")
+
+        })
+        .catch(erro =>{
+            console.log("ERRO AO ALTERAR A PRIVACIDADE DE UMA PUBLICAÇÃO : " + data.idPub + erro)
+        })
+
+    })
+
+    $("input.publicacb").click(function(e) {
+        var pubID = $(this).closest('publicacao').attr('id')
+
+        $('#publicacb'+pubID).prop('checked', true)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.seguidorescb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', true)
+		$('#privadacb'+pubID).prop('checked', false)
+	})
+
+	$("input.privadacb").click(function(e){
+        var pubID = $(this).closest('publicacao').attr('id')
+
+		$('#publicacb'+pubID).prop('checked', false)
+		$('#seguidorescb'+pubID).prop('checked', false)
+		$('#privadacb'+pubID).prop('checked', true)
+	})
 
     $('#aSeguirBTN').click(e=>{
         e.preventDefault()

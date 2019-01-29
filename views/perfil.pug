@@ -103,7 +103,7 @@ block content1
                                                             ul
                                                                 each item in e.ficheiros.ficheiros
                                                                     li
-                                                                        if (item.isImage == true)
+                                                                        if (item.isImage == "true")
                                                                             a(href='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
                                                                                 img(style="max-width: 160px; max-height: 160px;" src='/api/files?username=' + p.utilizador.username + '&idPub=' + p._id + '&idFich=' + item._id + '&data=' + p.data)
                                                                         else
@@ -189,9 +189,7 @@ block content1
                                                                         input.privadacb(id="privadacb"+p._id type='checkbox' name='agreement' style='margin-left: 20px;display: none' unchecked)
                                             br
                                             br
-                                            br
-                                            br
-                                            .w3-card-4.w3-round-large(style='margin-top:5px;')
+                                            .w3-card-4.w3-round-large(style='margin-top:30px;')
                                                 header.w3-container.w3-round-large(style='background-color: rgb(59,100,170); color: white;')
                                                     h7
                                                         b Comentários
