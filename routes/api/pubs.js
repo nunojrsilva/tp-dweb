@@ -41,7 +41,10 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
             .then( aSeguir => {
                 Pubs.listarPorHashtag(req.query.hashtag, req.user._id, aSeguir[0])
                 .then(dados => res.jsonp(dados))
-                .catch(e => res.status(500).send("Erro no listarPorHAshtags"))
+                .catch(e =>{
+                    console.log(JSON.stringify(e))
+                    res.status(500).send("Erro no listarPorHAshtags")
+                })
             })
             .catch(erro => res.status(500).send('Erro ao obter os seguidores'))
 	}else if(req.query.data){
