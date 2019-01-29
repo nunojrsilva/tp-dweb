@@ -541,13 +541,13 @@ async function parseFicheiros(username, fileTitle, files, data_DADA){
 
 
 function separa (ListaHash) {
-	Lista = ListaHash.split("#")
+	console.log("ESTAMOS NAS LISTAS")
+	console.log(ListaHash)
+	var Lista1 = ListaHash.replace(/ /g, '')
+	var Lista = Lista1.split("#")
+	Lista.splice(0,1)
 	console.log(Lista)
-	for(i=0; i < Lista.length; i++) {
-		if (Lista[i].length == 0 || Lista[i] == ' ')
-			Lista.splice(i,1)
-		Lista[i].trim()
-	}
+
 	return Lista
 }
 
