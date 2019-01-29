@@ -383,7 +383,7 @@ router.post("/lista", passport.authenticate('jwt', {session : false, failureRedi
 
 			var i = 1;
 			var tag
-			for (i = 1; i <= Object.keys(fields).length - 3; i++){
+			for (i = 1; i <= Object.keys(fields).length - 4; i++){
 				tag = "item"+i
 				listaElem.lista.itens.push(fields[tag])
 			}
