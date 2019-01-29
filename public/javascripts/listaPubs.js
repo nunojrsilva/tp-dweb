@@ -4,7 +4,7 @@ $(()=>{
         var pubID = $(this).closest('publicacao').attr('id')
 
         alert("ID da publicação: " + pubID);
-
+z
         var formData = new FormData();
         formData.append('pubID', pubID)
         
