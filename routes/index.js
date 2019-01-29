@@ -45,13 +45,18 @@ router.get("/publicas", (req,res) => {
 router.get('/logout', passport.authenticate('jwt', {session : false, failureRedirect : "/publicas", failureFlash : "Não tem acesso a esta página, por favor autentique-se!"}),(req,res) => {
   console.log('Na cb do GET /logout ...')
   req.session.token = null
-  res.redirect('/')
+  res.redirect('/publicas')
 
 })
 
 router.get('/registo', (req,res) => {
   console.log('Na cb do GET /login ...')
-  res.render('registo')
+  var srt = req.flash("inforeg")
+  if(srt.length > 0)
+    res.render('registo', {msg: srt})
+  else
+    res.render('registo')
+
 
 })
 
@@ -108,8 +113,14 @@ router.post("/registo", (req,res) => {
 
   axios.post("http://localhost:3000/api/users", {nome, username, password}, { withCredentials: true })
     .then(dados => {
-      console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
-      res.redirect("/login")
+      if(dados.data.msg == "Repetido"){
+        req.flash("inforeg","Username já está a ser utilizado, por favor escolha outro")
+        res.redirect("/registo")
+      }
+      else{
+        console.log("Registo com sucesso, user criado : " + JSON.stringify(dados.data))
+        res.redirect("/login")
+      }
     })
     .catch(e => {
       console.log("Erro no /registo " + JSON.stringify(e) )
