@@ -291,7 +291,7 @@ router.post('/login', async (req,res,next) => {
 router.post('/', function(req, res, next) {
     console.log("Entrei no post de /api/users")
     passport.authenticate('registo', function(err, user, info){
-        if (err) { return next(err); }
+        if (err) { return res.jsonp({erro: err, msg: "Repetido"}); }
         if (!user) { return res.jsonp({erro: "Utilizador não existe"}); }
         console.log("Body no post de /api/users " + JSON.stringify(req.body))
         console.log("Passport já atuou")
