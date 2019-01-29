@@ -108,11 +108,11 @@ module.exports.listarPorHashtag = (hashtag, id, aSeguir)  => {
 						{privacidade: 'seguidores'},
 						{hashtags : {$all : [hashtag]}}
 					]},
-					{$and :[
+					{$and:[
 						{privacidade: 'publica'},
 						{hashtags : {$all : [hashtag]}}
 					]},
-					{$and : [
+					{$and:[
 						{utilizador: id},
 						{hashtags : {$all : [hashtag]}}
 					]}
