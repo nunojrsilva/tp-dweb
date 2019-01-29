@@ -83,7 +83,9 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 // Para uso quando utilizador não está autenticado, não pode estar protegida...
 router.get('/publicas', (req,res) => {
     Pubs.listarPorPrivacidade('publica')
-            .then(dados => res.jsonp(dados))
+            .then(dados => {
+                console.log("QUERO VER ESTA CENA!!!!!!!!!! " + JSON.stringify(dados))
+                res.jsonp(dados)})
             .catch(erro => res.status(500).send('Erro na consulta de publicações publicas: '))
 
 })

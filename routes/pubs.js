@@ -89,11 +89,9 @@ router.get('/', passport.authenticate('jwt', {session : false, failureRedirect :
 router.get('/publicas', (req,res) => {
 	axiosGet(req, res, 'http://localhost:3000/api/pubs/publicas')
 		.then(resposta =>{
-			var str = req.flash('error')
-			console.log("Flash - " + str)
 			console.log(resposta)
 			removeNomeGuardado(resposta)
-			.then(publicacoes => res.render('listaPubs', { msg : str, pubs: publicacoes}))
+			.then(publicacoes => res.render('listaPubsPublicas', {pubs: publicacoes}))
 			.catch(fail => res.render('error', {e: fail, message: "Erro ao eliminar campos das publicações"}))
 		})
 })
@@ -183,7 +181,8 @@ router.post('/opiniao', passport.authenticate('jwt', {session : false, failureRe
 			console.log('files: \n' + JSON.stringify(files))       
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date().toString();
+			var data = new Date()
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
@@ -229,7 +228,8 @@ router.post('/evento', passport.authenticate('jwt', {session : false, failureRed
 			
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date().toString();
+			var data = new Date()
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.local = fields.local
 			publicacao.privacidade = fields.privacidade
@@ -280,7 +280,8 @@ router.post('/ficheiros', passport.authenticate('jwt', {session : false, failure
 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date().toString();
+			var data = new Date()
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			publicacao.hashtags = separaHashtag(fields.hashtags)
 			publicacao.privacidade = fields.privacidade
 			publicacao.elems = []
@@ -318,7 +319,8 @@ router.post("/narracao", passport.authenticate('jwt', {session : false, failureR
 
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date().toString();
+			var data = new Date()
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.gostos = []
@@ -369,7 +371,8 @@ router.post("/lista", passport.authenticate('jwt', {session : false, failureRedi
 	
 			var publicacao = {}
 			publicacao.utilizador = req.user._id
-			publicacao.data = new Date().toString();
+			var data = new Date()
+			publicacao.data = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
 			publicacao.privacidade = fields.privacidade
 			publicacao.hashtags = separa(fields.hashtags)
 			publicacao.elems = []
@@ -488,21 +491,18 @@ async function parseFicheiros(username, fileTitle, files, data_DADA){
 		var ficheirosArray = []
 		var ficheiro = {}
 		var salt = null
-		var data = null
 
         for(var fich in files){
 			var nome = files[fich].name
 			var parts = nome.split('.')
 			var extention = "." + parts[parts.length - 1]
-			data = new Date(data_DADA)
 			
-			var dataCalendario = data.getFullYear() + "-" + (data.getMonth() + 1) + "-" + data.getDate();
-			var pasta = path.resolve(__dirname + '/../uploaded/' + username+'/' + dataCalendario)
+			var pasta = path.resolve(__dirname + '/../uploaded/' + username+'/' + data_DADA)
 			
 			salt = randomstring.generate(64)
 
 			ficheiro = {}
-			ficheiro.nomeGuardado = hash('sha1').update(username + nome + salt + dataCalendario).digest('hex')
+			ficheiro.nomeGuardado = hash('sha1').update(username + nome + salt + data_DADA).digest('hex')
 			ficheiro.nome = nome
 			ficheiro.isImage = isImage(nome).toString()
 			
