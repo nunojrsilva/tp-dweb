@@ -13,8 +13,6 @@ publicacao.w3-container(id=pub._id)
         .w3-container
             if pub.tituloPub
                 h2=pub.tituloPub
-            if pub.local
-                h4="Local: " + pub.local
             each e in pub.elems
                         
                 if e.tipo == "lista"
