@@ -1,12 +1,10 @@
-Pub -> idUtilizador | [Hashtag] | Data | Local* | Privacidade | TituloPublicacao* | [Elems] | [Gostos] | [Comentarios]
+Pub -> idUtilizador | [Hashtag] | Data | Privacidade | TituloPublicacao* | [Elems] | [Gostos] | [Comentarios]
 
 idUtilizador -> String
 
 Hashtag -> String
 
 Data -> String
-
-Local -> String
 
 Privacidade -> String
 
